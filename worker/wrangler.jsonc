@@ -1,0 +1,19 @@
+{
+  "name":"openclscope-database-api",
+  "main":"src/index.js",
+  "compatibility_date":"2026-08-23",
+  "d1_databases":[{
+    "binding":"DB",
+    "database_name":"openclscope-database",
+    "database_id":"REPLACE_WITH_NEW_OPENCLSCOPE_D1_DATABASE_ID",
+    "migrations_dir":"migrations"
+  }],
+  "vars":{
+    "ALLOWED_ORIGIN":"https://efishell0.github.io",
+    "SNAPSHOT_GITHUB_OWNER":"EFIShell0",
+    "SNAPSHOT_GITHUB_REPO":"OpenCLScope_database",
+    "SNAPSHOT_GITHUB_WORKFLOW":"pages.yml",
+    "SNAPSHOT_GITHUB_REF":"main"
+  },
+  "observability":{"enabled":true}
+}

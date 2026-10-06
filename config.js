@@ -1,0 +1,1 @@
+window.OPENCLSCOPE_DATABASE_API = "";

@@ -1,0 +1,70 @@
+name: OpenCLScope Database Pages
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'assets/**'
+      - 'data/**'
+      - 'config.js'
+      - 'registry/**'
+      - 'tools/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Refresh database snapshot and publish the updated Pages artifact
+        required: true
+        default: snapshot
+        type: choice
+        options: [snapshot]
+      report_id:
+        description: Require that a submitted report appears in the new snapshot index
+        required: false
+        type: string
+      submitted_at:
+        description: Server-side receipt timestamp (diagnostic only)
+        required: false
+        type: string
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: openclscope-database-pages
+  cancel-in-progress: false
+jobs:
+  verify-publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check contract and static assets
+        run: |
+          node --check assets/app.v0100.js
+          node --check worker/src/index.js
+          node --test worker/tests/*.test.mjs
+          node --test tests/*.test.mjs
+          python3 tools/verify_release.py
+      - name: Configure fixed production API and CSP
+        env:
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+        run: node tools/configure.mjs
+      - name: Produce and verify complete public index and featured full reports
+        env:
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+          REQUIRED_REPORT_ID: ${{ inputs.report_id }}
+        run: node tools/build_snapshot.mjs
+      - name: Build allowlisted-only public site (no Worker source, test fixtures or secrets)
+        run: node tools/build_pages_artifact.mjs
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+      - id: deployment
+        uses: actions/deploy-pages@v4

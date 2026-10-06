@@ -1,0 +1,12 @@
+import {cp,copyFile,mkdir,rm,readFile} from 'node:fs/promises';
+import {resolve,join} from 'node:path';
+const root=resolve('.');
+const destination=join(root,'_site');
+const index=JSON.parse(await readFile(join(root,'data/index.json'),'utf8'));
+const snapshot=JSON.parse(await readFile(join(root,'data/snapshot.json'),'utf8'));
+if(index.schemaVersion!==1||snapshot.schemaVersion!==1||!Array.isArray(index.reports)||!Array.isArray(snapshot.reports))throw Error('Invalid static snapshot, Pages publication aborted');
+await rm(destination,{recursive:true,force:true});
+await mkdir(destination,{recursive:true});
+for(const file of ['index.html','config.js'])await copyFile(join(root,file),join(destination,file));
+for(const folder of ['assets','data','registry'])await cp(join(root,folder),join(destination,folder),{recursive:true});
+process.stdout.write('Prepared allowlisted-only Pages artifact: index.html, config.js, assets/, data/, registry/\n');

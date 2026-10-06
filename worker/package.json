@@ -1,0 +1,9 @@
+{
+  "name":"openclscope-database-worker", "version":"0.1.0", "private":true,
+  "type":"module", "scripts":{
+    "dev":"wrangler dev", "deploy":"wrangler deploy", "migrate":"wrangler d1 migrations apply openclscope-database --remote",
+    "test":"node --test tests/*.test.mjs", "check":"node --check src/index.js && node --test tests/*.test.mjs"
+  },
+  "devDependencies":{"wrangler":"4.130.0"},
+  "allowScripts":{"esbuild":true,"sharp":true,"workerd":true}, "overrides":{"sharp":"0.35.4"}
+}
