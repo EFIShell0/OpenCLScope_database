@@ -10,11 +10,12 @@ root=Path(__file__).resolve().parents[1]
 asset=root/'assets'
 worker=root/'worker'
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+def sha_lf(path):return hashlib.sha256(path.read_bytes().replace(b'\r\n',b'\n')).hexdigest()
 def check(value,name):
     if not value:raise AssertionError(name)
 
 check(sha(root/'registry/cl.xml')=='c24f63ad9aa5776fe67808926ae85613248ebbeefa7373fceb406a0bd12ce016','Official OpenCL registry changed')
-check(sha(root/'registry/opencl.svg')=='7e99195dec3f96efb9cfd6aa137af390f9f30711b6e6a0573bfc47f50ab77f1e','Official logo changed')
+check(sha_lf(root/'registry/opencl.svg')=='6067ef6dc08e815d837c43a29d724ec7eedf96a808941d99cc3e7cdd8b5ee6b1','Official logo changed')
 ET.parse(root/'registry/cl.xml')
 catalog=json.loads((asset/'catalog.json').read_text())
 check(catalog['registrySha256']==sha(root/'registry/cl.xml'),'Catalog XML SHA mismatch')
@@ -27,7 +28,10 @@ for group,field in [('PLATFORM_KEYS','platformQueries'),('DEVICE_KEYS','deviceQu
 check(catalog['registrySha256'] in manifest,'Worker registry hash mismatch')
 check(json.loads((worker/'tests/complete-report.json').read_text())['technicalReport']['appVersion']=='0.2.0','Fixture version mismatch')
 config=(worker/'wrangler.jsonc').read_text()
-check('REPLACE_WITH_NEW_OPENCLSCOPE_D1_DATABASE_ID' in config,'No immutable new D1 ID placeholder')
+db_entries=json.loads(config)['d1_databases']
+check(len(db_entries)==1 and db_entries[0].get('binding')=='DB' and db_entries[0].get('database_name')=='openclscope-database','Cloudflare D1 binding changed')
+db_id=db_entries[0].get('database_id','')
+check(db_id=='REPLACE_WITH_NEW_OPENCLSCOPE_D1_DATABASE_ID' or re.fullmatch(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}',db_id) is not None,'D1 ID must be the source placeholder or a UUID')
 check('vulkanscope-database' not in config,'Accidentally references old Vulkan D1')
 sql=(worker/'migrations/0001_init.sql').read_text()
 for name in ('reports','report_payload_chunks','submitted_at','payload_json','platform_count','device_count'):
@@ -67,6 +71,6 @@ for logo in (asset/'openclscope_logo_foreground.png', asset/'openclscope_logo_ho
 check((root/'rules/UPSTREAM_REFERENCE_RULES.md').exists() and (root/'rules/PROJECT_RULES.md').exists(),'Rulebook provenance missing')
 for path in [asset/'app.v1200.js',worker/'src/index.js',root/'tools/build_snapshot.mjs',root/'tools/configure.mjs',root/'tools/build_pages_artifact.mjs']:
     subprocess.run(['node','--check',str(path)],check=True)
-print('PASS: byte-identical official XML/logo; 16/209/156 current catalogue and paired Worker tokens with legacy 8/120 acceptance')
+print('PASS: pinned official XML/logo with CRLF/LF-safe SVG check; 16/209/156 current catalogue and paired Worker tokens with legacy 8/120 acceptance')
 print('PASS: OpenCL-only SQL, fixed-contract server, explicit empty report index and auto-refresh workflow')
 print('PASS: 10 responsive views, VulkanScope GPU logos and separately pinned CSS references, live polling, Node.js syntax, no fictitious server or D1 ID')
