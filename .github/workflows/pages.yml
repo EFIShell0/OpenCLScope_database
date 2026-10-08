@@ -44,9 +44,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install release image-verification dependency
+        run: python -m pip install Pillow==11.3.0
       - name: Check contract and static assets
         run: |
-          node --check assets/app.v0100.js
+          node --check assets/app.v1200.js
           node --check worker/src/index.js
           node --test worker/tests/*.test.mjs
           node --test tests/*.test.mjs
@@ -68,3 +73,10 @@ jobs:
           path: ./_site
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify the published Pages index and triggered report
+        env:
+          PUBLISHED_PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+          REQUIRED_REPORT_ID: ${{ inputs.report_id }}
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+        run: node tools/verify_published_snapshot.mjs
+

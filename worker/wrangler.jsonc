@@ -13,7 +13,9 @@
     "SNAPSHOT_GITHUB_OWNER":"EFIShell0",
     "SNAPSHOT_GITHUB_REPO":"OpenCLScope_database",
     "SNAPSHOT_GITHUB_WORKFLOW":"pages.yml",
-    "SNAPSHOT_GITHUB_REF":"main"
+    "SNAPSHOT_GITHUB_REF":"main",
+    "SNAPSHOT_PAGES_URL":""
   },
+  "triggers":{"crons":["*/15 * * * *"]},
   "observability":{"enabled":true}
 }

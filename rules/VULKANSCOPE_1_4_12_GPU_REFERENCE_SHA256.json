@@ -1,0 +1,14 @@
+{
+  "gpu_vendor_imagination.png": "e8a7c11f6f285ea276de7245eec42d2b546845d05feb1813a85d183658b20db8",
+  "gpu_vendor_samsung.png": "f52c8577e176a239a8288e9c2d84be9aa430831a4837d074f444fa2d0c0aa190",
+  "gpu_vendor_unknown.png": "0c338a8e6fbc0031ded7e72cbf0f5d3f61205ffd242e518053a9f9d125330c4c",
+  "gpu_vendor_intel.png": "9473a9ddef012b5a98e0308d6aceb843b14fb5a8d9e9e2f28790f2849c51a9d2",
+  "gpu_vendor_amd.png": "90ee261222f684064bfd611f350ea94c59ba54803593bebe0b46b159db177c3f",
+  "gpu_vendor_vsi.png": "cf56b998003538bfc7684a5da8ba95a3d75bd41edcd422999efdbcf6694a23c8",
+  "gpu_vendor_nvidia.png": "08e24a8ea51facb270ec6315e45ff5d057eb81738ca4672bdb1987a925e9fe28",
+  "gpu_vendor_qualcomm.png": "25c11260eadc8902c114ceacdb5c4a04a72984b2ed9608082e9bb0190529cad2",
+  "gpu_vendor_vivante.png": "cf56b998003538bfc7684a5da8ba95a3d75bd41edcd422999efdbcf6694a23c8",
+  "gpu_vendor_huawei.png": "3d664401a27bbfbfbff6e745c30772cfaa8c428b75c50acf66c844ef73e44a58",
+  "gpu_vendor_arm.png": "fcb25adc270c88d0bb3032cc209dcdf053c23dbd9923c1d7194af0881f070395",
+  "gpu_vendor_broadcom.png": "ddfa456e50a65969ad5b64bb5e203d35282380c4acfae7eb545217a48a0bb4e9"
+}

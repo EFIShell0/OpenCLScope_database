@@ -1,13 +1,21 @@
-# OpenCLScope™ Database 0.1.0
+# OpenCLScope™ Database 0.12.0
 
 ## Added
-- Independent Cloudflare Worker/D1 database for OpenCLScope 0.2.0 schema-1 reports.
-- AMOLED/green web report explorer with full-report detail, aggregate OpenCL views, report-ID search and exact query comparisons.
-- Server-side UTC timestamp, idempotent SHA-256 report ID, chunk-safe atomic storage and snapshot-triggered GitHub Pages publishing.
-- Repository checks, full-index/snapshot corruption checks, negative-mutation and false-positive regression tests.
+- Immediate accepted-report GitHub Actions snapshot dispatch with authoritative ID and timestamp; optional 15-minute Pages reconciliation and retry for failed publication.
+- Post-deployment Pages index and preload verification, requiring each triggering report to be visible.
+- Cache-first website with 10-second visible-page live synchronization against `/v1/sync` and non-destructive offline fallback.
+- VulkanScope-matched GPU vendor logos for recognized vendor strings and consistent responsive navigation icons.
 
 ## Changed
-- VulkanScope-native technical fields replaced with canonical OpenCL™ platform, device, properties, formats and extensions.
+- Snapshot generation now shares Worker producer validation, eliminating the old snapshot whitelist that rejected valid 0.10.1–0.12.4 producers.
+- Required just-submitted report receives preload priority; complete metadata index remains authoritative for all reports.
+- Versioned UI assets, refreshed card/search/navigation proportions and database status indicators.
 
 ## Fixed
-- Prevent fake status, partial reports, unbounded body, wrong producer/version and missing durable chunks from entering a report-backed view.
+- GitHub Actions previously checked non-existent `assets/app.v0701.js`.
+- Worker release metadata, public snapshot/index release version and packaged website version are now consistent.
+- Snapshot publication tests now cover latest exact producer, historical compatibility, invalid identity, SHA integrity and post-deployment gating.
+
+## Security
+- No fake entries, guessed GPU identification or permissive producer matching. Registry `cl.xml` and official SVG remain unchanged.
+- Live Cloudflare D1/Pages publication must be validated after deploying; local test results alone do not assert a live success.

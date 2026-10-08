@@ -2,6 +2,7 @@ import {createHash} from 'node:crypto';
 import {writeFile,rename,mkdir} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
+import {validateSubmission,DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
 
 const ID=/^[a-f0-9]{64}$/;
 const MAX_INDEX=100000;
@@ -14,8 +15,9 @@ function sorted(value,depth=0){
   return JSON.stringify(value);
 }
 function verifyEnvelope(full,id){
-  if(!full||full.id!==id||full.schemaVersion!==1||full?.application?.versionName!=='0.2.0'||full?.collection?.status!=='complete'||full?.technicalReport?.status!=='ok')throw Error(`Incorrect report identity/schema: ${id}`);
+  if(!full||full.id!==id||full.schemaVersion!==1||typeof full.submittedAt!=='string'||!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d/.test(full.submittedAt))throw Error(`Incorrect report identity/schema: ${id}`);
   const bare={...full};delete bare.id;delete bare.submittedAt;
+  if(!validateSubmission(bare).ok)throw Error(`Invalid producer or report contract in published detail: ${id}`);
   if(createHash('sha256').update(sorted(bare)).digest('hex')!==id)throw Error(`Payload SHA-256 mismatch: ${id}`);
   return full;
 }
@@ -54,21 +56,28 @@ export async function collectSnapshot(api,fetchImpl=fetch,options={}){
     if(page===Math.ceil(maxIndex/50))throw Error('Index traversal limit exceeded');
   }
   if(cursor)throw Error('Database report index was not fully retrieved');
-  const featured=[];let used=Buffer.byteLength('{"schemaVersion":1,"reports":[]}'),omittedForSize=0;
+  const featured=[],featuredIds=new Set();let used=Buffer.byteLength('{"schemaVersion":1,"reports":[]}'),omittedForSize=0;
+  const expected=options.requireId;
+  if(expected&&!rows.some(r=>r.id===expected))throw Error('Just-submitted report is missing from published index');
+  if(expected){
+    const required=verifyEnvelope(await getJson(api,`/v1/reports/${expected}`,fetchImpl),expected);
+    const bytes=Buffer.byteLength(JSON.stringify(required))+1;
+    if(used+bytes>maxBytes)throw Error('Just-submitted report exceeds snapshot preload limit');
+    featured.push(required);featuredIds.add(expected);used+=bytes;
+  }
   for(let i=0;i<Math.min(rows.length,maxFull);i+=4){
-    const batch=await Promise.all(rows.slice(i,i+4).map(async r=>verifyEnvelope(await getJson(api,`/v1/reports/${r.id}`,fetchImpl),r.id)));
+    const batch=await Promise.all(rows.slice(i,i+4).filter(r=>!featuredIds.has(r.id)).map(async r=>verifyEnvelope(await getJson(api,`/v1/reports/${r.id}`,fetchImpl),r.id)));
     for(const value of batch){
       const size=Buffer.byteLength(JSON.stringify(value))+1;
       if(used+size>maxBytes){omittedForSize++;continue}
-      used+=size;featured.push(value);
+      used+=size;featured.push(value);featuredIds.add(value.id);
     }
   }
   const generatedAt=new Date().toISOString();
-  const index={schemaVersion:1,databaseReleaseVersion:'0.1.0',generatedAt,reportCount:rows.length,reports:rows,nextCursor:null};
-  const snapshot={schemaVersion:1,databaseReleaseVersion:'0.1.0',generatedAt,reportCount:rows.length,preloadedReportCount:featured.length,omittedForSize,reports:featured};
+  const index={schemaVersion:1,databaseReleaseVersion:DATABASE_RELEASE_VERSION,generatedAt,reportCount:rows.length,reports:rows,nextCursor:null};
+  const snapshot={schemaVersion:1,databaseReleaseVersion:DATABASE_RELEASE_VERSION,generatedAt,reportCount:rows.length,preloadedReportCount:featured.length,omittedForSize,reports:featured};
   if(Buffer.byteLength(JSON.stringify(snapshot))>maxBytes)throw Error('Final snapshot exceeded size cap');
-  const expected=options.requireId;
-  if(expected&&!rows.some(r=>r.id===expected))throw Error('Just-submitted report is missing from published index');
+  if(expected&&!snapshot.reports.some(r=>r.id===expected))throw Error('Just-submitted report is missing from required snapshot preload');
   return {index,snapshot};
 }
 export async function publishSnapshot(api,out,fetchImpl=fetch,options={}){

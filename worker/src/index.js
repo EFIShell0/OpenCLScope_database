@@ -1,6 +1,7 @@
-import {PLATFORM_KEYS, DEVICE_KEYS, REGISTRY_SHA256} from './query-manifest.js';
+import {PLATFORM_KEYS, DEVICE_KEYS, LEGACY_PLATFORM_KEYS, LEGACY_DEVICE_KEYS, REGISTRY_SHA256} from './query-manifest.js';
 
-const RELEASE = '0.1.0';
+export const DATABASE_RELEASE_VERSION = '0.12.0';
+const RELEASE = DATABASE_RELEASE_VERSION;
 const MAX_BODY = 18 * 1024 * 1024;
 const MAX_REPORT = 16 * 1024 * 1024;
 const INLINE_BYTES = 100000;
@@ -61,19 +62,21 @@ function validImageGroups(groups) {
   }
   return true;
 }
-function validReport(t) {
+function validReport(t, producerVersion) {
+  const platformKeys = (producerVersion === '0.8.0' || producerVersion === '0.8.1' || producerVersion === '0.9.0' || producerVersion === '0.10.0' || producerVersion === '0.10.1' || producerVersion === '0.10.2' || producerVersion === '0.10.3' || producerVersion === '0.11.0' || producerVersion === '0.11.1' || producerVersion === '0.12.0' || producerVersion === '0.12.1' || producerVersion === '0.12.2' || producerVersion === '0.12.3' || producerVersion === '0.12.4') ? PLATFORM_KEYS : LEGACY_PLATFORM_KEYS;
+  const deviceKeys = (producerVersion === '0.8.0' || producerVersion === '0.8.1' || producerVersion === '0.9.0' || producerVersion === '0.10.0' || producerVersion === '0.10.1' || producerVersion === '0.10.2' || producerVersion === '0.10.3' || producerVersion === '0.11.0' || producerVersion === '0.11.1' || producerVersion === '0.12.0' || producerVersion === '0.12.1' || producerVersion === '0.12.2' || producerVersion === '0.12.3' || producerVersion === '0.12.4') ? DEVICE_KEYS : LEGACY_DEVICE_KEYS;
   if (!hasExactly(t,['schema','appVersion','collectedAtEpochMs','status','message','loader','errorCode','durationMs','platforms'])) return false;
-  if (t.schema!==1 || t.appVersion!=='0.2.0' || t.status!=='ok' || !Number.isSafeInteger(t.collectedAtEpochMs) || t.collectedAtEpochMs<=0 || !Number.isInteger(t.durationMs) || t.durationMs<0 || t.durationMs>3600000 || t.errorCode!==0 || typeof t.message!=='string' || t.message.length>512 || typeof t.loader!=='string' || t.loader.length>512 || !Array.isArray(t.platforms) || t.platforms.length<1 || t.platforms.length>64) return false;
+  if (t.schema!==1 || t.appVersion!==producerVersion || t.status!=='ok' || !Number.isSafeInteger(t.collectedAtEpochMs) || t.collectedAtEpochMs<=0 || !Number.isInteger(t.durationMs) || t.durationMs<0 || t.durationMs>3600000 || t.errorCode!==0 || typeof t.message!=='string' || t.message.length>512 || typeof t.loader!=='string' || t.loader.length>512 || !Array.isArray(t.platforms) || t.platforms.length<1 || t.platforms.length>64) return false;
   let total=0;
   for (let p=0;p<t.platforms.length;p++) {
     const platform=t.platforms[p];
     if (!hasExactly(platform,['index','name','vendor','version','profile','extensions','properties','devices','deviceEnumerationStatus','deviceEnumerationCode'])) return false;
-    if (platform.index!==p || !['name','vendor','version','profile'].every(key=>typeof platform[key]==='string' && platform[key].length<=1024) || !platform.name || !platform.version || !validateExtensions(platform.extensions) || !validatesProperties(platform.properties,PLATFORM_KEYS)) return false;
+    if (platform.index!==p || !['name','vendor','version','profile'].every(key=>typeof platform[key]==='string' && platform[key].length<=1024) || !platform.name || !platform.version || !validateExtensions(platform.extensions) || !validatesProperties(platform.properties,platformKeys)) return false;
     if (!Array.isArray(platform.devices) || platform.devices.length>64 || !['available','no_devices'].includes(platform.deviceEnumerationStatus) || !Number.isInteger(platform.deviceEnumerationCode) || (platform.deviceEnumerationStatus==='available' ? platform.deviceEnumerationCode!==0 : (platform.deviceEnumerationCode!==-1 || platform.devices.length!==0))) return false;
     for (let d=0;d<platform.devices.length;d++) {
       const device=platform.devices[d];
       if (!hasExactly(device,['index','name','vendor','version','driverVersion','profile','type','extensions','properties','imageFormats'])) return false;
-      if (device.index!==d || !['name','vendor','version','driverVersion','profile','type'].every(key=>typeof device[key]==='string' && device[key].length<=1024) || !device.name || !device.version || !device.driverVersion || !validateExtensions(device.extensions) || !validatesProperties(device.properties,DEVICE_KEYS) || !validImageGroups(device.imageFormats)) return false;
+      if (device.index!==d || !['name','vendor','version','driverVersion','profile','type'].every(key=>typeof device[key]==='string' && device[key].length<=1024) || !device.name || !device.version || !device.driverVersion || !validateExtensions(device.extensions) || !validatesProperties(device.properties,deviceKeys) || !validImageGroups(device.imageFormats)) return false;
       total++;
     }
   }
@@ -81,10 +84,10 @@ function validReport(t) {
 }
 export function validateSubmission(p) {
   if (!hasExactly(p,['schemaVersion','application','device','collection','registrySha256','technicalReport']) || p.schemaVersion!==1 || p.registrySha256!==REGISTRY_SHA256 || hasSensitive(p)) return {ok:false,reason:'envelope'};
-  if (!hasExactly(p.application,['name','packageName','versionName','versionCode']) || p.application.name!=='OpenCLScope' || p.application.packageName!=='com.efishell.openclscope' || p.application.versionName!=='0.2.0' || p.application.versionCode<200 || !Number.isSafeInteger(p.application.versionCode)) return {ok:false,reason:'producer'};
+  if (!hasExactly(p.application,['name','packageName','versionName','versionCode']) || p.application.name!=='OpenCLScope' || p.application.packageName!=='com.efishell.openclscope' || !((p.application.versionName==='0.2.0' && p.application.versionCode===200) || (p.application.versionName==='0.3.0' && p.application.versionCode===300) || (p.application.versionName==='0.4.0' && p.application.versionCode===400) || (p.application.versionName==='0.5.0' && p.application.versionCode===500) || (p.application.versionName==='0.6.0' && p.application.versionCode===600) || (p.application.versionName==='0.6.1' && p.application.versionCode===601) || (p.application.versionName==='0.7.0' && p.application.versionCode===700) || (p.application.versionName==='0.8.0' && p.application.versionCode===800) || (p.application.versionName==='0.8.1' && p.application.versionCode===801) || (p.application.versionName==='0.9.0' && p.application.versionCode===900) || (p.application.versionName==='0.10.0' && p.application.versionCode===1000) || (p.application.versionName==='0.10.1' && p.application.versionCode===1001) || (p.application.versionName==='0.10.2' && p.application.versionCode===1002) || (p.application.versionName==='0.10.3' && p.application.versionCode===1003) || (p.application.versionName==='0.11.0' && p.application.versionCode===1100) || (p.application.versionName==='0.11.1' && p.application.versionCode===1101) || (p.application.versionName==='0.12.0' && p.application.versionCode===1200) || (p.application.versionName==='0.12.1' && p.application.versionCode===1201) || (p.application.versionName==='0.12.2' && p.application.versionCode===1202) || (p.application.versionName==='0.12.3' && p.application.versionCode===1203) || (p.application.versionName==='0.12.4' && p.application.versionCode===1204)) || !Number.isSafeInteger(p.application.versionCode)) return {ok:false,reason:'producer'};
   if (!hasExactly(p.device,['manufacturer','model','androidApi']) || !['manufacturer','model'].every(key=>typeof p.device[key]==='string' && p.device[key].length<=120) || !Number.isInteger(p.device.androidApi) || p.device.androidApi<31 || p.device.androidApi>200) return {ok:false,reason:'device'};
   if (!hasExactly(p.collection,['status','source']) || p.collection.status!=='complete' || p.collection.source!=='live') return {ok:false,reason:'collection'};
-  if (!validReport(p.technicalReport)) return {ok:false,reason:'technical_report'};
+  if (!validReport(p.technicalReport,p.application.versionName)) return {ok:false,reason:'technical_report'};
   return {ok:true,reason:'ok'};
 }
 function cors(origin, allowed) {
@@ -138,7 +141,7 @@ async function dispatchSnapshot(env,id,submittedAt) {
   const body=JSON.stringify({ref,inputs:{mode:'snapshot',report_id:id,submitted_at:submittedAt}});
   for(let attempt=0;attempt<3;attempt++) {
     try {
-      const result=await fetch(url,{method:'POST',headers:{'content-type':'application/json','accept':'application/vnd.github+json','authorization':`Bearer ${token}`,'user-agent':'OpenCLScope-Database/0.1.0'},body});
+      const result=await fetch(url,{method:'POST',headers:{'content-type':'application/json','accept':'application/vnd.github+json','authorization':`Bearer ${token}`,'user-agent':'OpenCLScope-Database/0.12.0'},body});
       if(result.ok) return;
       if(result.status>=400 && result.status<500 && result.status!==429) throw Error('Snapshot dispatcher authorization failed');
     } catch(error) {if(attempt===2) throw error}
@@ -202,5 +205,25 @@ export default {
       if(['/v1/health','/v1/sync','/v1/reports'].includes(url.pathname)||url.pathname.startsWith('/v1/reports/')) return response({error:'Method not allowed'},405,origin,allowed,{'allow':url.pathname==='/v1/reports'?'GET, POST, OPTIONS':'GET, OPTIONS'});
       return response({error:'Not found'},404,origin,allowed);
     } catch(error) {console.error('OpenCLScope database request failed',String(error));return response({error:'Internal server error'},500,origin,allowed)}
+  },
+  async scheduled(_event,env) {
+    if(!snapshotReady(env))return;
+    const site=text(env.SNAPSHOT_PAGES_URL).trim();
+    if(!site)return;
+    const url=new URL(site);
+    if(url.protocol!=='https:'||url.username||url.password||url.search||url.hash||!/^https:\/\/[^\s]+$/.test(site))throw Error('Invalid snapshot Pages URL');
+    const latest=await env.DB.prepare('SELECT id,submitted_at FROM reports ORDER BY submitted_at DESC,id DESC LIMIT 1').first();
+    if(!latest)return;
+    const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM reports').first();
+    let published=false;
+    try {
+      const indexUrl=new URL(`${url.pathname.replace(/\/$/,'')}/data/index.json`,url.origin);
+      const response=await fetch(indexUrl,{redirect:'error',headers:{accept:'application/json','cache-control':'no-cache'},signal:AbortSignal.timeout(12000)});
+      if(response.ok){
+        const data=await response.json();
+        published=data.schemaVersion===1&&data.reportCount===count.total&&Array.isArray(data.reports)&&data.reports.some(r=>r.id===latest.id);
+      }
+    }catch(error){console.error('Snapshot published-index check failed',String(error))}
+    if(!published)await dispatchSnapshot(env,latest.id,latest.submitted_at);
   }
 };
