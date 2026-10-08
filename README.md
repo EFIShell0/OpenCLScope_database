@@ -1,4 +1,4 @@
-# OpenCLScope™ Database 0.12.0
+# OpenCLScope Database 0.12.0
 
 Standalone OpenCL™ capability database companion for **OpenCLScope 0.12.4**, modeled after the supplied VulkanScope Database 1.4.12 Worker/D1/Pages security and publication architecture. This is OpenCL report schema 1 and stores only explicitly submitted OpenCLScope evidence. The normative `cl.xml` and official `opencl.svg` remain checked in under `registry/`.
 
