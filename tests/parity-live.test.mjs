@@ -45,16 +45,16 @@ test('snapshot publication requires exact new report detail and no false success
 });
 test('workflow references existing versioned site asset, post-deploy verification and API snapshot',async()=>{
   const src=await readFile(new URL('../.github/workflows/pages.yml',import.meta.url),'utf8');
-  assert.match(src,/node --check assets\/app\.v1252\.js/);
+  assert.match(src,/node --check assets\/app\.v1253\.js/);
   assert.doesNotMatch(src,/app\.v0701\.js/);
   assert.match(src,/verify_published_snapshot\.mjs/);
   assert.match(src,/build_snapshot\.mjs/);
   const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(html,/assets\/app\.v1252\.js/);
+  assert.match(html,/assets\/app\.v1253\.js/);
 });
 
 test('cache-first browser code checks sync token before querying index and polls only when visible',async()=>{
-  const js=await readFile(new URL('../assets/app.v1252.js',import.meta.url),'utf8');
+  const js=await readFile(new URL('../assets/app.v1253.js',import.meta.url),'utf8');
   assert.match(js,/fetch\('\.\/data\/index\.json'/);
   assert.match(js,/const sync=await api\('\/v1\/sync'\)/);
   assert.match(js,/if\(!force&&same\)/);

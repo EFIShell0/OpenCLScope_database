@@ -1,19 +1,18 @@
-# OpenCLScope Database 0.12.52 — QA (2026-10-15)
+# OpenCLScope Database 0.12.53 — test results
 
-## Source baseline
-- OpenCLScope Database 0.12.51 ZIP and VulkanScope Database 1.4.12 ZIP were extracted and compared.
-- Full results: `FULL_VULKAN_COMPARISON_0.12.52.md`, `FILE_BY_FILE_COMPARISON.tsv`.
-- 44 prioritized behavior/design findings; report labels fixed/intentional/pending individually.
+## Executed
 
-## Executed local checks
-- `python tools/verify_release.py` — PASS.
-- `node --test tests/*.test.mjs worker/tests/*.test.mjs` — PASS 40/40.
-- `node tools/build_pages_artifact.mjs` — PASS with current 0.12.52 empty snapshot fixture.
-- Negative release-gate test — PASS: mismatched 0.12.7 index fails closed; matching Worker/snapshot 0.12.52 passes.
-- Source Worker producer acceptance contract remains 1.0.14 / 10014, with older pinned historical producers preserved.
-- Official cl.xml, 16 platform + 209 device queries, 156 registry extensions and pinned upstream branding assets unchanged.
+- **PASS** — `python -B tools/verify_release.py`: fixed schema, pinned `cl.xml`, official logos, immutable upstream references, Producer 1.0.14 / 10014 and historical pairs, stylesheet/version targets, manifest constraints.
+- **PASS** — `node --test tests/*.test.mjs worker/tests/*.test.mjs`: **47 tests passed, 0 failed**. Includes 19 Worker tests plus 28 site/cache/visual contract tests.
+- **PASS** — `node tools/build_pages_artifact.mjs`: static production allowlist built; Pages release index and snapshot matched Worker 0.12.53.
+- **PASS** — Chromium (offline fixture-only preview, not live domain), desktop 1440×900 and mobile 390×844: no uncaught JavaScript errors; no horizontal overflow; all five native select controls enhanced; Settings opened and closed via Escape; navigation changed views; loader vanished after snapshot loaded.
+- **PASS** — `node --check assets/app.v1253.js`, release ZIP safety/integrity check, SHA-256 manifest.
 
-## Not executed / limitations
-- Real deployed Cloudflare Worker/D1 write/read, GitHub Actions and actual GitHub Pages publication: NOT EXECUTED.
-- Full-browser UI parity, mobile responsiveness and pixel-level screenshot tests: NOT VERIFIED. Headless Chromium screenshot attempt timed out; do not claim success.
-- Pending parity differences are intentionally not claimed as fixed in this release.
+## Not executed / not asserted
+
+- Live GitHub Pages / Cloudflare D1 / Worker publish and on-domain browser test.
+- Pixel-by-pixel overlay comparison with the live VulkanScope reference using identical populated reports.
+- Real device, TalkBack, right-click, or full cross-browser animation testing.
+- Correctness of semantic comparison and remaining advanced Settings and chart features (listed PENDING in the gap ledger).
+
+Design differences not verifiably closed are documented in `FULL_VULKAN_DESIGN_COMPARISON_0.12.53.md`; they have not been relabeled as passed.

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const site = await readFile(new URL('../assets/app.v1252.js', import.meta.url), 'utf8');
+const site = await readFile(new URL('../assets/app.v1253.js', import.meta.url), 'utf8');
 const fixture = JSON.parse(await readFile(new URL('../worker/tests/complete-report.json', import.meta.url), 'utf8'));
 const exportFuncs = site.slice(site.indexOf('function completeReportText(report){'), site.indexOf('function installIcons(){'));
 const context = vm.createContext({text: value => value === null || value === undefined ? '' : String(value)});
@@ -34,7 +34,7 @@ test('UI binds TXT/HTML/JSON report downloads, selected page size and all-filter
   const html = await readFile(new URL('../index.html',import.meta.url),'utf8');
   for (const id of ['downloadTxt','downloadHtml','downloadReport','pageLimit','stateFilter','globalSearch','globalSearchClear']) assert.ok(html.includes(`id="${id}"`), id);
   for (const value of [25,50,100]) assert.ok(html.includes(`value="${value}"`),`${value} page size`);
-  assert.ok(site.includes('localStorage.setItem(\'openclscope-page-limit\''));
+  assert.ok(site.includes('safeStorageSet(\'openclscope-page-limit\''));
   assert.ok(site.includes('Math.ceil(total/state.pageSize)'));
   assert.ok(site.includes('downloadCompleteReport(state.detail,\'txt\')'));
   assert.ok(site.includes('downloadCompleteReport(state.detail,\'html\')'));

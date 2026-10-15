@@ -1,6 +1,11 @@
-# OpenCLScope Database 0.12.52
+# OpenCLScope Database 0.12.53
 
-Paired with **OpenCLScope 1.0.14 / Android versionCode 10014**. Complete, explicitly submitted live reports from 1.0.14 are accepted after deploying this Worker. Existing producer pairs, including 1.0.12 / 10012, remain accepted. The native-query manifest, provenance and no-imported-report checks remain strict.
+Android-facing producer compatibility remains **OpenCLScope 1.0.14 / versionCode 10014** with exact historical producer support and unchanged schema 1, registry hash, and OpenCL query manifest. Deploy the **0.12.53 Worker** before publishing the **0.12.53 Pages frontend**.
 
+## Visual parity
 
-Database 0.12.52: deploy frontend/Worker together; publish workflow now rejects mismatched release IDs using the Worker release constant. Producer compatibility remains OpenCLScope 1.0.14 / 10014 and historical allowlisted versions.
+This release incorporates VulkanScope Database 1.4.12's current CSS design layer and corresponding portable layout conventions. These are adapted for OpenCL™ green while keeping Vulkan-only hardware fields, driver modes and support semantics out of the OpenCL interface. See `FULL_VULKAN_DESIGN_COMPARISON_0.12.53.md` for fixed versus outstanding differences. The previous 0.12.52 file-by-file audit is preserved separately as historical evidence.
+
+## Verification
+
+Run `python -B tools/verify_release.py`, `node --test tests/*.test.mjs worker/tests/*.test.mjs`, and `node tools/build_pages_artifact.mjs`. Browser smoke evidence is summarized in `QA_RESULTS.md`. Live Cloudflare deployment and complete visual identity were not verified here.

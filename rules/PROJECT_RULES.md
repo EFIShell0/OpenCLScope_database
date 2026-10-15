@@ -154,9 +154,15 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Retain earlier supported exact versions; reject mismatched version name/code, missing device/platform queries and imported or incomplete reports.
 
 
-## Database 0.12.52 release gating and incremental parity
+## Database 0.12.53 release gating and incremental parity
 - Both Pages generation and post-deploy verification MUST validate the live Worker-exported DATABASE_RELEASE_VERSION. No stale static release literals. A deliberate mismatch MUST cause release failure.
 - All changed frontend JS/CSS files require distinct versioned filenames, aligned HTML references, and a release-matched static snapshot. Preserve snapshot-first UI; do not refetch every report detail on navigation.
 - VulkanScope navigation affordances, usable 25-item page default, clear filters and correct evidence-state semantics are portable UI conventions; Vulkan-specific types, WSI, Turnip, and Vulkan registry behavior remain forbidden as OpenCL data.
 - The accepted application producer baseline remains OpenCLScope 1.0.14 / 10014. Changes to the Database presentation MUST NOT force a new Android producer or loosen previously pinned submission contracts.
-- Pending parity gaps are explicitly documented in FULL_VULKAN_COMPARISON_0.12.52.md. Source validation is not real device/browser/deployment verification.
+- Pending parity gaps are explicitly documented in FULL_VULKAN_COMPARISON_0.12.53.md. Source validation is not real device/browser/deployment verification.
+
+## Database 0.12.53 portable VulkanScope visual-shell alignment
+- The pinned `assets/upstream-reference.css` and `rules/UPSTREAM_REFERENCE_SITE_CSS.css` remain byte-identical. The current VulkanScope Database 1.4.12 design is kept in its separately versioned layout asset, with the OpenCL green brand accent applied in the local current stylesheet.
+- Header order, reference SVG navigation paths, visible filters and native-select-backed custom listboxes, bounded pagination, report actions, Settings focus/escape, load status and scroll controls are presentation changes only. The schema 1 technical evidence and all historical producer acceptances remain strict and unchanged.
+- Do not claim complete pixel/behavior identity: nonportable Vulkan workspaces and currently unimplemented applicable settings, aggregate charts and semantic comparisons are tracked in `FULL_VULKAN_DESIGN_COMPARISON_0.12.53.md`. Browser and real deployment testing must be distinguished from source checks.
+- Storage access must be guarded so browsers that reject localStorage still render cache-first report and navigation content; do not introduce unexpected write/upload actions.
