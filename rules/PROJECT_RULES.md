@@ -1,10 +1,10 @@
-# OpenCLScope Database Engineering Rules — 0.12.0
+# OpenCLScope Database Engineering Rules — 0.12.4
 
-This rulebook is adapted from the complete immutable VulkanScope Database 1.4.12 rulebook, with OpenCLScope schema 1 and 0.12.4 current producer plus exact historical producer compatibility. `UPSTREAM_REFERENCE_RULES.md` preserves the original unmodified for comparison. Vulkan display/Surface/Turnip/driver-mode semantics MUST NOT be fabricated as OpenCL device facts.
+This rulebook is adapted from the complete immutable VulkanScope Database 1.4.12 rulebook, with OpenCLScope schema 1 and 0.12.8 current producer plus exact historical producer compatibility. `UPSTREAM_REFERENCE_RULES.md` preserves the original unmodified for comparison. Vulkan display/Surface/Turnip/driver-mode semantics MUST NOT be fabricated as OpenCL device facts.
 
 ## Unbreakable rules
 - Do not use production source-code comments. Escape untrusted output with DOM text nodes, not dynamic HTML. No made-up GPU devices, names, driver IDs, query values, reports, submission dates or support statuses.
-- Public submission is one complete exact OpenCLScope 0.12.4/1204 producer or explicitly allowlisted historical version (0.2.0 through 0.12.3). Producer versionName/versionCode and technicalReport.appVersion must match exactly. Schema 1 and pinned registry SHA-256 are mandatory. Historical 0.2.0–0.7.0 reports use exact 8 platform + 120 device query contracts; 0.8.0–0.12.4 reports use the current 16 platform + 209 device query contracts. Imported, partial, loader-unavailable, failed, or no-device reports are ineligible.
+- Public submission is one complete exact OpenCLScope 0.12.8/1207 producer or explicitly allowlisted historical version (0.2.0 through 0.12.6). Producer versionName/versionCode and technicalReport.appVersion must match exactly. Schema 1 and pinned registry SHA-256 are mandatory. Historical 0.2.0–0.7.0 reports use exact 8 platform + 120 device query contracts; 0.8.0–0.12.8 reports use the current 16 platform + 209 device query contracts. Imported, partial, loader-unavailable, failed, or no-device reports are ineligible.
 - Query value `false` and `0` can be valid available results; not_applicable, unavailable, unknown and error are distinct. Registered extensions are only a reference catalog; runtime extension support derives solely from exact reported strings.
 - Bounded request streaming, UTF-8 strictness, finite numeric values, exact shape, explicit sensitive-key denial, capped platform/device/property/image entries, and max 16 MiB canonical JSON. Reject instead of silently truncating.
 - Normalize canonical JSON recursively with stable sorted object keys, SHA-256 as report ID and server-side UTC submission timestamp. D1 stores the full canonical JSON; payload chunks and metadata must commit atomically. Duplicate exact submissions yield the same ID/timestamp. Missing/corrupt chunks fail closed.
@@ -52,3 +52,111 @@ This rulebook is adapted from the complete immutable VulkanScope Database 1.4.12
 - Frontend loads snapshot before checking `/v1/sync`, polls every 10 seconds only while visible, fetches changed indexes, preserves cached data on network errors and does not re-download all details unnecessarily.
 - Vendor icons must derive from vendor-reported names, never unverified GPU hardware inference; retain OpenCL data semantics and Kubernetes/Turnip/WSI exclusion.
 - After publication check live D1, Worker API, GitHub Actions and the actual Pages URL separately; untested live deployments MUST NOT be reported as passing.
+
+## 0.12.1 producer and production deployment lock
+OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-version/schema contracts remain intact. Preserve Cloudflare DB binding/real UUID, Pages recovery URL, GitHub workflow permissions and token secret in Cloudflare only.
+
+## 0.12.2 report export and app producer parity
+- Current producer pair OpenCLScope 0.12.6/1206 is accepted by the Worker without changing historical producer allowlists.
+- Detailed report view has complete TXT/HTML/JSON downloads and per-view page limit 25/50/100, with safe escaping and report-only explicit user action.
+- Cache-first index/snapshot loading and existing synchronization must not regress.
+
+## 0.12.3 VulkanScope report view controls
+- Render a centered editable page-number input with chevron actions, bounded page selection, filter card, and page-size persistence across Reports and capability views.
+- Use VulkanScope's neutral text/surface state hierarchy with OpenCL green accent as the only brand deviation; About must use the upstream warning/secondary hierarchy.
+- Preserve the OpenCL schema 1 API, snapshot-first loading, 25/50/100 bounded pagination, offline behavior, and all earlier exact producer contracts.
+- OpenCLScope 0.12.8/1207 is a new exact accepted producer, never a wildcard acceptance rule.
+
+## 0.12.4 / OpenCLScope 0.12.8 producer parity
+
+- Accept the explicit 0.12.8 / 1208 application/native identity under the existing complete 16-platform/209-device-query contract without relaxing historical producers.
+- Pages, snapshot and Worker 0.12.4 release IDs must stay synchronized; the Worker update must precede publishing app 0.12.8.
+- The previous Worker contract, accepted 0.12.8 and all historical app versions remain accepted.
+
+## 0.12.5 producer pairing and query completeness
+- Accept exact OpenCLScope 0.12.9 / versionCode 1209 and retain all historically accepted exact producers.
+- Preserve full source technicalReport, with 24 bounded image-format group slots and explicit unknown/unavailable/partial evidence; `partial` must not be published as a complete report.
+- Keep strict registry hash, complete 16+209 query contract, fixed HTTPS and immutable report ID/content validation.
+
+## Database 0.12.8 / OpenCLScope 0.30.1
+- Current exact new producer is 0.30.1 / 3001 using the same complete 16 platform / 209 device registry-derived manifest as 0.12.10.
+- Retain exact historical accepted producer pairs and fail-closed query completeness, import/history, unknown or inconsistent producer version, transport, privacy and security checks.
+
+## Database 0.12.9 / OpenCLScope 0.30.2
+- Accept exactly 0.30.2 / 3002 with full query manifest and existing security requirements; retain prior exact producer identities.
+- The 0.30.2 query-kind correction changes value decoding but does not change registry keys or invalidate historical reports.
+
+## 0.12.14
+- Accept OpenCLScope 0.30.7/3007 without rejecting 0.30.6/3006; retain exact-query, complete-live-report, CORS, privacy and HTTPS gates.
+
+## 0.12.15
+- Accept OpenCLScope 0.30.8/3008 with exact 16/209 and complete-report gates; retain all historical approved producer pairs without weakening validation.
+
+## 0.12.16
+- Accepts OpenCLScope 0.30.9/3009 with the existing exact complete-report query and integrity gate; retains all prior accepted versions.
+
+## 0.30.10 compile/parity integrity
+- OpenCLScope 0.30.10 / versionCode 3010 fixes the Kotlin `PageList` duplicated `LocalDensity.current` binding reported by `compileReleaseKotlin` at lines 1240 and 1262 of the predecessor.
+- Source gate verifies one PageList declaration, catches deliberate reinsertion and allows independent bindings in other composables.
+- No OpenCL runtime query, upload privacy, network origin, report envelope/schema or existing UI animation function changed.
+- The 0.12.17 Database accepts producer 0.30.10/3010 while retaining 0.30.9/3009 and previous complete-report producers.
+- Physical-device UI and full Android Gradle compile must be marked NOT EXECUTED until actually run.
+
+
+## 0.12.18 paired producer contract
+- Strict complete OpenCLScope 0.30.11 (versionCode 3011) reports are accepted; all previously approved complete producer pairs remain valid.
+- No schema, query manifest, Worker endpoint or export semantics change.
+
+## 0.12.19 app 0.30.12 parity contract
+- Add complete OpenCLScope 0.30.12/3012 producer with the same strict per-platform, per-device query shape as 0.30.11/3011.
+- All previous producer pairs remain valid with exact version-code pairing, without relaxing upload requirements or private field restrictions.
+
+## 0.12.20 app 0.30.13 shared methodology / producer contract
+- Admit only exact OpenCLScope 0.30.13 / 3013 producer with unchanged, complete 16-platform/209-device query-catalog contract and fail-closed validation. Earlier accepted producers remain admitted with their original version-specific schemas.
+- VulkanScope 3.0.12 shared methodology adoption and exact common UI icon parity are app-side changes; they do not broaden report schema, infer runtime OpenCL support, alter historical records or permit automatic submission.
+
+## 0.12.21 app 0.30.14 producer contract
+- Exact OpenCLScope 0.30.14 / 3014 accepted only with complete canonical query evidence and matching appVersion. Prior producers retain immutable exact validation. No UI-only data changes are permitted in the report producer.
+
+## 0.12.22 app 0.30.15 producer contract
+- OpenCLScope 0.30.15 / 3015 requires the same complete canonical 16-platform-property and 209-device-property evidence as the prior 0.30.14 producer.
+- 0.30.14 / 3014 and other previously supported producer identities remain accepted; version-name/code mismatch and incomplete live reports fail closed.
+
+## 0.12.23 producer admission
+- Exact OpenCLScope 0.30.16/3016 is accepted with all existing complete query and privacy validation gates; older admitted versions remain accepted.
+
+## 0.12.24 producer admission
+- OpenCLScope 0.30.17 / 3017 is accepted only by the existing complete live-report validation path. The schema and all earlier admitted producer versions are unchanged.
+
+
+## 0.12.25 UI parity producer admission
+- Accept OpenCLScope 0.30.18 / 3018 only as a strict complete live technical report, preserving historical producer admissions and all privacy and schema checks.
+- The app's UI layout parity changes do not alter the OpenCL report schema or justify relaxing any backend validation.
+
+
+## 0.12.26 producer admission
+- 0.30.19 / 3019 is accepted as a complete live OpenCL technicalReport only; no relaxation of existing schema, registry, provenance or privacy gates.
+
+## 0.12.28 long-press reference contract
+- Admit the exact OpenCLScope 0.30.21 / 3021 producer without relaxing or removing earlier complete-report acceptance or native reporting safety. UI-only evidence changes do not change technicalReport schema.
+
+## Database release 0.12.39 pairing
+
+- Accept OpenCLScope 1.0.2 / versionCode 10002 only through the complete canonical report contract, using the unchanged OpenCL 16/209 query manifest.
+- Keep 1.0.1 / 10001 and all historically allowed producer identities with their existing validation. Never bypass report size, evidence, schema or HTTPS requirements.
+
+## Database release 0.12.40 pairing
+- Accept the exact OpenCLScope 1.0.3 / 10003 complete producer under unchanged 16/209 and 24 image-format query evidence, without relaxing any previously enforced structural, privacy or source checks.
+- Preserve all accepted historical pairs, including 1.0.2 / 10002.
+
+## 0.12.47 OpenCLScope 1.0.10 pairing
+- Exact new application version 1.0.10/versionCode 10010 accepted only with the complete live report schema and normative platform/device query manifests.
+- Retain earlier supported exact versions; reject mismatched version name/code, missing device/platform queries and imported or incomplete reports.
+
+
+## Database 0.12.52 release gating and incremental parity
+- Both Pages generation and post-deploy verification MUST validate the live Worker-exported DATABASE_RELEASE_VERSION. No stale static release literals. A deliberate mismatch MUST cause release failure.
+- All changed frontend JS/CSS files require distinct versioned filenames, aligned HTML references, and a release-matched static snapshot. Preserve snapshot-first UI; do not refetch every report detail on navigation.
+- VulkanScope navigation affordances, usable 25-item page default, clear filters and correct evidence-state semantics are portable UI conventions; Vulkan-specific types, WSI, Turnip, and Vulkan registry behavior remain forbidden as OpenCL data.
+- The accepted application producer baseline remains OpenCLScope 1.0.14 / 10014. Changes to the Database presentation MUST NOT force a new Android producer or loosen previously pinned submission contracts.
+- Pending parity gaps are explicitly documented in FULL_VULKAN_COMPARISON_0.12.52.md. Source validation is not real device/browser/deployment verification.

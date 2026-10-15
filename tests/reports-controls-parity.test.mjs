@@ -1,0 +1,36 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+const root = new URL('../',import.meta.url);
+const html = await readFile(new URL('index.html',root),'utf8');
+const js = await readFile(new URL('assets/app.v1252.js',root),'utf8');
+const css = await readFile(new URL('assets/site.v1252.css',root),'utf8');
+
+test('Report page has explicit editable bounded page field with usable navigation controls',()=>{
+ for(const id of ['pageNumber','previousPage','nextPage','pageCounter','pageLimit','vendorFilter','versionFilter','stateFilter','sortFilter','globalSearch'])
+   assert.match(html,new RegExp(`id="${id}"`),id);
+ assert.match(html,/id="pageNumber"[^>]*type="number"[^>]*min="1"/);
+ assert.match(js,/pageField\.addEventListener\('keydown'/);
+ assert.match(js,/pageField\.addEventListener\('change',commitPage\)/);
+ assert.match(js,/Math\.min\(max,Math\.max\(1,parsed\)\)/);
+ assert.match(js,/\$\('pageNumber'\)/);
+});
+
+test('Settings Close is contained with an SVG cross, not a free text link',()=>{
+ assert.match(html, /id="closeSettings"[^>]*>[\s\S]*?<svg[^>]*viewBox="0 0 24 24"/);
+ assert.match(css,/\.settings-top button\{/);
+});
+
+test('About has VulkanScope-styled warning and restrained captions',()=>{
+ assert.match(html, /class="independence-notice"/);
+ assert.match(html,/class="trademark-note"/);
+ assert.match(css,/#ffc857/i);
+ assert.match(css, /--bg:\s*#000\b/);
+});
+
+test('All filter and page sizes remain wired alongside complete report exports',()=>{
+ for(const value of [25,50,100])assert.match(html,new RegExp(`value="${value}"`));
+ assert.match(js,/downloadCompleteReport\(state.detail,'txt'\)/);
+ assert.match(js,/downloadCompleteReport\(state.detail,'html'\)/);
+ assert.match(js,/pageField\.dataset\.total/);
+});

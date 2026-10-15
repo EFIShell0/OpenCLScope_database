@@ -1,4 +1,4 @@
-# Deploy OpenCLScope Database 0.12.0
+# Deploy OpenCLScope Database 0.12.47
 
 This project cannot be live merely by creating a ZIP: Cloudflare/D1 and GitHub Pages must be configured with accounts owned by the deployer. Use a **new** D1 database and a **new** Pages repository; do not bind or overwrite VulkanScope Database tables.
 
@@ -25,17 +25,22 @@ Provide a scoped GitHub token with Actions/workflow dispatch permission for the 
 
 ## 2. Pages repository
 
-Commit the **contents** of the `OpenCLScope-Database-0.12.0` root to a new GitHub repository on the configured branch. Enable Settings → Pages → Source **GitHub Actions**. Set GitHub repository variable `OPENCLSCOPE_DATABASE_API` to the actual deployed Worker HTTPS origin (no trailing path). If host or repository name changes, update `ALLOWED_ORIGIN` in Worker and deploy again. The production `tools/configure.mjs` injects this exact API URL in `config.js` and restricts the browser CSP connect-src to the same origin; source defaults remain deliberately empty.
+Commit the **contents** of the `OpenCLScope-Database-0.12.1` root to a new GitHub repository on the configured branch. Enable Settings → Pages → Source **GitHub Actions**. Set GitHub repository variable `OPENCLSCOPE_DATABASE_API` to the actual deployed Worker HTTPS origin (no trailing path). If host or repository name changes, update `ALLOWED_ORIGIN` in Worker and deploy again. The production `tools/configure.mjs` injects this exact API URL in `config.js` and restricts the browser CSP connect-src to the same origin; source defaults remain deliberately empty.
 
 Run the Pages workflow once manually with mode `snapshot` and blank `report_id` to publish the initial empty site. The workflow validates code and catalog, configures the real fixed URL, downloads the full published D1 report index and a bounded full-report preload, and deploys the rebuilt static site. On first **new** report the Worker dispatches the same workflow with the report ID so it is required to appear in the generated index before deployment. If GitHub token/workflow vars are unconfigured, reports may store in D1 successfully but no automatic Pages refresh can happen; `/v1/health` exposes the configured snapshot flag.
 
-## 3. Pair Android 0.12.4
+## 3. Pair Android 1.0.10
 
-Build the **separate** `OpenCLScope-0.12.4` source with these real URLs, substituting YOUR actual values:
+Build the **separate** `OpenCLScope-1.0.10` source. The production endpoints are already pinned and verified in `app/build.gradle.kts`:
 
 ```powershell
-.\gradlew.bat :app:assembleDebug -PopenclscopeDatabaseApiUrl=https://YOUR-ACTUAL-WORKER.workers.dev -PopenclscopeDatabaseWebUrl=https://YOUR-USERNAME.github.io/OpenCLScope_database
+.\gradlew.bat :app:assembleRelease
 ```
+
+API: `https://openclscope-database-api.efishell0.workers.dev`
+Site: `https://efishell0.github.io/OpenCLScope_database/`
+
+**Established EFIShell0 production upgrade:** do not create a new D1 database or replace the existing `SNAPSHOT_GITHUB_TOKEN` secret. Unpack this project over the existing `OpenCLScope_database` project folder, keeping Wrangler `binding: DB` and D1 ID `3c17e43c-c0d0-49d9-a6d9-c1134332519c`; then run `npx wrangler@latest deploy` in `worker/`, commit and push to `main`. Since the migration schema is unchanged, no D1 migration is required. Deploy the Worker **before** installing OpenCLScope 1.0.10. Confirm `/v1/health` reports `databaseReleaseVersion: 0.12.47` and `snapshotAutomation.configured: true`.
 
 No startup report upload occurs. Press **Reports & Database → Submit complete report** and confirm after collecting a complete live OpenCL report. The server returns a SHA-256 ID and authoritative UTC timestamp. Public GET list/ID work separately. If the Worker returns HTTP 400, read the JSON error `Invalid OpenCLScope report [reason]` and compare schema, producer version, registry SHA, the exact producer-specific query contract (historical 8/120 or current 16/209 keys) and live/complete status; never silently omit failed query rows to satisfy the backend.
 
@@ -49,6 +54,6 @@ node --test tests/*.test.mjs
 
 For a deployed production environment, also test a real Android native report on each intended ABI, then confirm the Worker public ID is readable, `/v1/sync` increases, GitHub Actions dispatch runs and Pages index includes that specific ID. These **live tests are not claimed executed** by the source ZIP creator.
 
-## 0.12.0 snapshot refresh behavior
+## 0.12.1 snapshot refresh behavior
 
 The Worker immediately dispatches a snapshot on a newly accepted complete report when `SNAPSHOT_GITHUB_TOKEN` exists. The 15-minute cron is a *fallback*: it compares the Worker latest ID/count against the actual published Pages index configured by `SNAPSHOT_PAGES_URL`, then dispatches a retry only when needed. Do not set this URL to a guessed Pages address. The Pages workflow builds a full metadata index and bounded verified detail preload, validates the newly submitted ID, deploys and checks the published index/preload again. The site shows the cached snapshot immediately and refreshes the visible page's live index every 10 seconds when its API is configured; it does not need to fetch every report detail on each load.

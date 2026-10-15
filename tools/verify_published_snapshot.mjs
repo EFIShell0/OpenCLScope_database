@@ -1,3 +1,4 @@
+import {DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
 import {setTimeout as sleep} from 'node:timers/promises';
 const site=String(process.env.PUBLISHED_PAGES_URL||'').trim();
 const api=String(process.env.OPENCLSCOPE_DATABASE_API||'').trim();
@@ -12,7 +13,7 @@ for(let i=0;i<12;i++){
     const response=await fetch(target,{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!response.ok)throw Error(`Pages index HTTP ${response.status}`);
     const index=await response.json();
-    if(index.schemaVersion!==1||index.databaseReleaseVersion!=='0.12.0'||!Array.isArray(index.reports)||index.reports.length!==index.reportCount)throw Error('Published index schema, count or release mismatch');
+    if(index.schemaVersion!==1||index.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||!Array.isArray(index.reports)||index.reports.length!==index.reportCount)throw Error('Published index schema, count or release mismatch');
     if(required&&!index.reports.some(r=>r.id===required))throw Error('Triggered report not yet visible in published Pages index');
     const snapshotResponse=await fetch(new URL('data/snapshot.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!snapshotResponse.ok)throw Error(`Pages preload HTTP ${snapshotResponse.status}`);

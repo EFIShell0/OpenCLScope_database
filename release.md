@@ -1,21 +1,14 @@
-# OpenCLScope™ Database 0.12.0
+# OpenCLScope Database 0.12.52
 
 ## Added
-- Immediate accepted-report GitHub Actions snapshot dispatch with authoritative ID and timestamp; optional 15-minute Pages reconciliation and retry for failed publication.
-- Post-deployment Pages index and preload verification, requiring each triggering report to be visible.
-- Cache-first website with 10-second visible-page live synchronization against `/v1/sync` and non-destructive offline fallback.
-- VulkanScope-matched GPU vendor logos for recognized vendor strings and consistent responsive navigation icons.
+- Strict full-live producer support for OpenCLScope 1.0.14 / versionCode 10014.
 
 ## Changed
-- Snapshot generation now shares Worker producer validation, eliminating the old snapshot whitelist that rejected valid 0.10.1–0.12.4 producers.
-- Required just-submitted report receives preload priority; complete metadata index remains authoritative for all reports.
-- Versioned UI assets, refreshed card/search/navigation proportions and database status indicators.
+- All previously approved producer pairs stay accepted; no changes to report data, cached snapshots or UI presentation.
 
-## Fixed
-- GitHub Actions previously checked non-existent `assets/app.v0701.js`.
-- Worker release metadata, public snapshot/index release version and packaged website version are now consistent.
-- Snapshot publication tests now cover latest exact producer, historical compatibility, invalid identity, SHA integrity and post-deployment gating.
-
-## Security
-- No fake entries, guessed GPU identification or permissive producer matching. Registry `cl.xml` and official SVG remain unchanged.
-- Live Cloudflare D1/Pages publication must be validated after deploying; local test results alone do not assert a live success.
+## 0.12.52
+### Fixed
+- Align live/published release validation with the Worker release identity; remove obsolete 0.12.7 deployment gates.
+- Cache-bust updated frontend assets and correct visible version metadata.
+- Restore reference-style horizontal navigation arrows, bounded 25-item default pagination and filter reset controls.
+- Prevent a stale snapshot detail preload from being combined with a different published report index.

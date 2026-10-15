@@ -1,0 +1,8 @@
+cd C:\Users\Administrator\Desktop\OpenCLScope_database
+cd worker
+npm install
+npm run deploy
+cd ..
+git add -A
+git commit -m "Release OpenCLScope Database 0.12.52"
+git push origin main

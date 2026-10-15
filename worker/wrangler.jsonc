@@ -5,7 +5,7 @@
   "d1_databases":[{
     "binding":"DB",
     "database_name":"openclscope-database",
-    "database_id":"REPLACE_WITH_NEW_OPENCLSCOPE_D1_DATABASE_ID",
+    "database_id":"3c17e43c-c0d0-49d9-a6d9-c1134332519c",
     "migrations_dir":"migrations"
   }],
   "vars":{
@@ -14,7 +14,7 @@
     "SNAPSHOT_GITHUB_REPO":"OpenCLScope_database",
     "SNAPSHOT_GITHUB_WORKFLOW":"pages.yml",
     "SNAPSHOT_GITHUB_REF":"main",
-    "SNAPSHOT_PAGES_URL":""
+    "SNAPSHOT_PAGES_URL":"https://efishell0.github.io/OpenCLScope_database/"
   },
   "triggers":{"crons":["*/15 * * * *"]},
   "observability":{"enabled":true}
