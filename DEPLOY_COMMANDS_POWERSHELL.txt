@@ -6,5 +6,5 @@ npm install
 npm run deploy
 cd ..
 git add -A
-git commit -m "Release OpenCLScope Database 1.0.0"
+git commit -m "Release OpenCLScope Database 1.0.1"
 git push origin main

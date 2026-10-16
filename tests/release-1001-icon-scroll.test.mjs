@@ -1,0 +1,45 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const root=new URL('../',import.meta.url);
+const load=path=>readFile(new URL(path,root),'utf8');
+const bytes=path=>readFile(new URL(path,root));
+const app=await load('assets/app.v1001.js'),css=await load('assets/site.v1001.css'),html=await load('index.html');
+
+test('Actual application 1.0.19 logo is used as header, favicon and loading artwork',async()=>{
+ const logo=await bytes('assets/openclscope_title_master_black.png');
+ assert.equal(createHash('sha256').update(logo).digest('hex'),'b2524dac02e18d042279d4efd170643e61e9a634e0f3c92462a939d5cd16b348');
+ assert.match(html,/<a[^>]+class="brand"[^>]*><img src="assets\/openclscope_title_master_black\.png"/);
+ assert.match(html,/<link href="assets\/openclscope_title_master_black\.png" rel="icon"/);
+ assert.match(html,/class="database-loading-logo" src="assets\/openclscope_title_master_black\.png"/);
+ assert.doesNotMatch(html,/class="brand"[^>]*><img src="assets\/openclscope_logo_horizontal\.png"/);
+});
+
+test('Generated icons use SVG XML namespace rather than invisible HTML unknown elements',()=>{
+ assert.match(app,/document\.createElementNS\('http:\/\/www\.w3\.org\/2000\/svg',tag\)/);
+ assert.match(app,/if\(isSvg\)e\.setAttribute\('class',v\)/);
+ assert.match(app,/svg\.append\(node\('path'/);
+ assert.match(app,/installIcons\(\)/);
+ const broken=app.replace("document.createElementNS('http://www.w3.org/2000/svg',tag)","document.createElement(tag)");
+ assert.doesNotMatch(broken,/document\.createElementNS\('http:\/\/www\.w3\.org\/2000\/svg',tag\)/);
+});
+
+test('Native VulkanScope table controls are ported with pointer dragging and keyboard arrows',()=>{
+ for(const f of ['function updateTableScroller(','function enhanceTableScroller(','function enhanceTableScrollers(','className=\'table-scroll-shell\'','class="table-scroll-controls"','aria-orientation="horizontal"','t.setPointerCapture?.(e.pointerId)','e.key===\'ArrowLeft\'','e.key===\'Home\'','e.key===\'End\''])assert.ok(app.includes(f),f);
+ assert.match(app,/class:'table-wrap reports-table-wrap'/);
+ assert.match(app,/class:'table-wrap evidence-table-wrap'/);
+ for(const rule of ['.table-scroll-shell.scrollable .table-scroll-controls','.table-scroll-shell .table-scroll-track','.table-scroll-shell .table-scroll-thumb','.table-scroll-shell .table-edge-left','.table-scroll-shell .table-edge-right'])assert.ok(css.includes(rule),rule);
+});
+
+test('Viewport scrollbar tracks thumb drag, keyboard and true source status',()=>{
+ for(const fragment of ["thumb.setAttribute('role','scrollbar')","thumb.setPointerCapture?.(e.pointerId)","thumb.addEventListener('pointermove'","thumb.addEventListener('keydown'","thumb.setAttribute('aria-valuenow'","rail.classList.toggle('at-top'", "rail.classList.toggle('at-bottom'"])assert.ok(app.includes(fragment),fragment);
+});
+
+test('Complete OpenCL report evidence remains gated at application 1.0.19',async()=>{
+ const worker=await load('worker/src/index.js');
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '1\.0\.1'/);
+ assert.match(worker,/p\.application\.versionName!=='1\.0\.19'/);
+ assert.match(worker,/p\.application\.versionCode!==10019/);
+ assert.match(html,/assets\/app\.v1001\.js\?v=1001/);
+});

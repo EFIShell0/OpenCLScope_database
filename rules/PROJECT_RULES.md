@@ -183,3 +183,8 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - This section supersedes earlier producer-acceptance rules **for new submissions**: accept only exact OpenCLScope 1.0.19 / versionCode 10019 and 16 platform + 210 device queries. Keep historical GET, snapshot, favorites and reports readable. All older new POSTs must fail closed with HTTP 400.
 - Use exact unaltered VulkanScope Database 1.4.12 stylesheet as a single reference input, with one OpenCL visual delta stylesheet. No triple-declared stylesheet references. Official black-backed OpenCLScope app master icon for browser title/favicon.
 - Include meaningful SVGs for each shared primary navigation, detail and settings destination, original vendor-logo asset mapping, Reference-like report table, Statistics and Compare layouts, correct color hierarchy, responsive mobile widths. Do not mix WSI/Turnip/Vulkan evidence into OpenCL reports.
+
+## Database 1.0.1 UI reference fidelity
+- Preserve VulkanScope 1.4.12 source geometry under pinned CSS and copy its table-scroll control interaction (touch, pointer, keyboard) for every evidence table.
+- Use the actual OpenCLScope Android black-backed logo in the header and favicon. Native OpenCL labels and technical evidence remain native, never synthesized Vulkan data.
+- Keep 1.0.19/10019 as the sole eligible new report producer, with historical stored reports readable; no server or catalog relaxation.

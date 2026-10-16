@@ -13,6 +13,7 @@ ACTIVE = frozenset({
     'vulkan-1412-visual-parity.test.mjs',
     'settings-1254-parity.test.mjs',
     'release-1000-visual-contract.test.mjs',
+    'release-1001-icon-scroll.test.mjs',
 })
 
 def check(apply=False):
@@ -38,14 +39,14 @@ def check(apply=False):
                 return 1
             source.rename(destination)
             print('Archived legacy/unreviewed test without deleting: '+name)
-    outdated = [p for stem in ('app','site') for p in (ROOT/'assets').glob(stem+'.v12??.'+('js' if stem=='app' else 'css'))]
-    stale = sorted([p for p in outdated if p.exists()])
+    outdated = [p for stem,extension in (('app','js'),('site','css')) for p in (ROOT/'assets').glob(f'{stem}.v*.{extension}')]
+    stale = sorted(p for p in outdated if p.name not in ('app.v1001.js','site.v1001.css'))
     if stale and not apply:
-        print('FAIL: stale pre-1.0.0 browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
+        print('FAIL: stale pre-1.0.1 browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
         return 1
     if stale:
         for old in stale:
-            latest = ROOT/'assets'/('app.v1000.js' if old.name.startswith('app.') else 'site.v1000.css')
+            latest = ROOT/'assets'/('app.v1001.js' if old.name.startswith('app.') else 'site.v1001.css')
             if not latest.exists():
                 print('FAIL: missing new replacement for '+old.name,file=sys.stderr)
                 return 1
