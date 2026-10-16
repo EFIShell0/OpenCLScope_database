@@ -1,8 +1,10 @@
 cd C:\Users\Administrator\Desktop\OpenCLScope_database
+python -B tools\reconcile_repository.py --apply
+python -B tools\verify_release.py
 cd worker
 npm install
 npm run deploy
 cd ..
 git add -A
-git commit -m "Release OpenCLScope Database 0.12.53"
+git commit -m "Release OpenCLScope Database 0.12.60"
 git push origin main

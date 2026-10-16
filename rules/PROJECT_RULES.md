@@ -166,3 +166,15 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Header order, reference SVG navigation paths, visible filters and native-select-backed custom listboxes, bounded pagination, report actions, Settings focus/escape, load status and scroll controls are presentation changes only. The schema 1 technical evidence and all historical producer acceptances remain strict and unchanged.
 - Do not claim complete pixel/behavior identity: nonportable Vulkan workspaces and currently unimplemented applicable settings, aggregate charts and semantic comparisons are tracked in `FULL_VULKAN_DESIGN_COMPARISON_0.12.53.md`. Browser and real deployment testing must be distinguished from source checks.
 - Storage access must be guarded so browsers that reject localStorage still render cache-first report and navigation content; do not introduce unexpected write/upload actions.
+
+## 0.12.55 producer-acceptance update
+- Only extend the exact producer allowlist with OpenCLScope 1.0.15/10015, keeping 1.0.14/10014 and all prior exact pairs; reject unknown version pairs, missing manifest data, imports and partial results.
+- Retain the immutable registry, catalog, full report stream caps, and snapshot-first caching; no UI/asset migration is necessary for this Worker-only change.
+- Deployment is separate from local verification and must not be described as completed unless the user deploys.
+
+## Database 0.12.60 — New submissions minimum OpenCLScope 1.0.19
+- New POST /v1/reports submissions are allowed only when the producer application name/package/versionName/versionCode are exactly OpenCLScope/com.efishell.openclscope/1.0.19/10019, and technicalReport.appVersion exactly matches. All producer versions below 1.0.19 fail closed; future versions require a separate reviewed release allowlist entry.
+- Previous complete reports remain queryable in D1 and published snapshots. Do not delete, mutate or reinterpret any preexisting report because a newer producer is required for uploads.
+- Accepted 1.0.19 evidence remains complete 16 platform properties, 210 device properties and schema 1; all integrity, privacy, import, partial, size, explicit states and official registry gates remain unchanged.
+- Portable VulkanScope Database 1.4.12 UI parity: report-first cache, contained filters/actions/navigation, accessible focus states, responsive Compare, semantics matched by canonical OpenCL identity and property token rather than unstable JSON row indexes. No Vulkan-only technical fields.
+- Preserve immutable reference assets and official cl.xml byte-for-byte. Do not claim visual pixel parity without browser screenshots or Cloudflare deployment without credentials.

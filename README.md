@@ -1,11 +1,30 @@
-# OpenCLScope Database 0.12.53
+# OpenCLScope Database 0.12.60
 
-Android-facing producer compatibility remains **OpenCLScope 1.0.14 / versionCode 10014** with exact historical producer support and unchanged schema 1, registry hash, and OpenCL query manifest. Deploy the **0.12.53 Worker** before publishing the **0.12.53 Pages frontend**.
+**Upload policy:** New report submissions require **OpenCLScope 1.0.19 / versionCode 10019**. Earlier applications and non-allowlisted future versions receive HTTP 400. The requirement applies to new uploads only; previously stored reports remain readable.
 
-## Visual parity
+**Scope:** Maintains OpenCL™ schema 1, the official cl.xml registry lock, complete 16-platform and 210-device query manifest, and fixed secure Cloudflare Worker submission route. Full report snapshots load cache-first. Device evidence is never inferred from the registry.
 
-This release incorporates VulkanScope Database 1.4.12's current CSS design layer and corresponding portable layout conventions. These are adapted for OpenCL™ green while keeping Vulkan-only hardware fields, driver modes and support semantics out of the OpenCL interface. See `FULL_VULKAN_DESIGN_COMPARISON_0.12.53.md` for fixed versus outstanding differences. The previous 0.12.52 file-by-file audit is preserved separately as historical evidence.
+**Design parity:** OpenCLScope-compatible elements of VulkanScope Database 1.4.12: header, settings drawer, filters, pagination, page controls, responsive layout, comparison, Statistics based only on fetched full reports, and report details. Compare now keys properties and extensions by canonical identity rather than input array order; no Vulkan-only Surface, WSI, Turnip or driver-mode states are fabricated.
 
-## Verification
+**Verification:** Local Node and release/Pages validation are not a substitute for real deployed Worker/D1 writes or browser screenshot equality. See `QA_RESULTS.md`, `rules/0.12.60_REPORT_MINIMUM_AND_PARITY_AUDIT.md`.
 
-Run `python -B tools/verify_release.py`, `node --test tests/*.test.mjs worker/tests/*.test.mjs`, and `node tools/build_pages_artifact.mjs`. Browser smoke evidence is summarized in `QA_RESULTS.md`. Live Cloudflare deployment and complete visual identity were not verified here.
+## Previous release history
+
+# OpenCLScope Database 0.12.56
+
+OpenCL™ technical report Database. Source layout and portable browser interactions are compared against VulkanScope Database 1.4.12, without substituting Vulkan runtime facts for OpenCL evidence.
+
+Prior version 0.12.54 adds four Settings categories, session-only/opt-in remembered Favorites, country/manual regional date-time settings (including a locally bundled country catalog), local clock, report display defaults, and an explicit source-tree regression-test inventory gate. This release accepts OpenCLScope 1.0.15/10015 in addition to prior exact producer contracts, Cloudflare Worker API and snapshot-first cache behavior.
+
+**Upgrading an existing checkout:** after placing the ZIP contents in your existing project folder, execute `python -B tools/reconcile_repository.py --apply` once before `git add -A`. This moves unknown or obsolete site regression tests to `rules/legacy_tests/` without deleting them. It is necessary because ZIP extraction over an old folder does not remove previously tracked test files.
+
+Run local release gates with `python -B tools/reconcile_repository.py --check`, `node --test tests/*.test.mjs worker/tests/*.test.mjs`, `python -B tools/verify_release.py`, and `node tools/build_pages_artifact.mjs`. Live Cloudflare D1 and GitHub Pages deployment require the existing configured accounts/secrets; no placeholder credentials are bundled.
+
+`rules/0.12.54_VULKANSCOPE_1.4.12_CI_SETTINGS_AUDIT.md` documents the exact findings and remaining gaps.
+
+OpenCLScope 1.0.16/10016 is accepted with the 210-device-query manifest; earlier exact producer versions remain supported.
+
+
+Release 0.12.59 adds strict 1.0.19/10019 producer acceptance with the unchanged 16 platform + 210 device manifest, retaining 1.0.17, 1.0.16 and historical contracts. The site cache, assets, snapshot generation and Worker API remain unchanged.
+
+1.0.19/10019 accepted using unchanged 16+210 query contract. Prior producers remain accepted.

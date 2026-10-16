@@ -4,13 +4,13 @@ import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {collectSnapshot} from '../tools/build_snapshot.mjs';
 import {validateSubmission,DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
-import {PLATFORM_KEYS,DEVICE_KEYS} from '../worker/src/query-manifest.js';
+import {PLATFORM_KEYS,DEVICE_KEYS,DEVICE_KEYS_1016} from '../worker/src/query-manifest.js';
 const fixture=JSON.parse(await readFile(new URL('../worker/tests/complete-report.json',import.meta.url),'utf8'));
 const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
-function upgrade(version='1.0.0',code=10000){
+function upgrade(version='1.0.19',code=10019){
   const value=structuredClone(fixture);value.application.versionName=version;value.application.versionCode=code;value.technicalReport.appVersion=version;
   const fill=(rows,keys)=>{const by=new Map(rows.map(r=>[r.name,r]));return [...keys].map(key=>by.get(key)||{name:key,value:'',status:'unavailable',code:-30})};
-  for(const p of value.technicalReport.platforms){p.properties=fill(p.properties,PLATFORM_KEYS);for(const d of p.devices)d.properties=fill(d.properties,DEVICE_KEYS)}
+  for(const p of value.technicalReport.platforms){p.properties=fill(p.properties,PLATFORM_KEYS);for(const d of p.devices)d.properties=fill(d.properties,version==='1.0.19'?DEVICE_KEYS_1016:DEVICE_KEYS)}
   return value;
 }
 function report(value,time='2026-10-08T05:00:00.000Z'){
@@ -45,16 +45,16 @@ test('snapshot publication requires exact new report detail and no false success
 });
 test('workflow references existing versioned site asset, post-deploy verification and API snapshot',async()=>{
   const src=await readFile(new URL('../.github/workflows/pages.yml',import.meta.url),'utf8');
-  assert.match(src,/node --check assets\/app\.v1253\.js/);
+  assert.match(src,/node --check assets\/app\.v1260\.js/);
   assert.doesNotMatch(src,/app\.v0701\.js/);
   assert.match(src,/verify_published_snapshot\.mjs/);
   assert.match(src,/build_snapshot\.mjs/);
   const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(html,/assets\/app\.v1253\.js/);
+  assert.match(html,/assets\/app\.v1260\.js/);
 });
 
 test('cache-first browser code checks sync token before querying index and polls only when visible',async()=>{
-  const js=await readFile(new URL('../assets/app.v1253.js',import.meta.url),'utf8');
+  const js=await readFile(new URL('../assets/app.v1260.js',import.meta.url),'utf8');
   assert.match(js,/fetch\('\.\/data\/index\.json'/);
   assert.match(js,/const sync=await api\('\/v1\/sync'\)/);
   assert.match(js,/if\(!force&&same\)/);

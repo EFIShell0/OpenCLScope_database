@@ -2,7 +2,7 @@ import {createHash} from 'node:crypto';
 import {writeFile,rename,mkdir} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {validateSubmission,DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
+import {validateStoredReport,DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
 
 const ID=/^[a-f0-9]{64}$/;
 const MAX_INDEX=100000;
@@ -17,7 +17,7 @@ function sorted(value,depth=0){
 function verifyEnvelope(full,id){
   if(!full||full.id!==id||full.schemaVersion!==1||typeof full.submittedAt!=='string'||!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d/.test(full.submittedAt))throw Error(`Incorrect report identity/schema: ${id}`);
   const bare={...full};delete bare.id;delete bare.submittedAt;
-  if(!validateSubmission(bare).ok)throw Error(`Invalid producer or report contract in published detail: ${id}`);
+  if(!validateStoredReport(bare).ok)throw Error(`Invalid producer or report contract in published detail: ${id}`);
   if(createHash('sha256').update(sorted(bare)).digest('hex')!==id)throw Error(`Payload SHA-256 mismatch: ${id}`);
   return full;
 }
