@@ -388,3 +388,35 @@ html,body{background:#09090a;color:var(--text)}
 @media(prefers-reduced-motion:reduce){.main-nav button.nav-button,.table-scroll-button,.table-scroll-thumb{transition:none!important;scroll-behavior:auto!important}}
 
 #viewportScrollbarThumb{top:0;touch-action:none;cursor:grab}#viewportScrollbar.is-dragging #viewportScrollbarThumb{cursor:grabbing;background:var(--accent)}#viewportScrollbarThumb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}#viewportScrollbar.at-top .viewport-scrollbar-up,#viewportScrollbar.at-bottom .viewport-scrollbar-down{opacity:.25}
+
+/* 1.0.2: restore original page wordmark, separate black CL tab favicon */
+.topbar-inner>.brand{gap:0!important;padding:2px 8px!important;min-width:0;max-width:min(310px,36vw)}
+.topbar-inner>.brand img{width:min(258px,100%)!important;max-width:100%;height:48px!important;flex:0 1 auto!important;border-radius:0!important;object-fit:contain!important;object-position:left center!important;background:transparent!important}
+.database-loading-logo{max-width:270px!important;max-height:78px!important;object-fit:contain!important;background:transparent!important}
+.filter-control[hidden],.custom-select-menu[hidden],#filterPanel[hidden]{display:none!important}
+.filter-panel .filter-control{min-width:0;display:flex;flex-direction:column;gap:5px}
+.filter-panel{grid-template-columns:repeat(auto-fit,minmax(124px,1fr))!important;align-items:end}
+.custom-select-button{min-height:39px!important;border-radius:11px!important;border:1px solid var(--line)!important;background:var(--panel2)!important;color:var(--text)!important}
+.custom-select-button:hover,.custom-select-button[aria-expanded=true]{border-color:var(--accent)!important}
+.custom-select-option:focus-visible,.custom-select-option.selected{outline:2px solid var(--accent);outline-offset:-2px}
+.settings-info-grid{display:grid;gap:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,225px),1fr));border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.settings-info-row{display:flex;flex-direction:column;gap:5px;padding:13px;border-bottom:1px solid var(--line);min-width:0;overflow-wrap:anywhere}
+.settings-info-row>span{font-size:11px;color:var(--muted)}.settings-info-row>strong{font-size:12px;color:var(--text);font-weight:700;overflow-wrap:anywhere}
+.ip-action{display:flex;align-items:center;gap:8px;min-width:0}.ip-action strong{flex:1;font-family:ui-monospace,monospace;overflow-wrap:anywhere}
+.network-ipv4{color:#ffb774!important}.network-ipv6{color:#8eeea8!important}
+.ip-reveal,.network-refresh{border:1px solid var(--line);border-radius:10px;color:var(--text);background:var(--panel2);padding:7px 11px;cursor:pointer}
+.ip-reveal:hover,.network-refresh:hover{border-color:var(--accent)}.network-refresh{margin:12px 0}.network-refresh:disabled{opacity:.5;cursor:default}
+.settings-network-summary{display:flex;flex-direction:column;gap:4px;padding:10px 0}.settings-network-summary small{color:var(--muted)}
+@media(max-width:760px){.topbar-inner>.brand{max-width:calc(100% - 60px);width:auto}.topbar-inner>.brand img{height:44px!important;width:min(254px,100%)!important}.filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:350px){.filter-panel{grid-template-columns:minmax(0,1fr)!important}}
+
+.filters .custom-select.open .custom-select-menu:not([hidden]){opacity:1!important;visibility:visible!important;transform:translateY(0) scale(1)!important;pointer-events:auto!important}.filters .custom-select:not(.open) .custom-select-menu{pointer-events:none}
+
+/* OpenCL brand/state palette: do not inherit upstream Vulkan decorative red */
+.hero-v127 .eyebrow,.db-workspace .eyebrow,.hero-v127-evidence,.section-heading .eyebrow{color:#78df83!important}
+.filter-clear-button{background:#17171a!important;color:#d9dbe0!important;border-color:#363840!important;box-shadow:none!important}
+.filter-clear-button:hover{border-color:#3dae2b!important;color:#b8f2b5!important;background:#1e2420!important}
+.filter-clear-button:active{transform:scale(.98)}
+.main-nav button.active,.main-nav button[aria-selected=true]{color:#f4f4f5!important}
+.main-nav button.active:focus-visible{outline-color:#3dae2b!important}
+.settings-category-button[aria-selected=true],.settings-category-button.active{border-color:#315f38!important}

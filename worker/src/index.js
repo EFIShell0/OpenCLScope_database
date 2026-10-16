@@ -1,6 +1,6 @@
 import {PLATFORM_KEYS, DEVICE_KEYS, DEVICE_KEYS_1016, LEGACY_PLATFORM_KEYS, LEGACY_DEVICE_KEYS, REGISTRY_SHA256} from './query-manifest.js';
 
-export const DATABASE_RELEASE_VERSION = '1.0.1';
+export const DATABASE_RELEASE_VERSION = '1.0.2';
 const RELEASE = DATABASE_RELEASE_VERSION;
 const MAX_BODY = 18 * 1024 * 1024;
 const MAX_REPORT = 16 * 1024 * 1024;
@@ -179,6 +179,8 @@ async function dispatchSnapshot(env,id,submittedAt) {
   }
   throw Error('Snapshot dispatcher failed');
 }
+const currentNetworkInfo=request=>{const cf=request.cf||{},connectingIp=text(request.headers.get('cf-connecting-ip')),connectingIpv6=text(request.headers.get('cf-connecting-ipv6')),pseudoIPv4=text(request.headers.get('cf-pseudo-ipv4'));let accessFamily='Unknown',ipv4='',ipv6='',activeAddress='';if(connectingIpv6){accessFamily='IPv6';ipv6=connectingIpv6;activeAddress=connectingIpv6}else if(connectingIp.includes(':')){accessFamily='IPv6';ipv6=connectingIp;activeAddress=connectingIp}else if(connectingIp){accessFamily='IPv4';ipv4=connectingIp;activeAddress=connectingIp}const n=v=>Number.isFinite(Number(v))?Number(v):null,deliveryRate=cf?.edgeL4&&typeof cf.edgeL4==='object'?cf.edgeL4.deliveryRate:null;return{networkInfoVersion:1,activeAddress,accessFamily,ipv4:{address:ipv4,status:ipv4?'observed':'not_observed'},ipv6:{address:ipv6,status:ipv6?'observed':'not_observed'},pseudoIPv4:pseudoIPv4||'',dns:{resolver:null,status:'not_observable',reason:'The client DNS resolver is not exposed by an HTTP request.'},country:text(cf.country),region:text(cf.region),regionCode:text(cf.regionCode),city:text(cf.city),continent:text(cf.continent),timezone:text(cf.timezone),asn:n(cf.asn),asOrganization:text(cf.asOrganization),colo:text(cf.colo),httpProtocol:text(cf.httpProtocol),tlsVersion:text(cf.tlsVersion),tlsCipher:text(cf.tlsCipher),clientTcpRtt:n(cf.clientTcpRtt),clientQuicRtt:n(cf.clientQuicRtt),deliveryRate:n(deliveryRate),serverTime:new Date().toISOString()}};
+
 export default {
   async fetch(request,env,ctx) {
     const origin=request.headers.get('origin')||'',allowed=text(env.ALLOWED_ORIGIN).trim();
@@ -186,7 +188,8 @@ export default {
     const url=new URL(request.url),method=request.method;
     if(method==='OPTIONS') return new Response(null,{status:204,headers:cors(origin,allowed)});
     try {
-      if(url.pathname==='/v1/health'&&method==='GET') return response({status:'ok',databaseReleaseVersion:RELEASE,schemaVersion:1,minimumProducer:'OpenCLScope 0.2.0',snapshotAutomation:{configured:snapshotReady(env)}},200,origin,allowed);
+      if(url.pathname==='/v1/network-info'&&method==='GET')return response(currentNetworkInfo(request),200,origin,allowed,{'cache-control':'no-store'});
+      if(url.pathname==='/v1/health'&&method==='GET') return response({status:'ok',databaseReleaseVersion:RELEASE,schemaVersion:1,minimumProducer:'OpenCLScope 1.0.19',snapshotAutomation:{configured:snapshotReady(env)}},200,origin,allowed);
       if(url.pathname==='/v1/sync'&&method==='GET') {
         const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM reports').first();
         const latest=await env.DB.prepare('SELECT id,submitted_at FROM reports ORDER BY submitted_at DESC,id DESC LIMIT 1').first();
@@ -233,7 +236,7 @@ export default {
         if(inserted && ctx?.waitUntil && snapshotReady(env))ctx.waitUntil(dispatchSnapshot(env,id,stored.submitted_at).catch(error=>console.error('Snapshot refresh failed',String(error))));
         return response({id,submittedAt:stored.submitted_at,status:inserted?'accepted':'duplicate'},inserted?201:200,origin,allowed);
       }
-      if(['/v1/health','/v1/sync','/v1/reports'].includes(url.pathname)||url.pathname.startsWith('/v1/reports/')) return response({error:'Method not allowed'},405,origin,allowed,{'allow':url.pathname==='/v1/reports'?'GET, POST, OPTIONS':'GET, OPTIONS'});
+      if(['/v1/health','/v1/network-info','/v1/sync','/v1/reports'].includes(url.pathname)||url.pathname.startsWith('/v1/reports/')) return response({error:'Method not allowed'},405,origin,allowed,{'allow':url.pathname==='/v1/reports'?'GET, POST, OPTIONS':'GET, OPTIONS'});
       return response({error:'Not found'},404,origin,allowed);
     } catch(error) {console.error('OpenCLScope database request failed',String(error));return response({error:'Internal server error'},500,origin,allowed)}
   },

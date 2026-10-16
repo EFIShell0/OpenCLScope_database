@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const root = new URL('../',import.meta.url);
 const html = await readFile(new URL('index.html',root),'utf8');
-const js = await readFile(new URL('assets/app.v1001.js',root),'utf8');
-const css = await readFile(new URL('assets/site.v1001.css',root),'utf8');
+const js = await readFile(new URL('assets/app.v1002.js',root),'utf8');
+const css = await readFile(new URL('assets/site.v1002.css',root),'utf8');
 
 test('Report page has explicit editable bounded page field with usable navigation controls',()=>{
  for(const id of ['pageNumber','previousPage','nextPage','pageCounter','pageLimit','vendorFilter','versionFilter','stateFilter','sortFilter','globalSearch'])

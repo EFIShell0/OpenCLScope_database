@@ -5,17 +5,15 @@ import {createHash} from 'node:crypto';
 const root=new URL('../',import.meta.url);
 const load=path=>readFile(new URL(path,root),'utf8');
 const bytes=path=>readFile(new URL(path,root));
-const app=await load('assets/app.v1001.js'),css=await load('assets/site.v1001.css'),html=await load('index.html');
+const app=await load('assets/app.v1002.js'),css=await load('assets/site.v1002.css'),html=await load('index.html');
 
-test('Actual application 1.0.19 logo is used as header, favicon and loading artwork',async()=>{
- const logo=await bytes('assets/openclscope_title_master_black.png');
- assert.equal(createHash('sha256').update(logo).digest('hex'),'b2524dac02e18d042279d4efd170643e61e9a634e0f3c92462a939d5cd16b348');
- assert.match(html,/<a[^>]+class="brand"[^>]*><img src="assets\/openclscope_title_master_black\.png"/);
- assert.match(html,/<link href="assets\/openclscope_title_master_black\.png" rel="icon"/);
- assert.match(html,/class="database-loading-logo" src="assets\/openclscope_title_master_black\.png"/);
- assert.doesNotMatch(html,/class="brand"[^>]*><img src="assets\/openclscope_logo_horizontal\.png"/);
+test('Horizontal page logo restored and OpenCL tab favicon is on black',async()=>{
+ const site=await bytes('assets/openclscope_logo_horizontal.png');assert.ok(site.length>1000);
+ assert.match(html,/<a[^>]+class="brand"[^>]*><img src="assets\/openclscope_logo_horizontal\.png"/);
+ assert.match(html,/<link href="assets\/opencl_tab_black_64\.png" rel="icon"/);
+ assert.match(html,/class="database-loading-logo" src="assets\/openclscope_logo_horizontal\.png"/);
+ assert.doesNotMatch(html,/class="brand"[^>]*><img src="assets\/openclscope_title_master_black\.png"/);
 });
-
 test('Generated icons use SVG XML namespace rather than invisible HTML unknown elements',()=>{
  assert.match(app,/document\.createElementNS\('http:\/\/www\.w3\.org\/2000\/svg',tag\)/);
  assert.match(app,/if\(isSvg\)e\.setAttribute\('class',v\)/);
@@ -38,8 +36,8 @@ test('Viewport scrollbar tracks thumb drag, keyboard and true source status',()=
 
 test('Complete OpenCL report evidence remains gated at application 1.0.19',async()=>{
  const worker=await load('worker/src/index.js');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '1\.0\.1'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '1\.0\.2'/);
  assert.match(worker,/p\.application\.versionName!=='1\.0\.19'/);
  assert.match(worker,/p\.application\.versionCode!==10019/);
- assert.match(html,/assets\/app\.v1001\.js\?v=1001/);
+ assert.match(html,/assets\/app\.v1002\.js\?v=1002/);
 });

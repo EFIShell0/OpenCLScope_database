@@ -1,3 +1,16 @@
+# OpenCLScope Database 1.0.2
+
+## Fixed
+- Original OpenCLScope horizontal page logo restored. The application OpenCL™ tab mark is used solely for the black favicon.
+- Device and Driver filters work, including listbox visibility, selection, keyboard input and clearing.
+- Internet settings expose request-scoped Cloudflare IPv4/IPv6 and network details with masked addresses, no invented DNS resolver or secondary IP.
+- Incorrect minimum producer shown in Worker health was corrected.
+
+## Changed
+- OpenCL™ brand accent consistent across interactive controls; no changes to technical data or snapshot-first cache.
+- New submission producer floor remains exactly OpenCLScope 1.0.19/10019.
+
+---
 # OpenCLScope Database 1.0.0
 
 ## Added
