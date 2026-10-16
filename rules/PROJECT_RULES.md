@@ -172,9 +172,14 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Retain the immutable registry, catalog, full report stream caps, and snapshot-first caching; no UI/asset migration is necessary for this Worker-only change.
 - Deployment is separate from local verification and must not be described as completed unless the user deploys.
 
-## Database 0.12.60 — New submissions minimum OpenCLScope 1.0.19
+## Database 1.0.0 — New submissions minimum OpenCLScope 1.0.19
 - New POST /v1/reports submissions are allowed only when the producer application name/package/versionName/versionCode are exactly OpenCLScope/com.efishell.openclscope/1.0.19/10019, and technicalReport.appVersion exactly matches. All producer versions below 1.0.19 fail closed; future versions require a separate reviewed release allowlist entry.
 - Previous complete reports remain queryable in D1 and published snapshots. Do not delete, mutate or reinterpret any preexisting report because a newer producer is required for uploads.
 - Accepted 1.0.19 evidence remains complete 16 platform properties, 210 device properties and schema 1; all integrity, privacy, import, partial, size, explicit states and official registry gates remain unchanged.
 - Portable VulkanScope Database 1.4.12 UI parity: report-first cache, contained filters/actions/navigation, accessible focus states, responsive Compare, semantics matched by canonical OpenCL identity and property token rather than unstable JSON row indexes. No Vulkan-only technical fields.
 - Preserve immutable reference assets and official cl.xml byte-for-byte. Do not claim visual pixel parity without browser screenshots or Cloudflare deployment without credentials.
+
+## Database 1.0.0 explicit supersession
+- This section supersedes earlier producer-acceptance rules **for new submissions**: accept only exact OpenCLScope 1.0.19 / versionCode 10019 and 16 platform + 210 device queries. Keep historical GET, snapshot, favorites and reports readable. All older new POSTs must fail closed with HTTP 400.
+- Use exact unaltered VulkanScope Database 1.4.12 stylesheet as a single reference input, with one OpenCL visual delta stylesheet. No triple-declared stylesheet references. Official black-backed OpenCLScope app master icon for browser title/favicon.
+- Include meaningful SVGs for each shared primary navigation, detail and settings destination, original vendor-logo asset mapping, Reference-like report table, Statistics and Compare layouts, correct color hierarchy, responsive mobile widths. Do not mix WSI/Turnip/Vulkan evidence into OpenCL reports.

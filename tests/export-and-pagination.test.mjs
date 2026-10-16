@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
-const site = await readFile(new URL('../assets/app.v1260.js', import.meta.url), 'utf8');
+const site = await readFile(new URL('../assets/app.v1000.js', import.meta.url), 'utf8');
 const fixture = JSON.parse(await readFile(new URL('../worker/tests/complete-report.json', import.meta.url), 'utf8'));
 const exportFuncs = site.slice(site.indexOf('function completeReportText(report){'), site.indexOf('function installIcons(){'));
 const context = vm.createContext({text: value => value === null || value === undefined ? '' : String(value)});

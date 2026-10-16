@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
 const html=await read('index.html');
-const css=await read('assets/site.v1260.css');
-const js=await read('assets/app.v1260.js');
+const css=await read('assets/site.v1000.css');
+const js=await read('assets/app.v1000.js');
 const ref=await read('assets/vulkan-layout.v1412.css');
 const upstream=await read('assets/upstream-reference.css');
 const head=html.match(/<header[\s\S]*?<\/header>/)?.[0]||'';
@@ -16,7 +16,7 @@ test('Settings precedes OpenCL logo and workspace tabs in reference header order
 });
 test('Reference CSS updated without changing immutable OpenCL reference',()=>{
  assert.ok(ref.includes('.settings-drawer')&&ref.includes('.hero-v127')&&ref.includes('.custom-select-menu'));
- assert.ok(upstream.includes('--accent:#3dae2b'));assert.match(html,/vulkan-layout\.v1412\.css\?v=1260/);
+ assert.ok(upstream.includes('--accent:#3dae2b'));assert.match(html,/vulkan-layout\.v1412\.css\?v=1000/);
  assert.match(css,/--cl-accent:#3dae2b/);assert.match(css,/\.hero-v127\{background:linear-gradient\(145deg,#142117/);
 });
 test('OpenCL keeps native filter values authoritative behind reference listboxes',()=>{
@@ -44,7 +44,7 @@ test('No fake Vulkan device fields, runtime data, or changed backend producer',(
 });
 test('Mutations to parity contracts are rejected',()=>{
  const cases=[html.replace('id="settingsButton"','id="settingsRemoved"'),html.replace('vulkan-layout.v1412.css','legacy.css')];
- assert.ok(!/id="settingsButton"/.test(cases[0]));assert.ok(!/vulkan-layout\.v1412\.css\?v=1260/.test(cases[1]));
+ assert.ok(!/id="settingsButton"/.test(cases[0]));assert.ok(!/vulkan-layout\.v1412\.css\?v=1000/.test(cases[1]));
  const broken=js.replace("$('settingsBackdrop').hidden=false",'void 0');assert.ok(!broken.includes("$('settingsBackdrop').hidden=false"));
 });
 

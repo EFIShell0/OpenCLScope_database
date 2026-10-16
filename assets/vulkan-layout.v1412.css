@@ -193,10 +193,10 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 
 .luminance-unit{white-space:nowrap;color:var(--muted);font-size:.92em}
 
-
+/* 0.38.0 local statistics visualizations */
 .statistics-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:16px 18px 0}.statistics-heading h3{margin:3px 0 0;font-size:20px}.statistics-heading p{margin:0;max-width:680px;color:var(--muted);font-size:13px}.distribution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:16px 18px 18px}.distribution-card{min-width:0;background:linear-gradient(180deg,#181011,#110b0c);border:1px solid var(--line);border-radius:18px;padding:16px}.distribution-card>h3{margin:0 0 12px;font-size:15px}.donut-wrap{position:relative;width:188px;height:188px;margin:2px auto 14px}.donut-chart{display:block;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}.donut-track,.donut-segment{fill:none;stroke-width:15}.donut-track{stroke:#2a1c1e}.donut-segment{stroke-linecap:butt;transition:opacity .16s ease}.donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}.donut-center strong{font-size:28px;line-height:1;letter-spacing:-.03em}.donut-center span{margin-top:4px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}.chart-legend{list-style:none;margin:0;padding:0;display:grid;gap:7px}.chart-legend li{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;align-items:center;gap:8px;min-width:0;font-size:12px;color:var(--muted)}.chart-legend .chart-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}.chart-legend strong{font-variant-numeric:tabular-nums;color:var(--text)}.chart-swatch{display:block;width:10px;height:10px;border-radius:3px}.chart-stroke-0{stroke:#b33a3f}.chart-stroke-1{stroke:#d87073}.chart-stroke-2{stroke:#836fd1}.chart-stroke-3{stroke:#5d8fbd}.chart-stroke-4{stroke:#bd844c}.chart-stroke-5{stroke:#94708d}.chart-stroke-6{stroke:#628982}.chart-stroke-7{stroke:#777985}.chart-fill-0{background:#b33a3f}.chart-fill-1{background:#d87073}.chart-fill-2{background:#836fd1}.chart-fill-3{background:#5d8fbd}.chart-fill-4{background:#bd844c}.chart-fill-5{background:#94708d}.chart-fill-6{background:#628982}.chart-fill-7{background:#777985}@media(max-width:760px){.statistics-heading{display:block;padding:14px 14px 0}.statistics-heading p{margin-top:8px}.distribution-grid{grid-template-columns:1fr;padding:14px}.distribution-card{padding:14px}.donut-wrap{width:174px;height:174px}}
 
-
+/* 0.39.0 filter architecture and interactive statistics */
 .filter-clear-button{min-height:36px;border:1px solid #4a2a2d;border-radius:11px;background:#221416;color:#ffd7da;padding:7px 11px;font:inherit;font-size:12px;font-weight:820;cursor:pointer;white-space:nowrap;transition:background .16s ease,border-color .16s ease,transform .16s ease}.filter-clear-button:hover{background:#32191c;border-color:#6a363b}.filter-clear-button:active{transform:scale(.97)}.filter-clear-button:focus-visible{outline:2px solid rgba(214,92,96,.82);outline-offset:2px}.filter-clear-button[hidden]{display:none!important}
 .subfilters{align-items:flex-end}.subfilter-control{display:flex!important;flex-direction:column;align-items:flex-start!important;gap:5px!important;min-width:150px}.subfilter-control>span{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--subtle);font-weight:850}.subfilter-search{flex:1 1 210px;max-width:340px}.subfilter-search input{width:100%;min-height:36px;border:1px solid var(--line);border-radius:11px;background:linear-gradient(180deg,#1b1213,#120d0e);color:var(--text);padding:7px 10px;font:inherit;font-size:12px;outline:none}.subfilter-search input:focus{border-color:#69383c;box-shadow:0 0 0 2px rgba(214,92,96,.12)}.subfilter-search input::placeholder{color:var(--subtle)}
 .donut-interactive{cursor:pointer;outline:none}.donut-interactive:hover,.donut-interactive:focus{opacity:.72;stroke-width:18}.chart-filter-button{min-width:0;border:0;background:transparent;color:var(--text);padding:0;text-align:left;font:inherit;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.chart-filter-button:hover{text-decoration:underline;color:#fff}.chart-filter-button:focus-visible{outline:2px solid rgba(214,92,96,.75);outline-offset:2px;border-radius:4px}.chart-legend li{grid-template-columns:10px minmax(0,1fr) auto auto}.distribution-card{position:relative}.distribution-card:focus-within{border-color:#533034}
@@ -204,14 +204,14 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 @media(max-width:760px){.filter-clear-button{width:100%;grid-column:1/-1}.subfilter-control,.subfilter-search{width:100%;max-width:none;min-width:0}.subfilters{display:grid;grid-template-columns:1fr 1fr;align-items:end}.subfilter-search{grid-column:1/-1}}
 @media(max-width:430px){.subfilters{grid-template-columns:1fr}}
 
-
+/* 0.39.0 interactive statistics selection state */
 .donut-interactive.is-selected{opacity:1;stroke-width:19;filter:drop-shadow(0 0 4px rgba(255,255,255,.18))}.chart-filter-button.is-selected{font-weight:800;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}.chart-filter-button[aria-pressed="true"]::after{content:" · active";color:var(--muted);font-weight:600;text-decoration:none}
 .database-loading-panel{display:flex;align-items:center;gap:16px;margin:0 0 18px;padding:18px 20px;border:1px solid var(--line);border-radius:20px;background:linear-gradient(135deg,#1b1112,#100a0b);box-shadow:0 14px 38px rgba(0,0,0,.18)}.database-loading-panel[hidden]{display:none!important}.database-loading-icon{width:42px;height:42px;flex:0 0 42px;border-radius:50%;display:grid;place-items:center;background:#241315;border:1px solid #5b3033}.database-loading-icon span{width:18px;height:18px;border:2px solid #684044;border-top-color:var(--accent2);border-radius:50%;animation:database-spin .85s linear infinite}.database-loading-copy{display:grid;gap:5px;min-width:0;flex:1}.database-loading-copy strong{font-size:15px}.database-loading-copy>span{color:var(--muted);font-size:12px}.database-loading-track{height:4px;border-radius:999px;background:#2a1a1c;overflow:hidden;margin-top:4px}.database-loading-track span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .18s ease}.page-progress{position:fixed;inset:0 0 auto 0;height:3px;z-index:230;pointer-events:none;opacity:0;overflow:hidden;background:transparent;transition:opacity .18s ease}.page-progress.is-scrollable{opacity:1}.page-progress span{display:block;width:100%;height:100%;transform:scaleX(0);transform-origin:left center;background:linear-gradient(90deg,var(--accent),var(--accent2));will-change:transform}.page-scroll-controls{position:fixed;right:18px;bottom:22px;z-index:50;display:grid;gap:8px;pointer-events:none;visibility:hidden}.page-scroll-controls.is-scrollable{visibility:visible}.page-scroll-controls button{width:44px;height:44px;border-radius:14px;border:1px solid #4a292b;background:rgba(27,17,18,.96);color:#f7f4f4;display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.28);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(var(--page-arrow-offset,0)) scale(.92);transition:opacity .22s ease,transform .28s cubic-bezier(.2,.8,.2,1),visibility 0s linear .28s}.page-scroll-controls #pageScrollUp{--page-arrow-offset:7px}.page-scroll-controls #pageScrollDown{--page-arrow-offset:-7px}.page-scroll-controls.is-active button.is-visible{opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scale(1);transition-delay:0s}.page-scroll-controls button:hover,.page-scroll-controls button:focus-visible{background:#2b1719;border-color:#6a383c}.page-scroll-controls button:focus-visible{outline:2px solid rgba(214,92,96,.82);outline-offset:2px}.page-scroll-controls svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}@keyframes database-spin{to{transform:rotate(360deg)}}@media(prefers-reduced-motion:reduce){.database-loading-icon span{animation:none}.database-loading-track span,.page-progress,.page-scroll-controls button{transition:none}}@media(max-width:760px){.database-loading-panel{padding:15px 16px;border-radius:18px}.page-scroll-controls{right:12px;bottom:14px}.page-scroll-controls button{width:42px;height:42px}}
 
-
+/* 0.39.23 Vulkan Encyclopedia */
 .encyclopedia-intro{background:linear-gradient(135deg,#1f1113,#100a0b);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:0 14px 38px rgba(0,0,0,.18)}.encyclopedia-intro h3{margin:5px 0 8px;font-size:24px}.encyclopedia-intro>p{max-width:980px;color:var(--muted);margin:6px 0}.encyclopedia-census{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}.encyclopedia-census span{border:1px solid #4b282b;background:#1b1112;color:#e9dfe0;border-radius:999px;padding:6px 10px;font-size:11px;font-weight:780}.encyclopedia-evidence-note{border-left:3px solid var(--accent);padding:8px 0 8px 12px!important;color:#d5c6c8!important}.encyclopedia-search{display:flex;align-items:center;gap:12px;margin-top:16px;background:#0e090a;border:1px solid #4a2a2d;border-radius:15px;padding:0 14px}.encyclopedia-search>span{flex:0 0 auto;color:var(--subtle);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.encyclopedia-search input{width:100%;min-width:0;padding:13px 0;border:0;outline:0;background:transparent;color:var(--text);font:inherit}.encyclopedia-search:focus-within{border-color:#71383d;box-shadow:0 0 0 2px rgba(214,92,96,.12)}.encyclopedia-categories{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:12px 0 4px}.encyclopedia-categories::-webkit-scrollbar{display:none}.encyclopedia-category{flex:0 0 auto;border:1px solid #4a292c;background:#171011;color:var(--muted);border-radius:999px;padding:7px 11px;font:inherit;font-size:11px;font-weight:820;cursor:pointer}.encyclopedia-category:hover,.encyclopedia-category:focus-visible{background:#281518;color:#fff;border-color:#68363a}.encyclopedia-category:focus-visible{outline:2px solid rgba(214,92,96,.82);outline-offset:2px}.encyclopedia-category.active{background:#3a171b;color:#fff;border-color:#7b3036}.encyclopedia-status{margin-top:8px;color:var(--subtle);font-size:11px}.encyclopedia-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}.encyclopedia-card{min-width:0;background:linear-gradient(180deg,#181011,#110b0c);border:1px solid var(--line);border-radius:18px;padding:16px}.encyclopedia-card-head{display:grid;gap:8px}.encyclopedia-card h3{margin:0;font-size:16px;overflow-wrap:anywhere}.encyclopedia-card p{color:#ddd2d3;margin:10px 0 0}.encyclopedia-detail{margin-top:10px;padding-top:10px;border-top:1px solid #352124;color:var(--muted);font-size:12px;overflow-wrap:anywhere}@media(max-width:760px){.encyclopedia-intro{padding:16px;border-radius:20px}.encyclopedia-grid{grid-template-columns:1fr}.encyclopedia-search{align-items:flex-start;flex-direction:column;gap:2px;padding:10px 12px}.encyclopedia-search input{padding:6px 0 2px}}
 
-
+/* 0.39.25 UI-coherence release: loading + Encyclopedia reuse the Database visual system. */
 .database-loading-panel{display:flex;align-items:center;gap:14px;margin:0 0 18px;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);box-shadow:0 12px 34px rgba(0,0,0,.18)}
 .database-loading-icon{width:40px;height:40px;flex:0 0 40px;border-radius:12px;display:grid;place-items:center;background:var(--panel2);border:1px solid var(--line)}
 .database-loading-icon span{width:17px;height:17px;border:2px solid #3a3a42;border-top-color:var(--accent);border-radius:50%;animation:database-spin .85s linear infinite}
@@ -220,10 +220,10 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 @media(max-width:900px){.encyclopedia-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.encyclopedia-heading{flex-direction:column;gap:8px}}
 @media(max-width:760px){.database-loading-panel{padding:14px;border-radius:16px}.encyclopedia-panel{padding:15px;border-radius:18px}.encyclopedia-grid{grid-template-columns:1fr}.encyclopedia-search{align-items:flex-start;flex-direction:column;gap:2px;padding:10px 12px}.encyclopedia-search input{padding:6px 0 2px}.encyclopedia-stats{grid-template-columns:1fr 1fr}.encyclopedia-stats>div:last-child{grid-column:1/-1}}
 
-
+/* Database 1.0.9 — report identity/timestamp and low-coverage affordances */
 .submitted-stack{display:grid;gap:3px;min-width:154px}.submitted-stack span{display:grid;grid-template-columns:62px minmax(0,1fr);gap:8px;align-items:baseline;white-space:nowrap;font-variant-numeric:tabular-nums}.submitted-stack b{color:var(--subtle);font-size:10px;font-weight:850;letter-spacing:.045em;text-transform:uppercase}.report-id-copy{min-height:34px;display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #3a3a42;border-radius:10px;background:linear-gradient(180deg,#1a1a1e,#121214);color:var(--text);padding:6px 10px;font:inherit;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;transition:background .16s ease,border-color .16s ease,transform .12s ease}.report-id-copy:hover{background:#202025;border-color:#4a4b54}.report-id-copy:active{transform:scale(.97)}.report-id-copy:focus-visible{outline:2px solid rgba(170,183,255,.78);outline-offset:2px}.report-id-copy.copied{border-color:#397250;background:#132a1d;color:#c9f7da}.report-id-copy svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}.report-id-length{margin-top:4px;color:var(--subtle);font-size:10px;white-space:nowrap}.coverage.low .coverage-bar{position:relative;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 4px,transparent 4px 8px)}.coverage.low .coverage-fill{position:relative;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.3) 0 2px,transparent 2px 5px);clip-path:polygon(0 0,100% 0,calc(100% - 4px) 100%,0 100%)}.coverage.very-low .coverage-fill{clip-path:polygon(0 0,100% 50%,0 100%);filter:drop-shadow(0 0 2px rgba(255,255,255,.25))}.coverage.low .coverage-bar::after{content:"";position:absolute;left:clamp(1px,var(--coverage-position),calc(100% - 1px));top:-2px;width:2px;height:11px;border-radius:2px;background:rgba(244,244,245,.72);transform:translateX(-1px);pointer-events:none}@media(max-width:760px){.submitted-stack{min-width:142px}.submitted-stack span{grid-template-columns:58px auto}.report-id-copy{min-height:36px}}@media(prefers-reduced-motion:reduce){.report-id-copy{transition:none}}
 
-
+/* Database 1.0.12 — coverage texture/glow, collapsible submitted metadata, app Android icon */
 .coverage.supported{--coverage-glow:rgba(116,226,166,.58)}
 .coverage.unsupported{--coverage-glow:rgba(255,143,152,.58)}
 .coverage.available{--coverage-glow:rgba(170,183,255,.55)}
@@ -253,7 +253,7 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 @media(max-width:760px){.submitted-head{min-width:104px}.submitted-stack{min-width:196px}.submitted-stack>span{grid-template-columns:60px minmax(120px,1fr)}.filter-option-icon.android-app-icon{width:17px;height:10px;flex-basis:17px}}
 @media(prefers-reduced-motion:reduce){.coverage.high .coverage-fill::after{animation:none;left:58%;opacity:.38}.submitted-toggle{transition:none}}
 
-
+/* Database 1.0.13 — zero-gap animated Submitted disclosure + semantic color-spray high coverage */
 .reports-table{width:max-content;min-width:100%;table-layout:auto}
 .reports-table th:first-child,.reports-table td.submitted-cell{padding-left:6px;padding-right:6px;transition:padding .30s cubic-bezier(.2,.8,.2,1)}
 .submitted-head{min-width:0;width:30px;justify-content:center;gap:0;overflow:visible;transition:width .32s cubic-bezier(.2,.8,.2,1),gap .24s ease}
@@ -285,7 +285,7 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 @media(prefers-reduced-motion:reduce){.submitted-head,.submitted-label,.submitted-reveal,.reports-table th:first-child,.reports-table td.submitted-cell{transition:none!important}.coverage.high .coverage-fill::before,.coverage.high .coverage-fill::after{animation:none!important}.coverage.high .coverage-fill::before{opacity:.32;transform:translateY(-50%) scale(1);left:auto}.coverage.high .coverage-fill::after{opacity:.48;transform:translateY(-50%) translateX(4px) scale(.8);left:auto}}
 
 
-
+/* Database 1.0.14 — fixed Submitted control, complete coverage ranking, modal evidence, HDR/display fidelity */
 .hero-side{flex:0 0 auto;min-width:210px;display:grid;gap:10px}.hero-side .repo-link{min-width:210px}.developer-info{display:grid;gap:4px;padding:12px 13px;border:1px solid #34343a;border-radius:16px;background:rgba(19,19,22,.76);box-shadow:0 12px 32px rgba(0,0,0,.16)}.developer-info-kicker{font-size:9px;letter-spacing:.13em;font-weight:900;color:var(--accent);text-transform:uppercase}.developer-info strong{font-size:13px}.developer-info small{font-size:11px;color:var(--muted)}
 
 .reports-table{width:max-content;min-width:100%;table-layout:auto}.submitted-head{width:30px;min-width:30px;justify-content:flex-start!important;gap:0!important}.submitted-toggle{order:0;flex:0 0 30px}.submitted-label{order:1;margin-left:0;transform:translateX(-5px) scale(.96);transform-origin:left center}.reports-table.submitted-expanded .submitted-head{width:250px;justify-content:flex-start!important;gap:0!important}.reports-table.submitted-expanded .submitted-label{max-width:120px;margin-left:10px;transform:none}.reports-table.submitted-expanded .submitted-reveal{width:248px;max-width:248px}.submitted-stack{width:248px;min-width:248px}.reports-table.submitted-expanded th:first-child,.reports-table.submitted-expanded td.submitted-cell{width:272px;min-width:272px;max-width:272px}
@@ -305,21 +305,21 @@ tr:hover .api-version-chip{border-color:#5c3a3d;background:linear-gradient(180de
 @media(prefers-reduced-motion:reduce){.coverage.high .coverage-bar::before,.coverage.high .coverage-bar::after{animation:none!important}.coverage.high .coverage-bar::before{opacity:.32;transform:translate(-50%,-50%) scale(1)}.coverage.high .coverage-bar::after{opacity:.48;transform:translate(-50%,-50%) translateX(4px) scale(.8)}.coverage-report-modal,.coverage-report-dialog,.coverage-report-trigger,.coverage-report-close{transition:none!important}}
 
 
-
+/* Database 1.0.15 — circular Versions statistics, comprehensive interaction motion, loading accents */
 .version-statistics,.version-report-counts{margin-top:14px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:0 14px 34px rgba(0,0,0,.16)}
 .version-statistics-heading,.version-report-counts-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:18px 18px 0}.version-statistics-heading h3,.version-report-counts-heading h3{margin:3px 0 0;font-size:20px}.version-statistics-heading p,.version-report-counts-heading p{margin:0;max-width:620px;color:var(--muted);font-size:12px;text-align:right}
 .version-ring-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:12px;padding:18px}.version-stat-card{position:relative;overflow:hidden;display:grid;justify-items:center;gap:12px;min-width:0;padding:18px 14px;border:1px solid #33282a;border-radius:18px;background:linear-gradient(180deg,#181113,#110c0d);transition:transform .22s cubic-bezier(.2,.8,.2,1),border-color .2s ease,background .2s ease,box-shadow .2s ease}.version-stat-card:hover{transform:translateY(-2px);border-color:#553236;background:linear-gradient(180deg,#1d1214,#120c0d);box-shadow:0 14px 28px rgba(0,0,0,.18)}
 .version-ring{--version-share:0;position:relative;width:132px;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--version-share)*1%),#2a2224 0);box-shadow:0 0 0 1px #3c2b2e,0 12px 28px rgba(0,0,0,.24);transform:rotate(-90deg);transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .2s ease}.version-stat-card:hover .version-ring{transform:rotate(-90deg) scale(1.025);filter:drop-shadow(0 0 8px rgba(214,92,96,.16))}.version-ring-core{position:absolute;inset:13px;border-radius:50%;display:grid;place-content:center;text-align:center;background:radial-gradient(circle at 50% 36%,#1b1416,#100c0d 72%);border:1px solid #362629;transform:rotate(90deg)}.version-ring-core strong{font-size:22px;letter-spacing:-.03em;line-height:1}.version-ring-core span{margin-top:4px;color:var(--muted);font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:850}.version-stat-copy{display:grid;justify-items:center;gap:7px;min-width:0;text-align:center}.version-stat-copy>span:last-child{color:var(--muted);font-size:11px}.version-ring-pair{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap}.version-ring-pair-sep{color:var(--muted);font-size:11px}.version-report-counts>.table-wrap{margin:14px 18px 18px}.version-share-text{font-variant-numeric:tabular-nums;font-weight:800;color:var(--text)}
 
-
+/* Native search cancel controls are replaced with one consistent animated control. */
 input[type="search"]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;display:none}.search-input-shell{position:relative;display:flex;align-items:center;width:100%;min-width:0}.search-input-shell>input{padding-right:38px!important}.search-clear-button{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;opacity:1;transform:scale(1);transition:opacity .18s ease,transform .18s cubic-bezier(.2,.8,.2,1),background .16s ease,border-color .16s ease,color .16s ease,box-shadow .16s ease}.search-input-shell>.search-clear-button{position:absolute;right:4px;top:50%;transform:translateY(-50%) scale(1)}.search-clear-button.is-hidden{opacity:0;visibility:hidden;pointer-events:none;transform:scale(.72)}.search-input-shell>.search-clear-button.is-hidden{transform:translateY(-50%) scale(.72)}.search-clear-button:hover{background:#252126;border-color:#40343a;color:#fff}.search-clear-button:active{transform:scale(.9)}.search-input-shell>.search-clear-button:active{transform:translateY(-50%) scale(.9)}.search-clear-button:focus-visible{outline:2px solid rgba(214,92,96,.74);outline-offset:2px}.search-clear-button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2.1;stroke-linecap:round}.global-search-clear{margin-left:2px}.search-box .global-search-clear.is-hidden{transform:scale(.72)}.search-box input{min-width:0}.encyclopedia-search-shell{flex:1}.encyclopedia-search-shell input{width:100%}
 
-
+/* Shared soft interaction language. */
 button,.repo-link,.card,.metric,.custom-select-button,.custom-select-option,.accordion-trigger,.inline-link,.chart-filter-button,.donut-interactive,.api-version-chip,.display-value-chip{transition-property:transform,background-color,background,border-color,color,box-shadow,opacity,filter;transition-duration:.18s;transition-timing-function:cubic-bezier(.2,.8,.2,1)}
 button:not(:disabled):active,.repo-link:active,.card:active,.custom-select-button:active,.custom-select-option:active,.accordion-trigger:active,.inline-link:active,.chart-filter-button:active{transform:scale(.97)}
 .search-box,.subfilter-search input,.encyclopedia-search,.custom-select-button,select{transition:border-color .18s ease,background .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)}.search-box:focus-within,.encyclopedia-search:focus-within{border-color:#61373b;box-shadow:0 0 0 3px rgba(214,92,96,.10)}.subfilter-search input:focus{transform:translateY(-1px)}
 
-
+/* A short local loading accent appears on every major box on route/filter/search renders. */
 .metric,.card,.section-card,.distribution-card,.version-stat-card,.version-statistics,.version-report-counts,.table-wrap,.developer-info,.repo-link,.encyclopedia-panel,.encyclopedia-card,.notice,.kv{position:relative}
 body.ui-loading .metric::after,body.ui-loading .card::after,body.ui-loading .section-card::after,body.ui-loading .distribution-card::after,body.ui-loading .version-stat-card::after,body.ui-loading .version-statistics::after,body.ui-loading .version-report-counts::after,body.ui-loading .table-wrap::after,body.ui-loading .developer-info::after,body.ui-loading .repo-link::after,body.ui-loading .encyclopedia-panel::after,body.ui-loading .encyclopedia-card::after,body.ui-loading .notice::after,body.ui-loading .kv::after{content:"";position:absolute;left:8px;right:8px;top:3px;height:2px;border-radius:999px;pointer-events:none;z-index:12;background:linear-gradient(90deg,transparent,var(--accent),transparent);background-size:38% 100%;background-repeat:no-repeat;animation:uiBoxLoadingSweep .42s cubic-bezier(.2,.8,.2,1) both;opacity:.82}@keyframes uiBoxLoadingSweep{0%{background-position:-45% 0;opacity:.18}35%{opacity:.9}100%{background-position:145% 0;opacity:0}}
 
@@ -327,14 +327,14 @@ body.ui-loading .metric::after,body.ui-loading .card::after,body.ui-loading .sec
 @media(prefers-reduced-motion:reduce){button,.repo-link,.card,.metric,.custom-select-button,.custom-select-option,.accordion-trigger,.inline-link,.chart-filter-button,.donut-interactive,.api-version-chip,.display-value-chip,.search-box,.subfilter-search input,.encyclopedia-search,.custom-select-button,select,.search-clear-button,.version-stat-card,.version-ring{transition:none!important}button:not(:disabled):active,.repo-link:active,.card:active,.custom-select-button:active,.custom-select-option:active,.accordion-trigger:active,.inline-link:active,.chart-filter-button:active{transform:none!important}body.ui-loading .metric::after,body.ui-loading .card::after,body.ui-loading .section-card::after,body.ui-loading .distribution-card::after,body.ui-loading .version-stat-card::after,body.ui-loading .version-statistics::after,body.ui-loading .version-report-counts::after,body.ui-loading .table-wrap::after,body.ui-loading .developer-info::after,body.ui-loading .repo-link::after,body.ui-loading .encyclopedia-panel::after,body.ui-loading .encyclopedia-card::after,body.ui-loading .notice::after,body.ui-loading .kv::after{animation:none!important;opacity:.45;background:var(--accent)}}
 
 
-
+/* Database 1.0.15 — Reports Vendor/Type fixed-left disclosure parity */
 .report-column-head{width:30px;min-width:30px;display:flex;align-items:center;justify-content:flex-start;gap:0;overflow:visible}.report-column-toggle{order:0;flex:0 0 30px;width:30px;height:30px;border:1px solid #36373d;border-radius:9px;background:linear-gradient(180deg,#19191d,#111113);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:background .16s ease,border-color .16s ease,color .16s ease,transform .16s cubic-bezier(.2,.8,.2,1)}.report-column-toggle svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}.report-column-toggle:hover,.report-column-toggle.active{background:#242429;border-color:#4b4c54;color:#fff}.report-column-toggle:active{transform:scale(.93)}.report-column-toggle:focus-visible{outline:2px solid rgba(255,92,102,.72);outline-offset:2px}.report-column-label{order:1;display:inline-block;max-width:0;margin-left:0;opacity:0;overflow:hidden;white-space:nowrap;transform:translateX(-5px) scale(.96);transform-origin:left center;transition:max-width .32s cubic-bezier(.2,.8,.2,1),margin-left .32s cubic-bezier(.2,.8,.2,1),opacity .2s ease,transform .32s cubic-bezier(.2,.8,.2,1)}
 .report-column-reveal{opacity:0;visibility:hidden;max-width:0;width:0;overflow:hidden;white-space:nowrap;transform:translateX(-5px);transition:width .32s cubic-bezier(.2,.8,.2,1),max-width .32s cubic-bezier(.2,.8,.2,1),opacity .2s ease,transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s linear .32s}.reports-table.vendor-collapsed th:nth-child(7),.reports-table.vendor-collapsed td:nth-child(7),.reports-table.type-collapsed th:nth-child(8),.reports-table.type-collapsed td:nth-child(8){width:42px!important;min-width:42px!important;max-width:42px!important;padding-left:6px!important;padding-right:6px!important}.reports-table.vendor-expanded th:nth-child(7),.reports-table.vendor-expanded td:nth-child(7){width:190px;min-width:190px;max-width:190px}.reports-table.type-expanded th:nth-child(8),.reports-table.type-expanded td:nth-child(8){width:320px;min-width:320px;max-width:320px}.reports-table.vendor-expanded .report-column-head,.reports-table.type-expanded .report-column-head{width:100%;min-width:100%;justify-content:flex-start}.reports-table.vendor-expanded .report-column-label,.reports-table.type-expanded .report-column-label{max-width:110px;margin-left:10px;opacity:1;transform:none}.reports-table.vendor-expanded .vendor-reveal{width:170px;max-width:170px;opacity:1;visibility:visible;transform:none;transition:width .32s cubic-bezier(.2,.8,.2,1),max-width .32s cubic-bezier(.2,.8,.2,1),opacity .2s ease .08s,transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s}.reports-table.type-expanded .type-reveal{width:296px;max-width:296px;opacity:1;visibility:visible;transform:none;transition:width .32s cubic-bezier(.2,.8,.2,1),max-width .32s cubic-bezier(.2,.8,.2,1),opacity .2s ease .08s,transform .32s cubic-bezier(.2,.8,.2,1),visibility 0s}
 @media(max-width:760px){.reports-table.vendor-expanded th:nth-child(7),.reports-table.vendor-expanded td:nth-child(7){width:180px;min-width:180px;max-width:180px}.reports-table.type-expanded th:nth-child(8),.reports-table.type-expanded td:nth-child(8){width:280px;min-width:280px;max-width:280px}.reports-table.type-expanded .type-reveal{width:256px;max-width:256px}}
 @media(prefers-reduced-motion:reduce){.report-column-toggle,.report-column-label,.report-column-reveal{transition:none!important}}
 
 
-
+/* Database 1.0.16 — expanded report columns, modal detail parity, live synchronization, Statistics-style Versions */
 .reports-table.submitted-expanded .submitted-head{width:320px!important}.reports-table.submitted-expanded .submitted-reveal,.submitted-stack{width:318px!important;max-width:318px!important;min-width:318px!important}.reports-table.submitted-expanded th:first-child,.reports-table.submitted-expanded td.submitted-cell{width:344px!important;min-width:344px!important;max-width:344px!important}.submitted-stack>span{grid-template-columns:66px minmax(228px,1fr)!important}.submitted-stack .submitted-value{white-space:nowrap!important;overflow-wrap:normal!important}
 .reports-table.vendor-expanded th:nth-child(7),.reports-table.vendor-expanded td:nth-child(7){width:286px!important;min-width:286px!important;max-width:286px!important}.reports-table.vendor-expanded .vendor-reveal{width:260px!important;max-width:260px!important;white-space:nowrap!important;overflow:visible!important}.reports-table.type-expanded th:nth-child(8),.reports-table.type-expanded td:nth-child(8){width:380px!important;min-width:380px!important;max-width:380px!important}.reports-table.type-expanded .type-reveal{width:352px!important;max-width:352px!important;white-space:nowrap!important;overflow:visible!important}
 .modal-value-list{display:grid;gap:8px;min-width:min(520px,70vw)}.modal-value-list>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center;padding:9px 10px;border:1px solid #292a30;border-radius:12px;background:#151518}.modal-value-list .code{overflow-wrap:anywhere}.modal-value-list .value-count{white-space:nowrap;color:var(--muted);font-weight:800}
@@ -343,7 +343,7 @@ body.ui-loading .metric::after,body.ui-loading .card::after,body.ui-loading .sec
 @media(max-width:760px){.reports-table.submitted-expanded .submitted-head{width:320px!important}.reports-table.submitted-expanded .submitted-reveal,.submitted-stack{width:318px!important;max-width:318px!important;min-width:318px!important}.reports-table.submitted-expanded th:first-child,.reports-table.submitted-expanded td.submitted-cell{width:344px!important;min-width:344px!important;max-width:344px!important}.reports-table.vendor-expanded th:nth-child(7),.reports-table.vendor-expanded td:nth-child(7){width:286px!important;min-width:286px!important;max-width:286px!important}.reports-table.type-expanded th:nth-child(8),.reports-table.type-expanded td:nth-child(8){width:380px!important;min-width:380px!important;max-width:380px!important}.reports-table.type-expanded .type-reveal{width:352px!important;max-width:352px!important}.modal-value-list{min-width:0}}
 @media(prefers-reduced-motion:reduce){.database-update-refresh{transition:none!important}}
 
-
+/* Database 1.0.17 — reliable high-coverage glow, Devices-parity Versions identity, bounded paged evidence modals */
 .coverage.high .coverage-bar{position:relative!important;overflow:visible!important;isolation:isolate;box-shadow:0 0 10px var(--coverage-glow),inset 0 0 4px rgba(255,255,255,.10)}
 .coverage.high .coverage-fill{position:relative;overflow:visible;box-shadow:0 0 12px var(--coverage-glow),0 0 4px var(--coverage-spray-soft)!important}
 .coverage.high .coverage-bar::before{left:clamp(4px,var(--coverage-position),calc(100% - 4px))!important;width:28px;height:28px;background:radial-gradient(circle,var(--coverage-spray) 0 7%,var(--coverage-spray-soft) 18%,transparent 67%);filter:blur(.45px);opacity:.42;animation:coverageEndpointPulseStable 1.65s ease-in-out infinite!important}
@@ -360,7 +360,7 @@ body.ui-loading .metric::after,body.ui-loading .card::after,body.ui-loading .sec
 @media(max-width:760px){.modal-pagination,.modal-page-actions{align-items:stretch}.modal-page-actions{width:100%;justify-content:flex-start}.modal-page-number{display:flex;align-items:center;justify-content:center}.modal-paged-list{max-height:50vh}.version-report-counts th:nth-child(3),.version-report-counts td:nth-child(3){min-width:210px}}
 @media(prefers-reduced-motion:reduce){.coverage.high .coverage-bar::before,.coverage.high .coverage-bar::after{animation:none!important}.coverage.high .coverage-bar::before{opacity:.58!important;transform:translate(-50%,-50%) scale(.9)!important}.coverage.high .coverage-bar::after{opacity:.62!important;transform:translate(-50%,-50%) translateX(4px) scale(.82)!important}}
 
-
+/* Database 1.0.18 — bounded modal selector, official Android color, Devices statistics parity */
 .modal-pagination .modal-page-size-select{min-width:92px!important;max-width:112px!important;flex:0 0 92px!important}
 .modal-pagination .modal-page-size-select .custom-select-button{min-height:36px;padding:6px 8px 6px 9px;border-radius:11px;font-size:12px}
 .modal-pagination .modal-page-size-select .custom-select-menu{top:auto!important;bottom:calc(100% + 7px)!important;max-height:160px;transform:translateY(7px) scale(.985);transform-origin:bottom center}
@@ -372,7 +372,7 @@ body.ui-loading .device-report-counts::after{content:"";position:absolute;left:8
 @media(max-width:760px){.modal-pagination .modal-page-size-select{min-width:88px!important;max-width:104px!important;flex-basis:88px!important}.device-report-counts>.table-wrap{margin:12px 14px 14px}.device-report-counts th:nth-child(3),.device-report-counts td:nth-child(3){min-width:210px}}
 @media(prefers-reduced-motion:reduce){body.ui-loading .device-report-counts::after{animation:none!important;opacity:.45;background:var(--accent)}}
 
-
+/* Database 1.0.22 settings drawer, favorites and selection-safe report controls */
 .settings-button{width:44px;height:44px;flex:0 0 44px;margin-right:12px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.045);color:#fff;display:grid;place-items:center;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .18s ease}
 .settings-button:hover{background:rgba(255,255,255,.085);border-color:rgba(255,255,255,.22)}.settings-button:active{transform:scale(.96)}.settings-button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .settings-backdrop{position:fixed;inset:0;z-index:140;background:rgba(0,0,0,.62);opacity:0;pointer-events:none;transition:opacity .24s ease;backdrop-filter:blur(2px)}
@@ -383,7 +383,7 @@ body.settings-open{overflow:hidden}body.settings-open .settings-backdrop{opacity
 @media(max-width:760px){.settings-button{margin-right:7px}.settings-info-row{grid-template-columns:1fr;gap:4px}.settings-info-row strong{text-align:left}.report-favorite-button.detail-favorite span{display:inline}}
 @media(prefers-reduced-motion:reduce){.settings-button,.settings-backdrop,.settings-drawer,.settings-toggle i,.settings-toggle i:after{transition:none!important}}
 
-
+/* Database 1.0.23 — live connectivity, settings categories, privacy-local preferences and report motion */
 :root{--network-banner-offset:0px}
 .network-status-shell{position:sticky;top:0;z-index:46;max-height:0;overflow:hidden;opacity:0;transform:translate3d(0,-10px,0);background:#111114;border-bottom:1px solid transparent;box-shadow:0 0 0 rgba(0,0,0,0);transition:max-height .32s cubic-bezier(.2,.8,.2,1),opacity .22s ease,transform .32s cubic-bezier(.2,.8,.2,1),border-color .22s ease,box-shadow .22s ease}
 .network-status-shell.is-visible{max-height:68px;opacity:1;transform:translate3d(0,0,0);border-bottom-color:rgba(255,255,255,.08);box-shadow:0 10px 28px rgba(0,0,0,.22)}
@@ -415,11 +415,11 @@ body.network-banner-visible{--network-banner-offset:58px}.topbar{top:var(--netwo
 @media(max-width:760px){body.network-banner-visible{--network-banner-offset:82px}.network-status-shell.is-visible{max-height:96px}.network-status-banner{min-height:82px;padding:8px 0;align-items:flex-start}.network-status-copy span{white-space:normal;line-height:1.3}.network-status-badge{min-width:68px}.settings-category-nav{padding:10px;gap:5px}.settings-category-button{min-height:48px;font-size:10px}.detail-actions{display:flex;flex-wrap:wrap;width:100%}.detail-action-button,.report-favorite-button.detail-action-button{flex:1 1 calc(50% - 2px);min-width:0;padding-left:8px;padding-right:8px}}
 @media(max-width:470px){.network-status-badge{display:none}.network-status-icon{width:32px;height:32px;flex-basis:32px}.settings-category-button span{font-size:9.5px}.detail-actions{flex-wrap:wrap}.detail-action-button,.report-favorite-button.detail-action-button{flex:1 1 30%}}
 @media(prefers-reduced-motion:reduce){.network-status-shell,.topbar,.detail-tabs,.settings-category-button,.settings-clear-data,.settings-favorite-open,.settings-favorite-remove,.settings-refresh,.settings-close,.detail-action-button,.report-favorite-button,.page-button,.click-row td,.card{transition:none!important}.settings-category-panel{animation:none!important}}
-
+/* Keep report section tabs below the persistent network banner as it expands/collapses. */
 .detail-tabs{top:calc(77px + var(--network-banner-offset));transition:top .32s cubic-bezier(.2,.8,.2,1)}
 @media(max-width:760px){.detail-tabs{top:calc(67px + var(--network-banner-offset))}}
 
-
+/* VulkanScope Database 1.0.24 — regional preferences, country identity, compare workspace */
 .network-status-badge[hidden]{display:none!important}
 .country-info-value{font-weight:750!important;letter-spacing:.01em}
 .settings-regional-group{margin-top:14px}.settings-preference-intro{margin:0 0 12px!important;font-size:11px!important;line-height:1.5!important}.settings-regional-grid{display:grid;gap:9px}.settings-select-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(150px,46%);gap:12px;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.065)}.settings-select-row:first-child{border-top:0}.settings-select-row>span{display:grid;gap:3px}.settings-select-row strong{font-size:12px}.settings-select-row small{color:var(--muted);font-size:10.5px;line-height:1.35}.settings-select-row select[data-native-select="1"]{width:100%;min-width:0;max-width:100%;padding:9px 30px 9px 10px;border-radius:10px;border-color:rgba(255,255,255,.12);background:#111216;color:#f4f4f5;font-size:11px;outline:none;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}.settings-select-row select[data-native-select="1"]:hover{background:#17181c;border-color:rgba(255,255,255,.2)}.settings-select-row select[data-native-select="1"]:focus-visible{border-color:rgba(255,92,102,.72);box-shadow:0 0 0 2px rgba(255,92,102,.14)}.settings-regional-preview{display:grid;gap:2px;margin-top:11px;padding:11px 12px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:linear-gradient(135deg,rgba(255,92,102,.055),rgba(255,255,255,.025))}.settings-regional-preview span,.settings-regional-preview small{font-size:10px;color:var(--muted)}.settings-regional-preview strong{font-size:12px;overflow-wrap:anywhere}
@@ -430,7 +430,7 @@ body.network-banner-visible{--network-banner-offset:58px}.topbar{top:var(--netwo
 @media(max-width:560px){.compare-workspace{padding:13px;border-radius:17px}.compare-workspace-head{display:grid}.compare-share-button{width:100%;justify-content:center}.compare-mode-controls{display:grid;grid-template-columns:1fr}.compare-mode-controls .compare-diff-toggle{width:100%;justify-content:flex-start}.compare-filter-heading{display:grid;gap:2px}.compare-filter-controls{display:grid}.compare-filter-controls>*{width:100%}#contentView[data-main-view="compare"] .compare-summary{grid-template-columns:1fr 1fr}.compare-overview-primary{grid-template-columns:1fr;gap:1px}.compare-section-head{padding:10px}}
 @media(prefers-reduced-motion:reduce){.compare-share-button,.compare-swap,.settings-select-row select[data-native-select="1"]{transition:none!important}}
 
-
+/* VulkanScope Database 1.0.25 — connection observation, local country flags, coherent scroll/select surfaces, Surface + Encyclopedia workspaces */
 html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stable}
 *{scrollbar-color:#684047 #100c0d}
 *::-webkit-scrollbar{width:11px;height:11px}
@@ -449,7 +449,7 @@ html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stabl
 .country-info-wrap{display:inline-flex;align-items:center;justify-content:flex-end;gap:8px;max-width:100%}.country-info-wrap>span{min-width:0}.country-info-wrap small{color:var(--muted);font:inherit}.country-flag{width:32px;height:24px;object-fit:contain;display:block;flex:0 0 32px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.28))}.country-info-value{display:flex;justify-content:flex-end;align-items:center}
 .settings-network-loading.compact{margin:8px 0;font-size:11px}.settings-network-summary.network-restored strong{color:var(--green)}
 
-
+/* Encyclopedia is a reference workspace rather than a loose card feed. */
 .encyclopedia-workspace{position:relative;overflow:hidden;border:1px solid #302b2e;border-radius:24px;background:linear-gradient(145deg,#171315 0%,#101114 62%,#11131a 100%);padding:20px;box-shadow:0 18px 48px rgba(0,0,0,.2)}
 .encyclopedia-workspace:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 0 0,rgba(255,92,102,.09),transparent 34%),radial-gradient(circle at 100% 0,rgba(116,137,255,.065),transparent 28%)}.encyclopedia-workspace>*{position:relative}
 .encyclopedia-workspace-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.encyclopedia-workspace-head h3{font-size:23px;letter-spacing:-.025em;margin:4px 0 6px}.encyclopedia-workspace-head p{max-width:760px;margin:0;color:var(--muted);font-size:13px}.encyclopedia-lock{flex:0 0 auto;display:grid;text-align:right;padding:10px 12px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(0,0,0,.2)}.encyclopedia-lock strong{font-size:14px}.encyclopedia-lock span{font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
@@ -458,7 +458,7 @@ html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stabl
 .encyclopedia-guidance{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.encyclopedia-guidance>div{display:grid;gap:2px;padding:10px 12px;border:1px solid rgba(170,183,255,.11);border-radius:12px;background:rgba(170,183,255,.035)}.encyclopedia-guidance strong{font-size:10.5px;color:#cdd5ff}.encyclopedia-guidance span{font-size:10px;line-height:1.4;color:var(--muted)}
 .encyclopedia-results-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-top:17px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07)}.encyclopedia-results-head h4{margin:2px 0 0;font-size:16px}.encyclopedia-result-status{max-width:560px;text-align:right;color:var(--muted);font-size:10.5px}.encyclopedia-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:10px;margin-top:12px}.encyclopedia-card{position:relative;overflow:hidden;border:1px solid #292a30;border-radius:16px;background:linear-gradient(150deg,#131417,#0f1012);padding:15px;box-shadow:0 10px 28px rgba(0,0,0,.12);transition:border-color .16s ease,transform .16s ease,box-shadow .16s ease}.encyclopedia-card:hover{border-color:#414249;transform:translateY(-1px);box-shadow:0 14px 32px rgba(0,0,0,.18)}.encyclopedia-card:before{content:"";position:absolute;left:0;top:13px;bottom:13px;width:2px;background:linear-gradient(180deg,rgba(255,92,102,.78),rgba(255,92,102,.08));border-radius:0 2px 2px 0}.encyclopedia-card-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}.encyclopedia-kind,.encyclopedia-local-mark{font-size:8.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.encyclopedia-kind{color:#ff9aa0}.encyclopedia-local-mark{color:#777984}.encyclopedia-card h3{font-size:14px;margin:0 0 8px;overflow-wrap:anywhere}.encyclopedia-card p{margin:0;color:#c8c8cd;font-size:11.5px;line-height:1.5}.encyclopedia-detail{display:grid;gap:3px;margin-top:10px;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.035);color:var(--muted);font-size:10.5px;line-height:1.45}.encyclopedia-detail>span{font-size:8.5px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8f9099}
 
-
+/* Surface is a WSI evidence workspace with clear evidence families and counts. */
 .surface-workspace{position:relative;overflow:hidden;border:1px solid #302d35;border-radius:24px;background:linear-gradient(145deg,#151419,#101115 64%,#141119);padding:19px;box-shadow:0 18px 46px rgba(0,0,0,.19)}.surface-workspace:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 4% 0,rgba(116,226,166,.065),transparent 32%),radial-gradient(circle at 94% 0,rgba(170,183,255,.065),transparent 29%)}.surface-workspace>*{position:relative}.surface-workspace-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}.surface-workspace-head h3{margin:4px 0 5px;font-size:22px;letter-spacing:-.025em}.surface-workspace-head p{margin:0;color:var(--muted);font-size:12px;max-width:760px}.surface-report-count{flex:0 0 auto;display:grid;text-align:right;padding:9px 11px;border:1px solid rgba(255,255,255,.08);border-radius:12px;background:rgba(0,0,0,.18)}.surface-report-count strong{font-size:18px}.surface-report-count span{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
 .surface-summary-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:14px}.surface-summary-grid>div{display:grid;gap:1px;padding:10px 11px;border:1px solid rgba(255,255,255,.07);border-radius:13px;background:#121318}.surface-summary-grid strong{font-size:18px;line-height:1.1}.surface-summary-grid span{font-size:10px;font-weight:850;color:#d7d8dc}.surface-summary-grid small{font-size:8.8px;line-height:1.3;color:#7f818a}
 .surface-control-panel{display:grid;grid-template-columns:minmax(180px,.65fr) minmax(0,1.35fr);align-items:end;gap:16px;margin-top:12px;padding:12px;border:1px solid rgba(255,255,255,.075);border-radius:14px;background:rgba(0,0,0,.2)}.surface-control-kicker{font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#9fa1aa}.surface-control-panel p{margin:3px 0 0;color:var(--muted);font-size:10px}.surface-control-row{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.surface-control-row>.filter-control,.surface-control-row>label{margin:0;flex:1 1 240px}.surface-evidence-rule{display:flex;align-items:flex-start;gap:10px;margin-top:10px;padding:9px 11px;border-left:2px solid rgba(255,215,107,.55);background:rgba(255,215,107,.035);border-radius:0 10px 10px 0}.surface-evidence-rule strong{flex:0 0 auto;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:#f0cf7d}.surface-evidence-rule span{font-size:9.5px;line-height:1.45;color:var(--muted)}
@@ -468,7 +468,7 @@ html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stabl
 @media(max-width:640px){.encyclopedia-workspace,.surface-workspace{padding:14px;border-radius:18px}.encyclopedia-workspace-head,.surface-workspace-head{display:grid}.encyclopedia-lock,.surface-report-count{text-align:left;justify-self:start}.encyclopedia-guidance{grid-template-columns:1fr}.encyclopedia-results-head{display:grid;gap:6px}.encyclopedia-result-status{text-align:left}.encyclopedia-grid{grid-template-columns:1fr}.surface-summary-grid,.encyclopedia-stat-strip{grid-template-columns:1fr}.encyclopedia-stat-strip>div:last-child,.surface-summary-grid>div:last-child{grid-column:auto}.surface-evidence-rule{display:grid}.country-info-value{justify-content:flex-start}.country-info-wrap{justify-content:flex-start}}
 @media(prefers-reduced-motion:reduce){.custom-select-option,.encyclopedia-category,.encyclopedia-card{transition:none!important}}
 
-
+/* Database 1.2.0 — workspace, filter, regional selector and Settings semantic-message refinement */
 .settings-message{display:flex!important;align-items:flex-start;gap:9px;margin:8px 0 0!important;padding:10px 11px!important;border-radius:12px!important;border:1px solid transparent!important;font-size:10.5px!important;line-height:1.48!important;background:transparent!important}
 .settings-message>span:last-child{min-width:0;flex:1}.settings-message-icon{width:20px;height:20px;flex:0 0 20px;display:grid;place-items:center;border-radius:7px;margin-top:0}.settings-message-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .settings-message-info{color:#cbd7ff!important;background:rgba(75,109,222,.095)!important;border-color:rgba(118,146,255,.23)!important}.settings-message-info .settings-message-icon{color:#a9bbff;background:rgba(96,126,231,.16)}
@@ -498,7 +498,7 @@ html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stabl
 #contentView[data-main-view]:not([data-main-view="reports"]) .table-wrap{box-shadow:0 12px 34px rgba(0,0,0,.13)}
 #contentView[data-main-view]:not([data-main-view="reports"]) tbody tr{transition:background-color .16s ease,box-shadow .16s ease}#contentView[data-main-view]:not([data-main-view="reports"]) tbody tr:hover{background:rgba(255,255,255,.025)}
 
-
+/* Surface, Encyclopedia and Compare retain their purpose-specific workspaces but share the 1.2.0 hierarchy. */
 #contentView[data-main-view="surface"] .surface-workspace,#contentView[data-main-view="encyclopedia"] .encyclopedia-workspace,#contentView[data-main-view="compare"] .compare-workspace{border-color:#303138;box-shadow:0 16px 42px rgba(0,0,0,.18)}
 #contentView[data-main-view="surface"] .surface-control-panel,#contentView[data-main-view="compare"] .compare-mode-panel,#contentView[data-main-view="compare"] .compare-filter-panel,#contentView[data-main-view="encyclopedia"] .encyclopedia-search-zone{background:linear-gradient(180deg,rgba(22,22,26,.9),rgba(13,13,16,.9));border-color:rgba(255,255,255,.085)}
 
@@ -508,7 +508,7 @@ html{scrollbar-width:thin;scrollbar-color:#684047 #100c0d;scrollbar-gutter:stabl
 .settings-select-row.settings-country-row{grid-template-columns:1fr}.settings-country-row>span{margin-bottom:2px}.settings-country-row .country-custom-select{width:100%;min-width:0!important}.settings-country-row .country-custom-select .custom-select-menu{width:100%;max-width:100%}
 
 
-
+/* VulkanScope Database 1.2.2 — release API retry hardening; inherited sticky comparison tracking, endpoint scroll state, confirmations and detail repair */
 html{scrollbar-width:auto;scrollbar-color:#784249 #100c0d}
 html::-webkit-scrollbar,body::-webkit-scrollbar{width:14px;height:14px}
 html::-webkit-scrollbar-track,body::-webkit-scrollbar-track{background:#100c0d}
@@ -531,7 +531,7 @@ html::-webkit-scrollbar-thumb:hover,body::-webkit-scrollbar-thumb:hover{backgrou
 html::-webkit-scrollbar-button:single-button:vertical{display:block;height:14px;background-color:#171012;background-repeat:no-repeat;background-position:center;background-size:7px 5px;border:1px solid #2c1c1f}html::-webkit-scrollbar-button:single-button:vertical:decrement{background-image:linear-gradient(135deg,transparent 50%,#8e5960 50%),linear-gradient(225deg,transparent 50%,#8e5960 50%);background-position:4px 6px,8px 6px;background-size:4px 4px}html::-webkit-scrollbar-button:single-button:vertical:increment{background-image:linear-gradient(45deg,transparent 50%,#8e5960 50%),linear-gradient(315deg,transparent 50%,#8e5960 50%);background-position:4px 4px,8px 4px;background-size:4px 4px}html::-webkit-scrollbar-button:single-button:vertical:disabled{opacity:.28;background-color:#100c0d;filter:saturate(.45)}
 
 
-
+/* VulkanScope Database 1.2.3 — compatibility, English presentation, endpoint state, motion and mobile containment */
 html.at-page-top::-webkit-scrollbar-button:single-button:vertical:decrement,html.at-page-bottom::-webkit-scrollbar-button:single-button:vertical:increment{background-color:#0e0b0c!important;filter:saturate(.18) brightness(.72);opacity:.42}
 html.at-page-top::-webkit-scrollbar-button:single-button:vertical:decrement{background-image:linear-gradient(135deg,transparent 50%,#555057 50%),linear-gradient(225deg,transparent 50%,#555057 50%)}
 html.at-page-bottom::-webkit-scrollbar-button:single-button:vertical:increment{background-image:linear-gradient(45deg,transparent 50%,#555057 50%),linear-gradient(315deg,transparent 50%,#555057 50%)}
@@ -542,8 +542,8 @@ html,body{max-width:100%;overflow-x:hidden}.shell,.hero,.view,.section-heading,.
 @media(max-width:430px){.metrics{grid-template-columns:1fr}.settings-drawer{width:100vw;max-width:100vw}.settings-category-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.settings-category-button{min-width:0;padding-inline:7px}.settings-category-button span{font-size:11px}.compare-workspace.is-compact .compare-report-grid{grid-template-columns:minmax(190px,1fr) 40px minmax(190px,1fr)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 
-
-
+/* VulkanScope Database 1.2.5 — root-scrollbar endpoint state + full interaction motion audit */
+/* The far-right viewport scrollbar is browser chrome themed by the Database. State classes are mirrored on html/body by app.v1205.js so Chromium/WebKit root-scrollbar ownership differences cannot leave the arrow stale. */
 html::-webkit-scrollbar-button:vertical:decrement,
 body::-webkit-scrollbar-button:vertical:decrement,
 html::-webkit-scrollbar-button:vertical:increment,
@@ -568,7 +568,7 @@ body::-webkit-scrollbar-button:vertical:increment{
   background-position:4px 4px,8px 4px;
   background-size:4px 4px;
 }
-
+/* At the absolute top the impossible UP arrow is visibly gray. Target both possible viewport owners. */
 html.at-page-top::-webkit-scrollbar-button:vertical:decrement,
 body.at-page-top::-webkit-scrollbar-button:vertical:decrement,
 html.at-page-top body::-webkit-scrollbar-button:vertical:decrement{
@@ -577,7 +577,7 @@ html.at-page-top body::-webkit-scrollbar-button:vertical:decrement{
   opacity:.58!important;
   filter:saturate(.12) brightness(.82)!important;
 }
-
+/* User-requested endpoint presentation: the bottom DOWN arrow remains Vulkan red at the document end. Native endpoint mechanics remain owned by the browser. */
 html.at-page-bottom::-webkit-scrollbar-button:vertical:increment,
 body.at-page-bottom::-webkit-scrollbar-button:vertical:increment,
 html.at-page-bottom body::-webkit-scrollbar-button:vertical:increment{
@@ -586,7 +586,7 @@ html.at-page-bottom body::-webkit-scrollbar-button:vertical:increment{
   opacity:1!important;
   filter:none!important;
 }
-
+/* Non-scrollable pages do not advertise motion in either direction. */
 html.at-page-top.at-page-bottom::-webkit-scrollbar-button:vertical,
 body.at-page-top.at-page-bottom::-webkit-scrollbar-button:vertical{
   background-color:#0e0b0c!important;
@@ -595,7 +595,7 @@ body.at-page-top.at-page-bottom::-webkit-scrollbar-button:vertical{
   filter:saturate(.1)!important;
 }
 
-
+/* Shared smooth interaction language. This deliberately covers every primary clickable/focusable surface used by every Database tab/workspace. */
 :where(button,a,[role="button"],[role="tab"],[role="option"],.click-row,.card,.metric,.kv,.section-card,.distribution-card,.version-stat-card,.version-statistics,.version-report-counts,.device-report-counts,.settings-info-row,.settings-favorite-item,.filter-family,.workspace-context,.workspace-context-stats>div,.coverage-report-row,.surface-data-section,.encyclopedia-card,.compare-report-card,.notice,.api-version-chip,.display-value-chip,.badge,.table-scroll-track,.table-scroll-thumb,.nav-edge,.table-edge){
   transition-property:background-color,border-color,color,box-shadow,opacity,transform,filter;
   transition-duration:.18s;
@@ -615,8 +615,9 @@ body.at-page-top.at-page-bottom::-webkit-scrollbar-button:vertical{
 
 
 
-
-
+/* VulkanScope Database 1.2.6 — cross-browser viewport rail + report detail workspace */
+/* Standards expose viewport thumb/track color, not a portable endpoint-arrow state. Once the
+   same-origin DOM rail mounts, native viewport chrome is hidden and this rail becomes authoritative. */
 html.viewport-scrollbar-mounted,body.viewport-scrollbar-mounted{scrollbar-width:none!important;scrollbar-gutter:auto!important}
 html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mounted body::-webkit-scrollbar,body.viewport-scrollbar-mounted::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
 .viewport-scrollbar{position:fixed;z-index:220;top:0;right:0;bottom:0;width:18px;display:grid;grid-template-rows:18px minmax(0,1fr) 18px;background:#100c0d;border-left:1px solid #2d1b1e;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,visibility 0s linear .18s;user-select:none;touch-action:none}
@@ -647,8 +648,9 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(max-width:430px){.detail-identity-grid{grid-template-columns:1fr}.detail-id-full{grid-column:1/-1}.detail-report-id-row{display:grid}.detail-copy-id{width:max-content}.detail-hero-v126{padding:18px!important}.detail-overview-section{padding:11px}.detail-overview-section .kv-grid{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.viewport-scrollbar,.viewport-scrollbar-arrow,.viewport-scrollbar-arrow svg,.viewport-scrollbar-thumb,.detail-back-button,.detail-back-button svg,.detail-identity-card,.detail-copy-id,.detail-tab-body,.detail-overview-section,.detail-tabs .tab-button,.detail-tab-body .table-wrap,.detail-tab-body .kv{transition:none!important;animation:none!important}}
 
-
-
+/* VulkanScope Database 1.2.7 — compare follow rail, adaptive database hero, endpoint and row-motion repair */
+/* Compare: sticky behavior belongs to a dedicated overflow-visible shell. The workspace itself may
+   compact, but it no longer owns sticky positioning or clips report-selector menus. */
 .compare-page{position:relative;min-width:0;overflow:visible}
 .compare-sticky-placeholder{height:0;pointer-events:none}.compare-sticky-shell{position:relative;z-index:145;overflow:visible;isolation:isolate;transition:filter .22s ease,box-shadow .22s ease,background .22s ease}.compare-sticky-shell.is-pinned{position:fixed;z-index:320;overflow:visible;isolation:isolate;pointer-events:auto}
 .compare-sticky-shell.is-pinned{filter:drop-shadow(0 14px 20px rgba(0,0,0,.22))}
@@ -660,12 +662,13 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 .compare-workspace.is-compact .compare-report-card.select-open .custom-select-menu{z-index:300}
 @media(max-width:760px){.compare-sticky-shell>.compare-workspace{max-width:100%}}
 
-
+/* Viewport rail: endpoint buttons now share a conventional disabled state. The thumb deliberately
+   keeps the normal cursor even while being pointer-draggable. */
 .viewport-scrollbar-thumb,.viewport-scrollbar-thumb:hover,.viewport-scrollbar.is-dragging .viewport-scrollbar-thumb{cursor:default!important}
 .viewport-scrollbar-down:not(:disabled){color:#ff5c66!important;background:#160f11!important;opacity:1!important;filter:none!important}
 .viewport-scrollbar.at-bottom .viewport-scrollbar-down,.viewport-scrollbar[data-endpoint="bottom"] .viewport-scrollbar-down,.viewport-scrollbar-down:disabled{color:#66636a!important;background:#0d0b0c!important;opacity:.72!important;filter:grayscale(1) saturate(0)!important;cursor:default!important}
 
-
+/* The persistent database hero becomes a workspace-aware command deck shared by every primary tab. */
 .hero-v127{position:relative;overflow:hidden;padding:0!important;border-radius:30px!important;background:linear-gradient(145deg,#211316 0%,#121013 48%,#101118 100%)!important;border:1px solid #3a2428!important;box-shadow:0 24px 70px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.025)!important}
 .hero-v127:before,.hero-v127:after{content:"";position:absolute;pointer-events:none;border-radius:50%;filter:blur(2px)}
 .hero-v127:before{width:520px;height:520px;left:-250px;top:-310px;background:radial-gradient(circle,rgba(255,92,102,.16),rgba(255,92,102,0) 68%)}
@@ -682,7 +685,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 .hero-metrics-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:16px 2px 8px;color:#a99fa1;font-size:9px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}.hero-metrics-head small{font-size:9px;font-weight:700;letter-spacing:0;text-transform:none;color:#6f6b72}.hero-v127 .metrics{margin-top:0!important;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.hero-v127 .metric{position:relative;min-width:0;min-height:104px;padding:14px 14px 13px;border-radius:15px;background:linear-gradient(180deg,#151316,#101012);border-color:#33272a;overflow:hidden}.hero-v127 .metric:after{content:"";position:absolute;left:14px;right:14px;bottom:0;height:2px;background:linear-gradient(90deg,rgba(255,92,102,.58),rgba(255,92,102,0));opacity:.35;transform:scaleX(.35);transform-origin:left;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .22s ease}.hero-v127 .metric:hover{transform:translateY(-2px);border-color:#4b3035;background:#191417;box-shadow:0 12px 28px rgba(0,0,0,.18)}.hero-v127 .metric:hover:after{opacity:.8;transform:scaleX(1)}.hero-v127 .metric .value{font-size:clamp(18px,1.65vw,25px);line-height:1.16;overflow-wrap:anywhere}.hero-v127 .metric .label{margin-top:5px;line-height:1.35}
 .hero-v127[data-workspace="compare"] .hero-workspace-card{background:linear-gradient(90deg,rgba(150,125,255,.075),rgba(255,255,255,.018));border-color:rgba(150,125,255,.16)}.hero-v127[data-workspace="encyclopedia"] .hero-workspace-card{background:linear-gradient(90deg,rgba(91,169,255,.065),rgba(255,255,255,.018));border-color:rgba(91,169,255,.14)}.hero-v127[data-workspace="surface"] .hero-workspace-card{background:linear-gradient(90deg,rgba(116,226,166,.06),rgba(255,255,255,.018));border-color:rgba(116,226,166,.14)}
 
-
+/* Reports row hover must ease every cell together regardless of which column receives pointer entry. */
 .reports-table .click-row{--report-row-surface:transparent}.reports-table .click-row>td{background-color:var(--report-row-surface)!important;transition:background-color .3s cubic-bezier(.2,.8,.2,1),color .22s ease,border-color .22s ease,box-shadow .22s ease!important}.reports-table .click-row:hover{--report-row-surface:#211416}.reports-table .click-row:active{--report-row-surface:#2b171a}.reports-table .click-row .submitted-reveal,.reports-table .click-row .submitted-stack,.reports-table .click-row .submitted-summary{transition:width .28s cubic-bezier(.2,.8,.2,1),max-width .28s cubic-bezier(.2,.8,.2,1),opacity .24s ease,transform .24s cubic-bezier(.2,.8,.2,1),color .22s ease,background-color .3s cubic-bezier(.2,.8,.2,1)!important}
 
 @media(max-width:1120px){.hero-v127 .metrics{grid-template-columns:repeat(3,minmax(0,1fr))}.hero-v127-grid{grid-template-columns:minmax(0,1fr) minmax(200px,235px)}}
@@ -691,12 +694,12 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(prefers-reduced-motion:reduce){.compare-sticky-shell,.compare-report-card,.hero-workspace-card,.hero-command-deck .search-box,.hero-v127 .metric,.hero-v127 .metric:after,.reports-table .click-row>td,.reports-table .click-row .submitted-reveal,.reports-table .click-row .submitted-stack,.reports-table .click-row .submitted-summary{transition:none!important}}
 
 
-
+/* 1.2.8 Compare viewport-follow hotfix: explicit fixed pin avoids ancestor overflow/sticky-container ambiguity. */
 .compare-sticky-shell.is-pinned .compare-workspace{max-height:calc(100vh - 16px);overflow:visible!important}.compare-sticky-shell.is-pinned .compare-report-card.select-open,.compare-sticky-shell.is-pinned .custom-select.open{z-index:420!important}.compare-sticky-shell.is-pinned .custom-select-menu{z-index:460!important;max-height:min(390px,calc(100vh - 118px))}
 @media(prefers-reduced-motion:reduce){.compare-sticky-placeholder,.compare-sticky-shell{transition:none!important}}
 
 
-
+/* VulkanScope Database 1.2.9 — Reports filter parity, responsive Compare minimization and in-panel scrollbar parity */
 #contentView[data-main-view="reports"] #filters{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap;width:min(100%,920px);justify-content:flex-end}
 #contentView[data-main-view="reports"] .filter-clear-button{align-self:end;min-height:40px;border-radius:11px}
 .report-toolbar{align-items:stretch;margin-bottom:13px}
@@ -708,7 +711,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 .report-toolbar .report-toolbar-family .custom-select-button{min-height:38px;border-radius:10px;background:#121317;box-shadow:none;font-size:10.5px}
 .report-toolbar .report-range{align-self:center;padding:8px 10px;border:1px solid rgba(255,255,255,.07);border-radius:11px;background:#111216;white-space:nowrap}
 
-
+/* Reuse the exact viewport rail controls and thumb treatment inside scrollable UI surfaces. */
 .surface-scroll-owner-static{position:relative!important}
 .surface-scroll-host{scrollbar-width:none!important;-ms-overflow-style:none}
 .surface-scroll-host::-webkit-scrollbar{width:0!important;height:0!important;display:none!important}
@@ -722,7 +725,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 .settings-drawer>.surface-scrollbar{z-index:230}
 .coverage-report-dialog>.surface-scrollbar{z-index:4}
 
-
+/* Compare manual minimization: the full pinned controls remain authoritative until the user minimizes them. */
 .compare-workspace{position:relative}
 .compare-minimize-dock{position:absolute;left:50%;bottom:-15px;z-index:470;display:flex;justify-content:center;transform:translateX(-50%);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .2s cubic-bezier(.2,.8,.2,1),visibility 0s linear .18s}
 .compare-sticky-shell.is-pinned .compare-minimize-dock{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .18s ease,transform .2s cubic-bezier(.2,.8,.2,1),visibility 0s}
@@ -754,7 +757,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(max-width:430px){.compare-workspace.is-compact:not(.is-minimized) .compare-report-grid{grid-template-columns:minmax(0,1fr)!important}.compare-mini-side strong{font-size:10.5px}.compare-mini-bar{gap:5px}.compare-minimize-toggle{min-width:92px;padding-inline:8px}.compare-workspace.is-minimized{padding-inline:4px!important}}
 @media(prefers-reduced-motion:reduce){.surface-scrollbar,.surface-scrollbar .viewport-scrollbar-arrow,.surface-scrollbar .viewport-scrollbar-arrow svg,.surface-scrollbar .viewport-scrollbar-thumb,.compare-minimize-dock,.compare-minimize-toggle,.compare-minimize-toggle svg,.compare-mini-bar,.compare-workspace-head,.compare-report-grid,.compare-mode-panel{transition:none!important;animation:none!important}}
 
-
+/* VulkanScope Database 1.2.10 — non-Reports mobile filter containment + Compare version emphasis */
 .compare-warning .compare-version-token{color:#fff;font-weight:900}
 @media(max-width:900px){
   #contentView[data-main-view]:not([data-main-view="reports"]):not([data-main-view="encyclopedia"]) #filters{display:grid!important;grid-template-columns:minmax(0,1fr)!important;align-items:stretch!important;justify-content:stretch!important;width:100%!important;max-width:100%!important;min-width:0!important;gap:8px}
@@ -775,7 +778,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
   #contentView[data-main-view="compare"] .compare-filter-controls>.custom-select{min-width:0!important;width:100%!important;max-width:100%!important}
 }
 
-
+/* VulkanScope Database 1.2.11 — Compare mobile identity-flow containment */
 .compare-identity-line{max-height:20rem;min-width:0}
 .compare-workspace.is-compact .compare-identity-line{max-height:0}
 @media(max-width:760px){
@@ -787,7 +790,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
   #contentView[data-main-view="compare"] .compare-workspace.is-compact .compare-identity-line{max-height:0}
 }
 
-
+/* VulkanScope Database 1.2.12 — bounded searchable filters + overlay ownership */
 .custom-select-menu.is-searchable{padding-top:6px}
 .custom-select-search-shell{position:sticky;top:-6px;z-index:6;display:flex;align-items:center;gap:8px;margin:-1px -1px 5px;padding:7px 7px 6px;background:linear-gradient(180deg,rgba(18,18,21,.995) 78%,rgba(18,18,21,.94));border-bottom:1px solid rgba(255,255,255,.075);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .custom-select-search-shell svg{width:17px;height:17px;flex:0 0 17px;fill:none;stroke:#999ba4;stroke-width:1.9;stroke-linecap:round}
@@ -801,7 +804,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(prefers-reduced-motion:reduce){.compare-sticky-shell.has-select-open .compare-minimize-dock{transition:none!important}}
 
 
-
+/* VulkanScope Database 1.2.13 — paged filter results + Compare direction-state hardening */
 .custom-select{max-width:100%}
 .custom-select-pagination{position:sticky;bottom:-6px;z-index:7;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:7px;margin:5px -1px -1px;padding:7px;background:linear-gradient(0deg,rgba(18,18,21,.995) 78%,rgba(18,18,21,.94));border-top:1px solid rgba(255,255,255,.075);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
 .custom-select-pagination[hidden]{display:none!important}.custom-select-page-button{min-width:0;min-height:36px;border:1px solid #34353d;border-radius:10px;background:linear-gradient(180deg,#1b1b1f,#121216);color:#d8d8de;padding:6px 9px;display:inline-flex;align-items:center;justify-content:center;gap:5px;font:inherit;font-size:10.5px;font-weight:850;cursor:pointer}.custom-select-page-button:hover:not(:disabled){background:#232329;border-color:#494a55;color:#fff}.custom-select-page-button:focus-visible{outline:2px solid rgba(255,92,102,.72);outline-offset:2px}.custom-select-page-button:disabled{opacity:.34;cursor:default}.custom-select-page-button svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.custom-select-page-status{white-space:nowrap;color:#a9aab2;font-size:10.5px;font-weight:800;text-align:center}
@@ -810,7 +813,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(prefers-reduced-motion:reduce){.custom-select-page-button{transition:none!important}}
 
 
-
+/* VulkanScope Database 1.2.14: direct page jump + browser information */
 .pagination{flex-wrap:wrap}
 .page-jump{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:0;color:var(--muted);font-size:12px;font-weight:800;font-variant-numeric:tabular-nums}
 .page-jump-prefix,.page-jump-of{white-space:nowrap}.page-jump-input{box-sizing:border-box;width:44px;min-width:38px;max-width:58px;height:36px;border:1px solid #34353d;border-radius:10px;background:#111216;color:#fff;padding:6px 7px;text-align:center;font:inherit;font-size:12px;font-weight:850;font-variant-numeric:tabular-nums;outline:none;appearance:none;-webkit-appearance:none}.page-jump-input:focus{border-color:rgba(255,92,102,.72);box-shadow:0 0 0 3px rgba(255,92,102,.12)}.page-jump-input::selection{background:rgba(255,92,102,.35)}
@@ -821,11 +824,11 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 @media(max-width:760px){.pagination{gap:8px}.page-jump{gap:4px}.page-jump-prefix{font-size:10px}.page-jump-of{font-size:10px}.page-jump-go{min-width:36px;padding:0 6px}.page-jump-go span{display:none}.custom-select-pagination{grid-template-columns:44px minmax(104px,1fr) 44px}.custom-select-pagination .page-jump{width:100%;max-width:132px;justify-self:center}.custom-select-pagination .page-jump-input{width:36px;min-width:32px}.custom-select-pagination .page-jump-of{font-size:9.5px}.modal-page-actions .page-jump{order:4;flex:1 1 150px;justify-content:flex-start}.settings-info-row{grid-template-columns:minmax(92px,.78fr) minmax(0,1.22fr);gap:9px}.settings-browser-grid .browser-long-row{grid-template-columns:1fr}.settings-browser-summary{padding:10px 11px}}
 @media(max-width:420px){.reports-pagination,.bounded-table-pagination{display:grid;grid-template-columns:minmax(0,1fr) minmax(118px,auto) minmax(0,1fr);width:100%;gap:7px}.reports-pagination>.page-button,.bounded-table-pagination>.page-button{min-width:0;padding:8px 6px;font-size:10.5px}.reports-pagination .page-jump,.bounded-table-pagination .page-jump{gap:3px}.reports-pagination .page-jump-prefix,.bounded-table-pagination .page-jump-prefix{display:none}.settings-info-row{grid-template-columns:1fr;gap:4px}.settings-info-row strong{text-align:left}.settings-browser-grid .browser-long-row strong{font-size:10px}}
 
-
+/* 1.2.15 Settings information + report JSON export */
 .settings-category-panel[data-settings-panel="information"]{min-width:0}.settings-information{display:grid;gap:12px;min-width:0}.settings-release-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.settings-release-summary>div{min-width:0;padding:11px 12px;border:1px solid rgba(255,255,255,.09);border-radius:13px;background:rgba(255,255,255,.035);display:grid;gap:4px}.settings-release-summary span{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}.settings-release-summary strong{font-size:12px;line-height:1.35;overflow-wrap:anywhere}.settings-information-note{margin:0;padding:11px 12px;border-radius:13px;background:rgba(76,139,245,.07);border:1px solid rgba(102,154,245,.18);color:#c9cbd2;font-size:11px;line-height:1.55;overflow-wrap:anywhere}.settings-library-list{display:grid;gap:10px}.settings-library-card{min-width:0;padding:13px;border:1px solid rgba(255,255,255,.09);border-radius:15px;background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.018));box-shadow:inset 0 1px 0 rgba(255,255,255,.025)}.settings-library-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px;min-width:0}.settings-library-head>div{min-width:0;display:grid;gap:3px}.settings-library-head span:first-child{color:var(--muted);font-size:9.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase}.settings-library-head h4{margin:0;color:#fff;font-size:14px;line-height:1.25;overflow-wrap:anywhere}.settings-library-license{flex:0 1 auto;max-width:48%;padding:5px 8px;border:1px solid rgba(255,255,255,.1);border-radius:999px;background:#1c1d22;color:#e3e4e8!important;font-size:9.5px!important;font-weight:800!important;letter-spacing:0!important;text-transform:none!important;text-align:center;overflow-wrap:anywhere}.settings-library-card dl{margin:0;display:grid;gap:1px;border-radius:11px;overflow:hidden;background:rgba(255,255,255,.055)}.settings-library-card dl>div{min-width:0;display:grid;grid-template-columns:minmax(82px,.7fr) minmax(0,1.3fr);gap:10px;padding:8px 9px;background:#141519}.settings-library-card dt{color:var(--muted);font-size:10px}.settings-library-card dd{margin:0;color:#e6e7ea;font-size:10.5px;line-height:1.45;text-align:right;overflow-wrap:anywhere}.detail-action-button.downloaded{color:var(--green)!important;background:rgba(116,226,166,.075)!important}.detail-action-button.download-failed{color:#ffb16f!important;background:rgba(255,177,111,.07)!important}.detail-action-button:disabled{cursor:wait;opacity:.72}.detail-action-button:disabled:active{transform:none}
 @media(max-width:430px){.settings-release-summary{grid-template-columns:1fr}.settings-library-head{display:grid}.settings-library-license{max-width:100%;width:max-content}.settings-library-card dl>div{grid-template-columns:1fr;gap:3px}.settings-library-card dd{text-align:left}.settings-category-button{min-height:44px}.detail-actions{gap:2px}.detail-action-button,.report-favorite-button.detail-action-button{flex-basis:calc(50% - 2px)}}
 
-
+/* 1.3.0 trademark / license disclosure / responsive audit */
 .khronos-independence-notice{color:var(--accent);font-weight:800;line-height:1.5;overflow-wrap:anywhere;word-break:normal}
 .settings-information>.khronos-independence-notice{margin:0;padding:11px 12px;border:1px solid rgba(255,92,102,.28);border-radius:13px;background:rgba(255,92,102,.075);font-size:11px}
 .settings-library-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;min-width:0}
@@ -839,7 +842,7 @@ html.viewport-scrollbar-mounted::-webkit-scrollbar,html.viewport-scrollbar-mount
 .footer-independence-notice{display:block;font-size:10.5px;letter-spacing:.005em}
 @media(max-width:760px){.footer-inner{align-items:flex-start;flex-direction:column;justify-content:center}.footer-brand-stack{width:100%}.footer-independence-notice{max-width:100%}.settings-license-read{width:100%}}
 
-
+/* VulkanScope Database 1.3.1 — resilient filter menus, inline license viewer and live-report notice */
 html.release-check-pending body{visibility:hidden}
 .custom-select-menu.is-searchable{display:grid;grid-template-rows:auto minmax(0,1fr) auto;overflow:hidden!important;padding:6px!important;max-height:min(390px,56vh)}
 .custom-select-menu.is-searchable[hidden]{display:none!important}
@@ -858,12 +861,12 @@ html.release-check-pending body{visibility:hidden}
 @media(prefers-reduced-motion:reduce){.new-report-toast{transition:none}}
 
 
-
-
+/* VulkanScope Database 1.3.2 — cache-transition, pointer-integrity, compact pagination and independence-note UI */
+/* The rail container is visual only. This prevents its blank left gutter/corners from becoming click targets. */
 .viewport-scrollbar.is-scrollable,.surface-scrollbar.is-scrollable{pointer-events:none!important}
 .viewport-scrollbar.is-scrollable>.viewport-scrollbar-arrow,.viewport-scrollbar.is-scrollable>.viewport-scrollbar-track,.surface-scrollbar.is-scrollable>.viewport-scrollbar-arrow,.surface-scrollbar.is-scrollable>.viewport-scrollbar-track{pointer-events:auto!important}
 .surface-scrollbar.is-scrollable .viewport-scrollbar-thumb,.viewport-scrollbar.is-scrollable .viewport-scrollbar-thumb{pointer-events:auto!important}
-
+/* Searchable-select pagination must fit the narrowest filter card on desktop and mobile. */
 .custom-select-pagination{grid-template-columns:36px minmax(0,1fr) 36px!important;gap:5px!important;min-width:0!important;max-width:100%!important;overflow:hidden}
 .custom-select-page-button{width:36px!important;min-width:36px!important;padding:6px!important}
 .custom-select-page-button span{display:none!important}
@@ -873,7 +876,7 @@ html.release-check-pending body{visibility:hidden}
 .custom-select-pagination .page-jump-go{width:30px!important;min-width:30px!important;padding:0!important}
 .pagination,.reports-pagination,.bounded-table-pagination{min-width:0;max-width:100%;flex-wrap:wrap}
 @media(max-width:420px){.reports-pagination,.bounded-table-pagination{grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1fr)!important}.reports-pagination>.page-button,.bounded-table-pagination>.page-button{min-width:0!important;max-width:100%;white-space:normal;overflow-wrap:anywhere}.reports-pagination .page-jump,.bounded-table-pagination .page-jump{min-width:0!important;max-width:100%!important}}
-
+/* Independence notice remains exact English copy, now presented as an informational blue note. */
 .khronos-independence-notice{display:inline-flex;align-items:flex-start;gap:8px;color:#b9d2ff!important;font-weight:760;line-height:1.48;overflow-wrap:anywhere;word-break:normal}
 .independence-info-icon{flex:0 0 auto;width:20px;height:20px;border-radius:999px;display:grid;place-items:center;color:#88b6ff;background:rgba(78,142,255,.12);box-shadow:inset 0 0 0 1px rgba(111,164,255,.27)}
 .independence-info-icon svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -881,23 +884,23 @@ html.release-check-pending body{visibility:hidden}
 .footer-independence-notice{max-width:760px;color:#9fc1ff!important;font-weight:700}
 
 
-
-
+/* VulkanScope Database 1.3.3 — Compare direction + symmetric UI motion */
+/* Compare chevron geometry is authored by setCompareMinimizeControl; do not rotate the same icon in CSS or the two state changes cancel each other. */
 .compare-minimize-toggle svg{transform:none}
 .custom-select-options,.modal-paged-list{transform-origin:center center}
 @media(prefers-reduced-motion:reduce){.license-viewer-backdrop,.license-viewer-dialog{transition:none!important}.compare-minimize-toggle svg{transition:none!important}}
 
 
-
-
+/* VulkanScope Database 1.3.4 — demand-driven filter rails + Compare state-chevron semantics */
+/* Never reveal a filter rail merely because the menu is open; JS overflow state is authoritative. */
 .custom-select.open .custom-select-menu>.surface-scrollbar:not(.is-scrollable){opacity:0!important;visibility:hidden!important;pointer-events:none!important}
 .custom-select.open .custom-select-menu>.surface-scrollbar.is-scrollable{opacity:1;visibility:visible}
 
-
+/* Database 1.3.5 — Submitted time-zone seasonal label wrapping */
 .submitted-stack .submitted-zone-value{white-space:normal;overflow-wrap:anywhere;word-break:normal}
 .submitted-zone-season{display:block;margin-top:2px;color:var(--muted);white-space:normal;overflow-wrap:anywhere}
 
-
+/* VulkanScope Database 1.3.6 report-detail evidence workspace refresh. Overview intentionally retains its 1.2.6+ layout. */
 .detail-section-intro{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;min-width:0;margin:2px 0 14px;padding:18px;border:1px solid #34272a;border-radius:20px;background:radial-gradient(circle at 0 0,rgba(255,92,102,.11),transparent 44%),linear-gradient(135deg,#171214 0%,#111114 58%,#101116 100%);box-shadow:0 16px 38px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.025);overflow:hidden}.detail-section-intro:after{content:"";position:absolute;inset:auto -80px -110px auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(126,143,255,.08),transparent 68%);pointer-events:none;z-index:-1}.detail-section-intro-main{display:flex;align-items:flex-start;gap:14px;min-width:0}.detail-section-icon{flex:0 0 44px;width:44px;height:44px;border:1px solid #4b2a30;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#32191e,#181216);color:#ff939b;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 10px 24px rgba(0,0,0,.22)}.detail-section-icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.detail-section-copy{min-width:0}.detail-section-copy h2{margin:3px 0 5px;font-size:clamp(19px,2.2vw,25px);line-height:1.12;letter-spacing:-.025em}.detail-section-copy p{max-width:790px;margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}.detail-section-stats{display:grid;grid-template-columns:repeat(3,minmax(96px,1fr));gap:7px;min-width:min(360px,36vw)}.detail-section-stat{min-width:0;padding:9px 10px;border:1px solid #2d2c32;border-radius:12px;background:rgba(15,15,18,.72);box-shadow:inset 0 1px 0 rgba(255,255,255,.018)}.detail-section-stat strong{display:block;color:#f7f7f8;font-size:15px;line-height:1.15;overflow-wrap:anywhere}.detail-section-stat span{display:block;margin-top:3px;color:var(--muted);font-size:10px;line-height:1.2}.detail-section-stat.state-supported{border-color:rgba(116,226,166,.25);background:rgba(19,59,40,.42)}.detail-section-stat.state-supported strong{color:var(--green)}.detail-section-stat.state-unsupported{border-color:rgba(255,143,152,.25);background:rgba(73,23,28,.42)}.detail-section-stat.state-unsupported strong{color:var(--red)}.detail-section-stat.state-available{border-color:rgba(170,183,255,.25);background:rgba(32,36,58,.48)}.detail-section-stat.state-available strong{color:var(--blue)}.detail-section-stat.state-unavailable{border-color:rgba(255,215,107,.24);background:rgba(64,55,19,.38)}.detail-section-stat.state-unavailable strong{color:var(--amber)}.detail-section-stat.state-not_applicable{border-color:rgba(215,202,234,.2);background:rgba(45,41,53,.48)}.detail-section-stat.state-not_applicable strong{color:#d7caea}.detail-section-stat.state-unknown{border-color:#3a3b42;background:rgba(41,42,47,.55)}.detail-section-stat.state-unknown strong{color:#d0d0d5}
 .detail-evidence-stack{display:grid;gap:12px;min-width:0}.detail-evidence-panel{min-width:0;border:1px solid #2d2d33;border-radius:18px;background:linear-gradient(180deg,#131316,#101012);box-shadow:0 12px 30px rgba(0,0,0,.14);overflow:visible;transition:border-color .18s ease,box-shadow .18s ease,transform .18s cubic-bezier(.2,.8,.2,1)}.detail-evidence-panel:hover{border-color:#393941;box-shadow:0 16px 38px rgba(0,0,0,.18)}.detail-evidence-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:14px 15px 12px;border-bottom:1px solid rgba(255,255,255,.055);background:linear-gradient(180deg,rgba(255,255,255,.018),transparent)}.detail-evidence-panel-head>div{min-width:0}.detail-evidence-panel-head h3{margin:0;color:#f3f3f5;font-size:14px;line-height:1.25;letter-spacing:.005em}.detail-evidence-panel-head p{max-width:920px;margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.45}.detail-panel-count{flex:0 0 auto;max-width:180px;padding:5px 8px;border:1px solid #373740;border-radius:999px;background:#17171b;color:#c8c8ce;font-size:10px;font-weight:800;line-height:1.1;white-space:nowrap}.detail-evidence-panel-body{min-width:0;padding:13px}.detail-evidence-panel-body>.table-scroll-shell{margin:0}.detail-evidence-panel-body>.table-scroll-shell+.table-scroll-shell{margin-top:12px}.detail-evidence-panel .table-wrap{border-color:#2a2a30;border-radius:14px;background:#0e0e11}.detail-evidence-panel table thead th{background:#17171b;color:#c9c9cf;border-bottom-color:#303039}.detail-evidence-panel table tbody td{background:rgba(14,14,17,.72)}.detail-evidence-panel table tbody tr:hover td{background:#17171b}.detail-evidence-panel .kv{background:linear-gradient(180deg,#151519,#111114);border-color:#2d2d34;border-radius:13px;padding:11px 12px}.detail-kv-grid{gap:8px}.detail-inline-notice{margin:0 0 11px;border-radius:12px}.detail-mini-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin:0 0 11px}.detail-mini-metrics .detail-section-stat{min-height:58px}.detail-pill-row{padding:2px 0}.detail-device-ribbon{display:flex;align-items:center;gap:10px;margin:0 0 11px;padding:10px 12px;border:1px solid #2e2e35;border-radius:12px;background:linear-gradient(90deg,#19171a,#121216)}.detail-device-ribbon span{color:var(--muted);font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.08em}.detail-device-ribbon strong{min-width:0;color:#f5f5f7;font-size:14px;overflow-wrap:anywhere}.detail-empty-state{display:flex;align-items:center;gap:10px;min-height:72px;padding:14px;border:1px dashed #34343b;border-radius:13px;background:#0e0e11;color:var(--muted)}.detail-empty-state p{margin:0;font-size:12px}.detail-empty-icon{flex:0 0 28px;width:28px;height:28px;border:1px solid #34343b;border-radius:9px;display:grid;place-items:center;background:#151519;color:#8d8e96;font-weight:900}
 .raw-report-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px}.raw-report-toolbar>div{min-width:0}.raw-report-toolbar strong{display:block;font-size:13px}.raw-report-toolbar p{max-width:900px;margin:4px 0 0;color:var(--muted);font-size:11px;line-height:1.5}.raw-report-download{flex:0 0 auto;min-width:178px;justify-content:center}.raw-report-shell{position:relative;min-width:0}.raw-report-scroll{position:relative;min-width:0;max-height:min(68vh,760px);overflow:auto;overscroll-behavior:contain;border:1px solid #292930;border-radius:14px;background:#0b0b0e;outline:none}.raw-report-scroll:focus-visible{border-color:#59628f;box-shadow:0 0 0 2px rgba(170,183,255,.22)}.raw-report-text{margin:0;padding:17px 40px 18px 17px;color:#dedee3;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:500 12px/1.62 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}.raw-report-shell>.surface-scrollbar{z-index:5;border-radius:0 14px 14px 0;overflow:hidden}.raw-report-scroll.surface-scroll-host{padding-right:0}.raw-report-panel .detail-evidence-panel-body{padding:12px}
@@ -909,7 +912,7 @@ html.release-check-pending body{visibility:hidden}
 .settings-browser-logo{display:block;width:32px;height:32px;max-width:32px;max-height:32px;object-fit:contain;filter:none!important;opacity:1}
 
 
-
+/* VulkanScope Database 1.3.8: resilient filters + regional-mode controls */
 .custom-select-button .filter-choice-content,.custom-select-option .filter-choice-content{min-width:0;max-width:100%;align-items:flex-start}
 .custom-select-button .filter-choice-label,.custom-select-option .filter-choice-label{min-width:0!important;max-width:100%!important;overflow:visible!important;text-overflow:clip!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal;line-height:1.28}
 .custom-select-button{height:auto!important;min-height:42px;align-items:center;padding-top:9px!important;padding-bottom:9px!important}
@@ -931,7 +934,7 @@ html.release-check-pending body{visibility:hidden}
 @media(max-width:680px){.settings-regional-grid{grid-template-columns:minmax(0,1fr)!important}.settings-select-row{min-width:0}.settings-select-row .custom-select{min-width:0;width:100%}.custom-select-button .filter-choice-label,.custom-select-option .filter-choice-label{font-size:.94rem}}
 
 
-
+/* VulkanScope Database 1.3.9 — regional control fit + country profile + demand-driven filter gutter */
 .settings-regional-group .settings-select-row{grid-template-columns:minmax(0,1fr)!important;align-items:stretch;gap:7px;padding:11px 0}
 .settings-regional-group .settings-select-row>span{min-width:0}
 .settings-regional-group .settings-select-row .custom-select{width:100%!important;min-width:0!important;max-width:none!important}
@@ -953,7 +956,7 @@ html.release-check-pending body{visibility:hidden}
 .settings-select-row.is-disabled .custom-select-button{opacity:.52}
 @media(max-width:760px){.custom-select-scroll.has-surface-scrollbar{padding-right:21px!important}.settings-regional-profile-row{grid-template-columns:1fr;gap:3px}.settings-regional-profile-row strong{text-align:left}.settings-regional-group .settings-select-row .custom-select-menu{max-width:100%!important}}
 
-
+/* VulkanScope Database 1.4.2 — stable startup shell + refined address privacy controls */
 body.database-loading #filters{display:none!important}
 body.startup-layout-hold{min-height:100dvh}
 body.startup-layout-hold #networkStatusShell,body.startup-layout-hold #pageProgress,body.startup-layout-hold .topbar,body.startup-layout-hold .hero,body.startup-layout-hold #contentView,body.startup-layout-hold #detailView,body.startup-layout-hold #pageScrollControls,body.startup-layout-hold #viewportScrollbar,body.startup-layout-hold footer{display:none!important}
@@ -989,7 +992,7 @@ body.startup-layout-ready #appRoot{animation:startupShellReveal .22s cubic-bezie
 @media(prefers-reduced-motion:reduce){body.startup-layout-ready #appRoot{animation:none!important}.network-address-toggle,.network-address-privacy-mark,.network-address-text,.network-address-mosaic,.network-address-action{transition:none!important}.network-address-mosaic::after{animation:none!important;display:none}}
 
 
-
+/* VulkanScope Database 1.4.3 — viewport-stable startup loader + fully fitting address controls */
 body.startup-layout-hold{min-height:100dvh;overflow:hidden}
 body.startup-layout-hold main.shell{min-height:100dvh;width:min(1500px,calc(100% - 36px));margin:auto;padding:0;display:block}
 body.startup-layout-hold #databaseLoading{position:fixed;z-index:590;left:50%;top:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(760px,calc(100vw - 36px));max-width:calc(100vw - 36px);max-height:calc(100dvh - 36px);overflow:auto;margin:0;padding:20px 22px}
@@ -1003,7 +1006,7 @@ body.startup-layout-hold #databaseLoading{position:fixed;z-index:590;left:50%;to
 @media(max-width:340px){.settings-info-row-address .network-address-toggle{grid-template-columns:26px minmax(0,1fr) auto;gap:5px}.network-address-privacy-mark{width:26px;height:26px}.network-address-action{min-width:52px;padding-inline:6px;gap:4px;font-size:8.5px}.network-address-action svg{width:13px;height:13px}.network-address-text{font-size:9.7px}}
 
 
-
+/* VulkanScope Database 1.4.8 — VulkanScope 2.0.6+ submission floor; 1.4.5 UI retained */
 .network-address-toggle{cursor:default}
 .network-address-toggle:hover{border-color:rgba(255,255,255,.09);background:radial-gradient(circle at 8% 12%,rgba(var(--network-address-accent-rgb),.08),transparent 34%),linear-gradient(180deg,rgba(29,29,35,.96),rgba(16,16,20,.97));box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 8px 22px rgba(0,0,0,.2);transform:none}
 .network-address-toggle:active{transform:none}
@@ -1018,7 +1021,7 @@ body.startup-layout-hold #databaseLoading{position:fixed;z-index:590;left:50%;to
 .custom-select-search-clear.is-hidden{width:0;flex-basis:0;margin-left:-8px;padding-left:0;padding-right:0;border-width:0}
 @media(prefers-reduced-motion:reduce){.network-address-action,.custom-select-search-clear{transition:none!important}}
 
-
+/* VulkanScope Database 1.4.9 — profile evidence, temporal preview, startup loader and viewport-control polish */
 .page-scroll-controls{right:30px}
 @media(max-width:760px){.page-scroll-controls{right:26px}}
 
@@ -1060,7 +1063,7 @@ body.startup-layout-hold #databaseLoading{position:fixed;z-index:590;left:50%;to
 
 @media(prefers-reduced-motion:reduce){.database-loading-logo,.database-loading-halo,.database-loading-accent i,.database-loading-accent span{animation:none!important}.settings-regional-preview{will-change:auto}.profile-evaluation-card{transition:none!important}}
 
-
+/* VulkanScope Database 1.4.10 — readable profiles, single-stage startup loader, report temporal disclosure */
 body.database-loading #pageScrollControls,body.database-loading #viewportScrollbar,body.database-loading #pageProgress{display:none!important}
 body.startup-layout-hold #databaseLoading{width:min(640px,calc(100vw - 32px));max-width:calc(100vw - 32px);max-height:calc(100dvh - 24px);overflow:hidden!important;padding:clamp(17px,3vh,24px) clamp(18px,3vw,26px);border-color:rgba(255,92,102,.2);background:radial-gradient(circle at 50% 4%,rgba(255,92,102,.09),transparent 34%),linear-gradient(145deg,#171113,#0e0d0f 72%);box-shadow:0 24px 72px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.035);animation:databaseLoaderPanelIn .34s cubic-bezier(.2,.8,.2,1) both}
 .database-loading-panel{gap:13px!important;overflow:hidden!important}
