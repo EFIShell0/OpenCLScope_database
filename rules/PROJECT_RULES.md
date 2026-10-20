@@ -353,3 +353,15 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Denominators count individual fully loaded, filtered platform or device enumerations and disclose excluded indexed-only reports; never count a single report once in place of its multiple devices. Keep platform-only names (including `cl_khr_icd`) independent of device extension advertisements; cross-scope mode must not rewrite the runtime evidence.
 - Namespace, coverage, status and search filters are presentation-only. Per-enumeration evidence remains linked to the original SHA-256 report ID and is rendered via DOM-safe text, with existing keyboard/pagination/long-press controls unaffected.
 - The new POST gate stays at OpenCLScope 3.0.8/30008; historical GET, canonical SHA, D1 schema, published cache, versioned asset / release marker synchronization and pinned Vulkan 1.4.12 design CSS and Khronos cl.xml remain unchanged. No live Cloudflare or physical device claims without independent evidence.
+
+
+## Database 3.0.22 — lossless canonical Compare stage 13
+- Presentation-only database increment: new POST remains limited to exact OpenCLScope 3.0.8 / 30008; historical full-report GET, Worker/D1 schema, snapshot cache and immutable upstream reference assets are unchanged.
+- The Compare workspace must retain all repeated property and image-format evidence, including duplicate device/platform names, repeated image-format groups and identical format pairs. Aggregate equal canonical identity paths as sorted multisets; list enumeration order must not create false Changed results.
+- Compare available property results without collapsing literal 0/false, null, missing, error and not_applicable; distinguish exact status, numeric return code, value structure and image pair numeric identity. Missing evidence is never unsupported capability.
+- Any Added/Removed/Changed/Unchanged filter and summary navigation operate only on two explicitly selected, fully loaded canonical reports. Source report links must use the original validated SHA-256 IDs. All exports reflect the same filters and all matched pages, and all untrusted strings remain DOM escaped.
+- Maintain versioned JS/CSS and consistent release/Worker/Pages/snapshot/verification markers. Browser fixtures, local source tests and live Cloudflare deployment are separate evidence categories.
+
+## Database 3.0.23 — upstream visual baseline and controls
+- Preserve VulkanScope 1.4.12 pristine CSS while layering OpenCL green brand decoration onto neutral upstream surfaces. No Vulkan-specific technical data, red semantic errors, or hardware facts are changed.
+- Unify navigation, page controls, mobile filter geometry, evidence tables, the left-side settings drawer, and responsive overlays without weakening report/Worker contract validation.

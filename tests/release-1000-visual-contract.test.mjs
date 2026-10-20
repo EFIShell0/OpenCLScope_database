@@ -10,7 +10,7 @@ test('VulkanScope Database 1.4.12 exact geometry source pinned, loaded only once
  assert.equal(createHash('sha256').update(css).digest('hex'),'bd5957461701439a7655c652b4e560cb84b7cc0163f202a257e019c2c468181b');
  const html=await read('index.html');
  assert.match(html,/vulkan-layout\.v1412\.css\?v=1008/);
- assert.match(html,/site\.v1014\.css\?v=1014/);
+ assert.match(html,/site\.v1015\.css\?v=1015/);
  assert.doesNotMatch(html,/<link[^>]*upstream-reference\.css/);
 });
 test('Original page wordmark and exact application CL tab icon have separate assets',async()=>{
@@ -22,22 +22,22 @@ test('Original page wordmark and exact application CL tab icon have separate ass
  assert.doesNotMatch(html,/<link href="assets\/openclscope_title_master_black\.png" rel="icon"/);
 });
 test('Every OpenCL primary workspace has the corresponding VulkanScope SVG path',async()=>{
- const js=await read('assets/app.v1015.js');
+ const js=await read('assets/app.v1017.js');
  for(const view of ['reports','platforms','devices','features','memory','formats','extensions','profiles','compare','encyclopedia','statistics'])assert.match(js,new RegExp(`${view}:'(?:reports|instance|devices|features|memory|formats|extensions|profiles|compare|encyclopedia|trends)'`));
  assert.match(js,/installSettingsCategoryIcons\(\)/);
  assert.match(js,/ensureWorkspaceHeadingIcon\(\)/);
  assert.match(js,/databaseSvgIcon\(/);
 });
 test('Report table, statistics and comparison preserve evidence and semantics',async()=>{
- const js=await read('assets/app.v1015.js');const css=await read('assets/site.v1014.css');
+ const js=await read('assets/app.v1017.js');const css=await read('assets/site.v1015.css');
  for(const needle of ['function reportTableRow(',"node('table',{class:'reports-table opencl-reports-table'}",'function renderStatistics()','function semanticComparisonLeaves(','Not reported'])assert.ok(js.includes(needle),needle);
  for(const needle of ['.reports-table-wrap','.opencl-reports-table','.stats-charts','.compare-evidence-table','.table-favorite','.table-report-id'])assert.ok(css.includes(needle),needle);
  assert.match(js,/navigator\.clipboard\.writeText\(id\)/);
 });
-test('New submissions strictly require OpenCLScope 3.0.8, database release identity 3.0.21',async()=>{
+test('New submissions strictly require OpenCLScope 3.0.8, database release identity 3.0.23',async()=>{
  const worker=await read('worker/src/index.js'),html=await read('index.html');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.21'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.23'/);
  assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
  assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
- assert.match(html,/OpenCLScope Database 3\.0\.21/);
+ assert.match(html,/OpenCLScope Database 3\.0\.23/);
 });

@@ -102,7 +102,7 @@ export async function publishSnapshot(api,out,fetchImpl=fetch,options={}){
   const result=await collectSnapshot(api,fetchImpl,options);
   const folder=resolve(out,'data');await mkdir(folder,{recursive:true});
   const suffix=`.${process.pid}.tmp`;
-  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',{databaseVersion:DATABASE_RELEASE_VERSION,appJs:'assets/app.v1015.js',siteCss:'assets/site.v1014.css',generatedAt:result.index.generatedAt}]];
+  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',{databaseVersion:DATABASE_RELEASE_VERSION,appJs:'assets/app.v1017.js',siteCss:'assets/site.v1015.css',generatedAt:result.index.generatedAt}]];
   for(const [filename,payload] of entries)await writeFile(join(folder,filename+suffix),JSON.stringify(payload));
   for(const [filename]of entries)await rename(join(folder,filename+suffix),join(folder,filename));
   return result;

@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
 const html=await read('index.html');
-const css=await read('assets/site.v1014.css');
-const js=await read('assets/app.v1015.js');
+const css=await read('assets/site.v1015.css');
+const js=await read('assets/app.v1017.js');
 const ref=await read('assets/vulkan-layout.v1412.css');
 const upstream=await read('assets/upstream-reference.css');
 const head=html.match(/<header[\s\S]*?<\/header>/)?.[0]||'';
@@ -50,7 +50,7 @@ test('Mutations to parity contracts are rejected',()=>{
 
 test('OpenCL Compare uses stable names, not platform/device or property enumeration positions',async()=>{
  const {runInNewContext}=await import('node:vm');
- const fn=js.match(/function semanticComparisonLeaves\(report\)\{[\s\S]*?\n\}\nfunction compareSelect/);
+ const fn=js.match(/function comparisonStableValue\(value\)\{[\s\S]*?\n\}\nfunction compareSelect/);
  assert.ok(fn,'semantic comparator missing');
  const comparator=runInNewContext(fn[0].replace(/\nfunction compareSelect$/,'')+'; semanticComparisonLeaves',{text:v=>v==null?'':String(v),Map,Set});
  const make=()=>({platforms:[{name:'Vendor platform',vendor:'Hardware vendor',version:'OpenCL 3.0',profile:'FULL_PROFILE',deviceEnumerationStatus:'available',deviceEnumerationCode:0,extensions:['cl_khr_fp64','cl_khr_icd'],properties:[{name:'CL_PLATFORM_VERSION',status:'available',code:0,value:'OpenCL 3.0'},{name:'CL_PLATFORM_VENDOR',status:'available',code:0,value:'Hardware vendor'}],devices:[{name:'GPU 0',vendor:'Hardware vendor',type:'GPU',version:'OpenCL 3.0',driverVersion:'driver 1',profile:'FULL_PROFILE',properties:[{name:'CL_DEVICE_AVAILABLE',status:'available',code:0,value:'false'},{name:'CL_DEVICE_MAX_COMPUTE_UNITS',status:'available',code:0,value:'8'}],extensions:['cl_khr_fp64','cl_khr_icd'],imageFormats:[{imageType:'CL_MEM_OBJECT_IMAGE2D',flags:'READ_ONLY',status:'available',code:0,formats:[{order:'CL_RGBA',dataType:'CL_UNORM_INT8',orderValue:4277,typeValue:4306},{order:'CL_R',dataType:'CL_FLOAT',orderValue:4272,typeValue:4318}]}]}]}]});

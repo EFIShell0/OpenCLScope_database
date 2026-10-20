@@ -1,10 +1,10 @@
-if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.0.21');}
+if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.0.23');}
 'use strict';
 const API = String(window.OPENCLSCOPE_DATABASE_API || '').trim().replace(/\/$/,'');
 const PAGE = 25;
-const DATABASE_RELEASE_VERSION = '3.0.21';
+const DATABASE_RELEASE_VERSION = '3.0.23';
 const $ = id=>document.getElementById(id);
-const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareSort:'evidence-asc',compareMobilePinnedExpanded:false};
+const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareChange:'All',compareSort:'evidence-asc',compareMobilePinnedExpanded:false};
 const panes={reports:['REPORTS','Latest submissions','Complete, explicitly shared technical reports'],platforms:['PLATFORMS','OpenCL platforms','Platform-reported versions, vendors and extensions'],devices:['DEVICES','Compute devices','Device identity, driver and capability evidence'],features:['FEATURES','Features and support','Canonical OpenCL property states, never inferred'],memory:['MEMORY','Memory & limits','Runtime-reported memory and SVM properties'],formats:['IMAGE FORMATS','Image formats','Actual clGetSupportedImageFormats query results'],extensions:['EXTENSIONS','Extensions','Runtime-enumerated device and platform extension names'],profiles:['PROFILES','Profiles','Informational checklist, not certification'],compare:['COMPARE','Compare reports','Compare exact values and query states'],encyclopedia:['ENCYCLOPEDIA','OpenCL registry','Bundled Khronos cl.xml reference tokens, not runtime support evidence'],statistics:['STATISTICS','Report statistics','Report-backed device, API and query-state distributions (loaded detail evidence only)']};
 function safeStorageGet(key){try{return localStorage.getItem(key)}catch{return null}}
 function safeStorageSet(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -366,7 +366,7 @@ function renderImageFormatCoverage(){
  $('contentView').replaceChildren(intro,controls,visible.length?table:empty());pager(total,false);
 }
 
-function pager(total,remote=true){const count=Math.max(1,Math.ceil(total/state.pageSize));$('pageCounter').textContent=`/ ${count} · ${total} entries`;const number=$('pageNumber');if(document.activeElement!==number){number.value=String(Math.min(state.page+1,count));}number.max=String(count);number.dataset.total=String(total);number.disabled=count<=1;$('previousPage').disabled=state.page===0;$('nextPage').disabled=state.page>=count-1;$('pager').hidden=false;$('fetchNext').hidden=!remote||!API||!state.cursor}
+function pager(total,remote=false){const count=Math.max(1,Math.ceil(total/state.pageSize));$('pageCounter').textContent=`/ ${count} · ${total} entries`;const number=$('pageNumber');if(document.activeElement!==number){number.value=String(Math.min(state.page+1,count));}number.max=String(count);number.dataset.total=String(total);number.disabled=count<=1;$('previousPage').disabled=state.page===0;$('nextPage').disabled=state.page>=count-1;$('pager').hidden=false;$('fetchNext').hidden=!remote||!API||!state.cursor}
 function setFavoriteFilterLabel(){const b=$('favoritesButton');if(!b)return;b.replaceChildren(databaseSvgIcon('profiles'),node('span',{},state.favoritesOnly?'Favorites only':'Favorites'))}
 let activeReportMenu=null;
 function closeReportMenu(){if(!activeReportMenu)return;const info=activeReportMenu;activeReportMenu=null;info.panel.remove();document.removeEventListener('pointerdown',info.outside,true);document.removeEventListener('keydown',info.keyboard,true);document.removeEventListener('wheel',info.scroll,true);document.removeEventListener('touchmove',info.scroll,true);if(info.restore?.isConnected)info.restore.focus({preventScroll:true})}
@@ -396,6 +396,7 @@ function evidenceQuickMenu(data,anchor){
  if(data.baselineReported)action('Copy baseline value',data.baseline);
  if(data.targetReported)action('Copy target value',data.target);
  action('Copy evidence row',data.row);
+ for(const [name,id] of [['Open baseline report',data.baselineReportId],['Open target report',data.targetReportId]])if(validComparisonId(id)){const button=node('button',{type:'button',role:'menuitem'},name);button.onclick=()=>{closeReportMenu();openReport(id)};panel.append(button)}
  document.body.append(panel);
  const rect=anchor.getBoundingClientRect(),width=220;
  panel.style.left=Math.max(8,Math.min(rect.left,window.innerWidth-width-8))+'px';
@@ -432,34 +433,47 @@ function reportTableRow(r){
 function renderReports(){
  const rows=filteredRows();state.page=Math.min(state.page,Math.max(0,Math.ceil(rows.length/state.pageSize)-1));
  const visible=rows.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
- if(!visible.length){$('contentView').replaceChildren(empty());pager(rows.length);return}
+ if(!visible.length){$('contentView').replaceChildren(empty());pager(rows.length,true);return}
  const head=node('thead',{},node('tr',{},...['Submitted','GPU / device','OpenCL™ API','Driver version','Platform','Report ID','Actions'].map(label=>node('th',{scope:'col'},label))));
  const table=node('table',{class:'reports-table opencl-reports-table'},head,node('tbody',{},...visible.map(reportTableRow)));
- $('contentView').replaceChildren(node('div',{class:'table-wrap reports-table-wrap'},table));pager(rows.length);
+ $('contentView').replaceChildren(node('div',{class:'table-wrap reports-table-wrap'},table));pager(rows.length,true);
+}
+function comparisonStableValue(value){
+ if(value===undefined)return '(missing)';
+ if(value===null)return 'null';
+ if(Array.isArray(value))return '['+value.map(comparisonStableValue).join(',')+']';
+ if(typeof value==='object')return '{'+Object.keys(value).sort().map(key=>JSON.stringify(key)+':'+comparisonStableValue(value[key])).join(',')+'}';
+ return JSON.stringify(value);
 }
 function semanticComparisonLeaves(report){
-  const out=new Map(),identityCounts=new Map();
-  const unique=key=>{const seen=identityCounts.get(key)||0;identityCounts.set(key,seen+1);return seen?`${key} [${seen+1}]`:key};
-  const record=(key,value)=>out.set(key,value===null?'null':text(value));
-  const props=(rows,key)=>{for(const q of rows||[])record(`${key} / ${q.name}`,`${q.status} · ${q.code} · ${q.value}`)};
-  const extensions=(list,key)=>{for(const ext of new Set(list||[]))record(`${key} / ${ext}`,'Enumerated')};
-  for(const p of report?.platforms||[]){
-    const platform=unique(`Platform: ${p.name} · ${p.vendor}`);
-    record(`${platform} / Version`,p.version);record(`${platform} / Profile`,p.profile);
-    record(`${platform} / Device discovery`,`${p.deviceEnumerationStatus} · ${p.deviceEnumerationCode}`);
-    props(p.properties,`${platform} / Property`);extensions(p.extensions,`${platform} / Extension`);
-    for(const d of p.devices||[]){
-      const device=unique(`${platform} / Device: ${d.name} · ${d.vendor} · ${d.type}`);
-      for(const [name,value] of [['OpenCL version',d.version],['Driver',d.driverVersion],['Profile',d.profile]])record(`${device} / ${name}`,value);
-      props(d.properties,`${device} / Property`);extensions(d.extensions,`${device} / Extension`);
-      for(const g of d.imageFormats||[]){
-        const group=`${device} / Image formats: ${g.imageType} · ${g.flags}`;
-        record(`${group} / State`,`${g.status} · ${g.code}`);
-        for(const format of g.formats||[])record(`${group} / ${format.order} · ${format.dataType}`,`${format.orderValue} · ${format.typeValue}`);
-      }
+ const buckets=new Map();
+ const record=(key,value)=>{const group=buckets.get(key)||[];group.push(value);buckets.set(key,group)};
+ const queryValue=q=>`Status: ${comparisonStableValue(q.status)} · Code: ${comparisonStableValue(q.code)} · Value: ${comparisonStableValue(q.value)}`;
+ const props=(rows,key)=>{for(const q of rows||[]){if(q&&typeof q.name==='string')record(`${key} / ${q.name}`,queryValue(q))}};
+ const extensions=(list,key)=>{for(const ext of new Set(Array.isArray(list)?list:[]))record(`${key} / ${ext}`,'Enumerated')};
+ for(const platform of report?.platforms||[]){
+  const pk=`Platform: ${text(platform.name)} · ${text(platform.vendor)}`;
+  record(`${pk} / Version`,comparisonStableValue(platform.version));
+  record(`${pk} / Profile`,comparisonStableValue(platform.profile));
+  record(`${pk} / Device discovery`,`Status: ${comparisonStableValue(platform.deviceEnumerationStatus)} · Code: ${comparisonStableValue(platform.deviceEnumerationCode)}`);
+  props(platform.properties,`${pk} / Property`);
+  extensions(platform.extensions,`${pk} / Extension`);
+  for(const device of platform.devices||[]){
+   const dk=`${pk} / Device: ${text(device.name)} · ${text(device.vendor)} · ${text(device.type)}`;
+   for(const [name,value] of [['OpenCL version',device.version],['Driver',device.driverVersion],['Profile',device.profile]])record(`${dk} / ${name}`,comparisonStableValue(value));
+   props(device.properties,`${dk} / Property`);
+   extensions(device.extensions,`${dk} / Extension`);
+   for(const group of device.imageFormats||[]){
+    const gk=`${dk} / Image formats: ${text(group.imageType)} · ${text(group.flags)}`;
+    record(`${gk} / State`,`Status: ${comparisonStableValue(group.status)} · Code: ${comparisonStableValue(group.code)}`);
+    for(const format of group.formats||[]){
+     const fk=`${gk} / ${text(format.order)} · ${text(format.dataType)} · ${comparisonStableValue(format.orderValue)} · ${comparisonStableValue(format.typeValue)}`;
+     record(fk,'Enumerated');
     }
+   }
   }
-  return out;
+ }
+ return new Map([...buckets].map(([key,values])=>[key,values.length===1?values[0]:comparisonStableValue(values.sort())]));
 }
 function validComparisonId(id){return /^[a-f0-9]{64}$/.test(text(id))}
 function compareRoute(){return validComparisonId(state.compareA)&&validComparisonId(state.compareB)&&state.compareA!==state.compareB?`#compare/${state.compareA}/${state.compareB}`:'#compare'}
@@ -468,11 +482,11 @@ function restoreCompareRoute(){const m=/^#compare\/([a-f0-9]{64})\/([a-f0-9]{64}
 function makeDownload(name,content,mime){const url=URL.createObjectURL(new Blob([content],{type:mime}));const link=node('a',{href:url,download:name});document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)}
 function compareExportRecords(records,format){
  if(!validComparisonId(state.compareA)||!validComparisonId(state.compareB)||!state.reports.has(state.compareA)||!state.reports.has(state.compareB))return;
- const base={schema:'openclscope-comparison-v1',baselineReportId:state.compareA,targetReportId:state.compareB,filters:{category:state.compareKind,differencesOnly:state.differencesOnly,search:state.query,sort:state.compareSort},entries:records.map(r=>({name:r.key,category:r.category,change:r.status,baselineReported:r.hasA,targetReported:r.hasB,baseline:r.hasA?r.baseline:null,target:r.hasB?r.target:null}))};
+ const base={schema:'openclscope-comparison-v1',baselineReportId:state.compareA,targetReportId:state.compareB,filters:{category:state.compareKind,change:state.compareChange,differencesOnly:state.differencesOnly,search:state.query,sort:state.compareSort},entries:records.map(r=>({name:r.key,category:r.category,change:r.status,baselineReported:r.hasA,targetReported:r.hasB,baseline:r.hasA?r.baseline:null,target:r.hasB?r.target:null}))};
  const filename=`OpenCLScope-Compare-${state.compareA.slice(0,12)}-${state.compareB.slice(0,12)}.${format}`;
  if(format==='json'){makeDownload(filename,JSON.stringify(base,null,2)+'\n','application/json;charset=utf-8');return}
  const line=row=>row.map(v=>String(v??'').replace(/\t/g,' ').replace(/\r?\n/g,' ')).join('\t');
- const data=[`OpenCLScope comparison | baseline ${state.compareA} | target ${state.compareB}`,`Category: ${state.compareKind} | Differences only: ${state.differencesOnly} | Search: ${state.query} | Sort: ${state.compareSort}`,'',line(['Canonical evidence','Category','Change','Baseline present','Target present','Baseline','Target']),...base.entries.map(e=>line([e.name,e.category,e.change,e.baselineReported,e.targetReported,e.baseline,e.target]))].join('\n')+'\n';
+ const data=[`OpenCLScope comparison | baseline ${state.compareA} | target ${state.compareB}`,`Category: ${state.compareKind} | Change: ${state.compareChange} | Differences only: ${state.differencesOnly} | Search: ${state.query} | Sort: ${state.compareSort}`,'',line(['Canonical evidence','Category','Change','Baseline present','Target present','Baseline','Target']),...base.entries.map(e=>line([e.name,e.category,e.change,e.baselineReported,e.targetReported,e.baseline,e.target]))].join('\n')+'\n';
  makeDownload(filename,data,'text/plain;charset=utf-8');
 }
 function compareSelect(label,id,current,items){const control=node('select',{id});control.append(node('option',{value:''},'Select report'));for(const report of items)control.append(node('option',{value:report.id},`${report.device_name} · ${report.id.slice(0,12)}`));if(validComparisonId(current)&&!items.some(r=>r.id===current))control.append(node('option',{value:current},`Report ${current.slice(0,12)}… (not in loaded index)`));control.value=current;control.addEventListener('change',()=>{state[id]=control.value;state.page=0;rememberCompareRoute();renderCompare()});return node('label',{},label,control)}
@@ -517,7 +531,7 @@ function renderCompare(){
  const swap=node('button',{class:'primary-action',type:'button',onclick:()=>{const a=state.compareA;state.compareA=state.compareB;state.compareB=a;state.page=0;rememberCompareRoute();renderCompare()}},'Swap reports');
  const toggle=node('label',{class:'compare-toggle'},node('input',{type:'checkbox',id:'diffToggle'}),' Differences only');
  toggle.firstChild.checked=state.differencesOnly;
- toggle.firstChild.addEventListener('change',e=>{state.differencesOnly=e.target.checked;state.page=0;renderCompare()});
+ toggle.firstChild.addEventListener('change',e=>{state.differencesOnly=e.target.checked;if(state.differencesOnly&&state.compareChange==='Unchanged')state.compareChange='All';state.page=0;renderCompare()});
  const kinds=['All','Platforms','Devices','Extensions','Image formats'];
  const type=node('select',{'aria-label':'Compare evidence category'},...kinds.map(k=>node('option',{value:k},k)));type.value=state.compareKind;
  type.onchange=()=>{state.compareKind=type.value;state.page=0;renderCompare()};
@@ -526,7 +540,10 @@ function renderCompare(){
  ].map(([value,label])=>node('option',{value},label)));
  sort.value=state.compareSort;
  sort.onchange=()=>{state.compareSort=sort.value;state.page=0;renderCompare()};
- const tools=node('div',{class:'compare-toolbar'},node('label',{},'Category',type),node('label',{},'Sort results',sort),toggle,swap);
+ const change=node('select',{'aria-label':'Filter comparison change type'},...['All','Added','Removed','Changed','Unchanged'].map(k=>node('option',{value:k},k==='All'?'All changes':k)));
+ change.value=state.compareChange;
+ change.onchange=()=>{state.compareChange=change.value;if(change.value==='Unchanged')state.differencesOnly=false;state.page=0;renderCompare()};
+ const tools=node('div',{class:'compare-toolbar'},node('label',{},'Category',type),node('label',{},'Change',change),node('label',{},'Sort results',sort),toggle,swap);
  const pinButton=node('button',{class:'primary-action compare-minimize',type:'button','aria-controls':'compareStickyBody','aria-expanded':String(!state.compareMinimized),'aria-label':state.compareMinimized?'Expand comparison header':'Minimize comparison header'},state.compareMinimized?'Expand controls ▾':'Minimize controls ▴');
  pinButton.onclick=()=>{const pinnedMobile=sticky.classList.contains('is-pinned')&&window.matchMedia('(max-width:760px)').matches;
   if(pinnedMobile&&!state.compareMinimized)state.compareMobilePinnedExpanded=!state.compareMobilePinnedExpanded;
@@ -550,14 +567,17 @@ function renderCompare(){
  const x=semanticComparisonLeaves(a.technicalReport),y=semanticComparisonLeaves(b.technicalReport),keys=[...new Set([...x.keys(),...y.keys()])].sort();
  const counts={Added:0,Removed:0,Changed:0,Unchanged:0};
  const records=keys.map(k=>{const status=!x.has(k)?'Added':!y.has(k)?'Removed':x.get(k)===y.get(k)?'Unchanged':'Changed';counts[status]++;return {key:k,status,category:compareCategory(k),baseline:x.get(k),target:y.get(k),hasA:x.has(k),hasB:y.has(k)}});
- const summary=node('div',{class:'compare-summary'},...Object.entries(counts).map(([kind,count])=>node('div',{class:'compare-summary-item'},node('small',{},kind),node('strong',{},String(count)))));
+ const summary=node('div',{class:'compare-summary'},...Object.entries(counts).map(([kind,count])=>{
+  const button=node('button',{type:'button',class:'compare-summary-item compare-summary-filter','aria-pressed':String(state.compareChange===kind),'aria-label':`Show ${kind.toLowerCase()} comparison fields (${count})`},node('small',{},kind),node('strong',{},String(count)));
+  button.onclick=()=>{state.compareChange=state.compareChange===kind?'All':kind;if(state.compareChange==='Unchanged')state.differencesOnly=false;state.page=0;renderCompare()};return button;
+ }));
  stickyBody.append(summary);
- const q=state.query.trim().toLowerCase();const matched=sortComparisonRecords(records.filter(r=>(!state.differencesOnly||r.status!=='Unchanged')&&(state.compareKind==='All'||r.category===state.compareKind)&&(!q||[r.key,r.baseline,r.target,r.status].some(v=>text(v).toLowerCase().includes(q)))),state.compareSort);
+ const q=state.query.trim().toLowerCase();const matched=sortComparisonRecords(records.filter(r=>(!state.differencesOnly||r.status!=='Unchanged')&&(state.compareChange==='All'||r.status===state.compareChange)&&(state.compareKind==='All'||r.category===state.compareKind)&&(!q||[r.key,r.baseline,r.target,r.status].some(v=>text(v).toLowerCase().includes(q)))),state.compareSort);
  const exports=node('div',{class:'compare-export-actions'},node('span',{class:'evidence-note'},'Export uses only the two fully loaded selected reports; filtered records across all pages.'),node('button',{class:'primary-action',type:'button',onclick:()=>compareExportRecords(matched,'json')},'Export JSON'),node('button',{class:'primary-action',type:'button',onclick:()=>compareExportRecords(matched,'txt')},'Export TXT'));box.append(exports);
  const pages=Math.max(1,Math.ceil(matched.length/state.pageSize));state.page=Math.min(state.page,pages-1);
  const rows=matched.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
- const table=node('table',{class:'compare-evidence-table'},node('thead',{},node('tr',{},...['Canonical evidence','Change','Baseline','Target','Actions'].map(v=>node('th',{scope:'col'},v)))),node('tbody',{},...rows.map(r=>{const row=node('tr',{},node('td',{class:'compare-evidence-key'},r.key),node('td',{},node('span',{class:'compare-change '+r.status.toLowerCase()},r.status)),node('td',{},r.hasA?text(r.baseline):'Not reported'),node('td',{},r.hasB?text(r.target):'Not reported'),node('td',{},node('button',{type:'button',class:'evidence-more','aria-label':'Evidence actions for '+r.key},'⋯')));const data={name:r.key,baselineReported:r.hasA,targetReported:r.hasB,baseline:r.baseline,target:r.target,row:[r.key,r.status,r.hasA?r.baseline:'Not reported',r.hasB?r.target:'Not reported'].join('\t')};row.querySelector('.evidence-more').onclick=()=>evidenceQuickMenu(data,row.querySelector('.evidence-more'));bindEvidenceLongPress(row,data);return row})));
- box.append(node('p',{class:'evidence-note'},`${matched.length} matching fields · ${keys.length} canonical fields checked`));
+ const table=node('table',{class:'compare-evidence-table'},node('thead',{},node('tr',{},...['Canonical evidence','Change','Baseline','Target','Actions'].map(v=>node('th',{scope:'col'},v)))),node('tbody',{},...rows.map(r=>{const row=node('tr',{},node('td',{class:'compare-evidence-key'},r.key),node('td',{},node('span',{class:'compare-change '+r.status.toLowerCase()},r.status)),node('td',{},r.hasA?text(r.baseline):'Not reported'),node('td',{},r.hasB?text(r.target):'Not reported'),node('td',{},node('button',{type:'button',class:'evidence-more','aria-label':'Evidence actions for '+r.key},'⋯')));const data={baselineReportId:state.compareA,targetReportId:state.compareB,name:r.key,baselineReported:r.hasA,targetReported:r.hasB,baseline:r.baseline,target:r.target,row:[r.key,r.status,r.hasA?r.baseline:'Not reported',r.hasB?r.target:'Not reported'].join('\t')};row.querySelector('.evidence-more').onclick=()=>evidenceQuickMenu(data,row.querySelector('.evidence-more'));bindEvidenceLongPress(row,data);return row})));
+ box.append(node('p',{class:'evidence-note'},`${matched.length} matching fields · ${keys.length} canonical fields checked · Missing means not recorded, never unsupported`));
  box.append(rows.length?node('div',{class:'table-wrap compare-evidence-wrap'},table):empty());pager(matched.length,false);queueComparePinned();
 }
 function statsDistribution(values){const counts=new Map();for(const value of values){const key=text(value).trim()||'Unreported';counts.set(key,(counts.get(key)||0)+1)}return [...counts].map(([label,count])=>({label,count})).sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label))}
@@ -658,7 +678,7 @@ function renderCatalog(){
  $('contentView').replaceChildren(node('div',{class:'encyclopedia-screen'},node('p',{class:'evidence-note'},'Registry relationships and symbol registration are reference metadata. They never replace evidence collected from a selected OpenCL device.'),overview,tools,shown.length?node('div',{class:'encyclopedia-results'},...rows):empty()));
  pager(matches.length,false);
 }
-function render(){const [eyebrow,title,desc]=panes[state.view];$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);$('globalSearchClear').hidden=!state.query;const statusView=['features','memory','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=state.view!=='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();if(state.view==='formats')return renderImageFormatCoverage();if(state.view==='extensions')return renderExtensionCoverage();if(['features','memory'].includes(state.view)){if(state.coverageDisplay==='coverage')return renderCoverageView(state.view);const raw=node('div',{class:'coverage-controls'},node('button',{type:'button',class:'evidence-modal-launch',onclick:()=>{state.coverageDisplay='coverage';state.page=0;render()}},'← Aggregate query coverage'));renderCards(recordEntries(state.view));$('contentView').prepend(raw);return}renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
+function render(){const [eyebrow,title,desc]=panes[state.view];$('databaseHero').dataset.workspace=state.view;$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);$('globalSearchClear').hidden=!state.query;const statusView=['features','memory','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=state.view!=='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();if(state.view==='formats')return renderImageFormatCoverage();if(state.view==='extensions')return renderExtensionCoverage();if(['features','memory'].includes(state.view)){if(state.coverageDisplay==='coverage')return renderCoverageView(state.view);const raw=node('div',{class:'coverage-controls'},node('button',{type:'button',class:'evidence-modal-launch',onclick:()=>{state.coverageDisplay='coverage';state.page=0;render()}},'← Aggregate query coverage'));renderCards(recordEntries(state.view));$('contentView').prepend(raw);return}renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
 async function api(path,opts={}){if(!API)throw Error('The database API is not configured; the published snapshot remains read-only.');const url=new URL(path,API+'/');if(url.origin!==new URL(API).origin||url.protocol!=='https:')throw Error('Invalid configured HTTPS API endpoint');const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),18000);try{const r=await fetch(url,{...opts,signal:controller.signal,cache:'no-store'});const value=await r.json();if(!r.ok)throw Error(`${r.status} · ${value.error||'API request failed'}`);return value}finally{clearTimeout(timer)}}
 async function loadReport(id){if(!/^[a-f0-9]{64}$/.test(id))throw Error('Report ID must contain 64 lowercase SHA-256 characters.');if(state.invalidPublishedContracts.has(id))throw Error('This indexed archive record failed the verified full-report contract and cannot be displayed as trusted evidence.');if(state.reports.has(id))return state.reports.get(id);const report=await api(`/v1/reports/${id}`);if(report.id!==id||!report.technicalReport)throw Error('Report ID or schema did not match');state.reports.set(id,report);addRows([report]);return report}
 function rowProps(rows){return rows.map(row=>[row.name,row.status==='available'?(row.value===null||row.value===undefined||row.value===''?'(empty)':row.value):`OpenCL ${row.code}`,row.status])}

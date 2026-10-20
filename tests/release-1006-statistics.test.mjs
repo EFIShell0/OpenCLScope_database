@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const [app,css,html,worker]=await Promise.all(['assets/app.v1015.js','assets/site.v1014.css','index.html','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
+const [app,css,html,worker]=await Promise.all(['assets/app.v1017.js','assets/site.v1015.css','index.html','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
 test('Statistics distribution is deterministic, correct and never loses unknown observations',()=>{
  const code=app.match(/function statsDistribution\(values\)\{[^\n]*\}/)?.[0];
  assert.ok(code);
@@ -26,9 +26,9 @@ test('Charts distinguish loaded report, platform and device denominators',()=>{
 });
 test('Report tabs support keyboard, and previous evidence/producer contracts stay locked',()=>{
  for(const token of ["setAttribute('role','tablist')","'ArrowLeft','ArrowRight','Home','End'","'aria-controls':'detailContent'","setAttribute('role','tabpanel')","'available','not_applicable','unavailable','error','unknown'"])assert.ok(app.includes(token),token);
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.21'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.23'/);
  assert.match(worker,/legacy307 \? '3\.0\.7' : '3\.0\.8'/);
- assert.match(html,/app\.v1015\.js\?v=1015/);
- assert.match(html,/site\.v1014\.css\?v=1014/);
+ assert.match(html,/app\.v1017\.js\?v=1017/);
+ assert.match(html,/site\.v1015\.css\?v=1015/);
  assert.match(html,/browser-compat\.v1006\.js\?v=1008/);
 });

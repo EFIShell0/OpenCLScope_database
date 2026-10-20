@@ -593,3 +593,9 @@ body.license-viewer-open{overflow:hidden}
 .extension-coverage-table .coverage-availability small{display:block;font-size:11px;color:#9cae9e;font-weight:400}
 .extension-controls{align-items:end}
 @media(max-width:620px){.extension-coverage-table{min-width:790px}.extension-coverage-table td{padding:9px 7px}.extension-controls label{flex-basis:135px}}
+
+.compare-summary-filter{font:inherit;color:var(--text);cursor:pointer;text-align:left;transition:border-color .16s ease,background .16s ease}
+.compare-summary-filter[aria-pressed="true"]{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,#17171a)}
+.compare-summary-filter:hover{border-color:var(--accent)}
+.compare-summary-filter:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.compare-summary-filter{transition:none}}
