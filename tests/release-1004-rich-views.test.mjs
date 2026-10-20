@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
 const read=(p)=>readFile(new URL(p,root),'utf8');
-const [app,html,css,worker,registry]=await Promise.all(['assets/app.v1009.js','index.html','assets/site.v1008.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
+const [app,html,css,worker,registry]=await Promise.all(['assets/app.v1011.js','index.html','assets/site.v1010.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
 const data=JSON.parse(registry);
 test('Complete bundled OpenCL encyclopedia, not runtime support claims',()=>{
  assert.equal(data.entries.length,2002);
@@ -36,11 +36,11 @@ test('Detail evidence provides category-scoped search, status states and bounded
  assert.match(app,/node\('pre',\{class:'raw-text'\},JSON\.stringify\(r,null,2\)\)/);
  assert.match(css,/\.detail-evidence-toolbar/);
 });
-test('Release 3.0.15 remains a UI-only producer lock',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.15'/);
+test('Release 3.0.17 remains a UI-only producer lock',()=>{
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.17'/);
  assert.match(worker,/legacy307 \? '3\.0\.7' : '3\.0\.8'/);
- assert.match(html,/app\.v1009\.js\?v=1009/);
- assert.match(html,/site\.v1008\.css\?v=1008/);
+ assert.match(html,/app\.v1011\.js\?v=1011/);
+ assert.match(html,/site\.v1010\.css\?v=1010/);
  assert.match(html,/browser-compat\.v1006\.js\?v=1008/);
  assert.match(app,/Full report details loaded/);
 });

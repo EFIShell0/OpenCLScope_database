@@ -1,21 +1,18 @@
-# OpenCLScope Database 3.0.15
+# OpenCLScope Database 3.0.17
 
-Database-only release correcting a **GitHub Pages public snapshot build failure** caused by one optional full historical report failing the pinned report-contract validator. The canonical public index remains complete while unverifiable optional details are *not* presented as fully validated reports. The relevant IDs and warnings are recorded explicitly, and the new report producer and SHA-256 identity rules remain strict. No D1 migration or Android app update is part of this release.
+Continued reference comparison against **VulkanScope Database 1.4.12**, with OpenCL-specific evidence retained independently. Stage 8 implements request-scoped Internet automatic refresh, IP privacy controls and collapsible report evidence panels. The app and Cloudflare Worker remain strict about raw OpenCL report identity; no invented Vulkan capabilities are introduced.
 
-## Release 3.0.15 — verified historical snapshot recovery
+## 3.0.17
 
-- `tools/build_snapshot.mjs` verifies envelope and SHA-256 before producer/schema validation. Optional, cryptographically intact but contract-invalid details are not preloaded and their IDs are listed in `skippedInvalidContractIds` with a GitHub Actions warning.
-- **Mandatory report IDs, API failures and corrupt or mismatched hashes still abort publication.** Index rows are never silently deleted or fabricated.
-- The frontend refuses to render archive details identified as unverified. Static Pages assembly and remote verification validate archival exclusions and keep them disjoint from trusted preloads.
-- `tests/snapshot.test.mjs` includes positive and negative cases for historical producer mismatches, required details, tampering and API failures. Exact diagnosis of the screenshot's individual published report needs that report's JSON body; it was not supplied.
-- The only new Android producer remains **OpenCLScope 3.0.8 / 30008**. Previous completed records are stored unmodified. OpenCL XML/query catalog, VulkanScope 1.4.12 CSS and vendor graphics are unchanged.
+- Internet settings: refresh every 60 seconds only when open, visible, and online; no polling while hidden. Mark failed or stale observations as old rather than current.
+- Explicit IP Show/Hide, automatic masking after 15 seconds, reset on switch/close; no IP persistent storage or report mutation.
+- Platform, device, extension and profile report panels now provide keyboard-accessible expandable evidence with Web Animations and reduced-motion fallback.
+- Matching release marker, frontend assets and Worker version; 16+211 OpenCL query catalog, `registry/cl.xml`, pinned VulkanScope reference CSS and GPU icons remain unmodified.
 
-## Reference and publishing
+## Release policy
 
-See `FULL_VULKAN_DESIGN_COMPARISON_3.0.15.md`, `QA_RESULTS.md`, `release.md` and `rules/PROJECT_RULES.md`. Verify with `python -B tools/reconcile_repository.py --check`, `python -B tools/verify_release.py`, `node --test tests/*.test.mjs` and `node --test worker/tests/*.test.mjs`.
+New Android report submissions require **OpenCLScope 3.0.8 / 30008**. Historically valid existing reports are readable with their original contracts; Worker/D1 schema is not migrated. ZIP includes local tests, static Pages packaging tools and `DEPLOY_COMMANDS_POWERSHELL.txt`.
 
-Publish Worker 3.0.15 first if required, then Pages, following `DEPLOY_COMMANDS_POWERSHELL.txt`. This bundle is not a live Cloudflare/D1 test; do not overwrite your configured Worker D1 database ID with the distribution placeholder. Historic report index entries are not deleted by the new Pages snapshot rules.
+## Limitations
 
-## Historical notes
-
-Version 3.0.14 introduced deterministic Compare sorting and contextual evidence quick actions, on top of earlier pinned VulkanScope-inspired user interface parity stages. Its historical comparison document is preserved as `FULL_VULKAN_DESIGN_COMPARISON_3.0.14.md`.
+Local tests are not proof of live Cloudflare / GitHub Pages operation or full visual pixel-parity. Remaining feature gaps are explicitly described in `FULL_VULKAN_DESIGN_COMPARISON_3.0.17.md`. See `QA_RESULTS.md` for verification.
