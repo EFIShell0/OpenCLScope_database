@@ -5,11 +5,11 @@ import {createHash} from 'node:crypto';
 const root=new URL('../',import.meta.url);
 const load=path=>readFile(new URL(path,root),'utf8');
 const bytes=path=>readFile(new URL(path,root));
-const app=await load('assets/app.v1002.js'),css=await load('assets/site.v1002.css'),html=await load('index.html');
+const app=await load('assets/app.v1008.js'),css=await load('assets/site.v1008.css'),html=await load('index.html');
 
 test('Horizontal page logo restored and OpenCL tab favicon is on black',async()=>{
  const site=await bytes('assets/openclscope_logo_horizontal.png');assert.ok(site.length>1000);
- assert.match(html,/<a[^>]+class="brand"[^>]*><img src="assets\/openclscope_logo_horizontal\.png"/);
+ assert.match(html,/<a[^>]+class="brand"[^>]*><img[^>]*src="assets\/openclscope_logo_horizontal\.png"/);
  assert.match(html,/<link href="assets\/opencl_tab_black_64\.png" rel="icon"/);
  assert.match(html,/class="database-loading-logo" src="assets\/openclscope_logo_horizontal\.png"/);
  assert.doesNotMatch(html,/class="brand"[^>]*><img src="assets\/openclscope_title_master_black\.png"/);
@@ -34,10 +34,10 @@ test('Viewport scrollbar tracks thumb drag, keyboard and true source status',()=
  for(const fragment of ["thumb.setAttribute('role','scrollbar')","thumb.setPointerCapture?.(e.pointerId)","thumb.addEventListener('pointermove'","thumb.addEventListener('keydown'","thumb.setAttribute('aria-valuenow'","rail.classList.toggle('at-top'", "rail.classList.toggle('at-bottom'"])assert.ok(app.includes(fragment),fragment);
 });
 
-test('Complete OpenCL report evidence remains gated at application 1.0.19',async()=>{
+test('Complete OpenCL report evidence remains gated at application 3.0.8',async()=>{
  const worker=await load('worker/src/index.js');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '1\.0\.2'/);
- assert.match(worker,/p\.application\.versionName!=='1\.0\.19'/);
- assert.match(worker,/p\.application\.versionCode!==10019/);
- assert.match(html,/assets\/app\.v1002\.js\?v=1002/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.14'/);
+ assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
+ assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
+ assert.match(html,/assets\/app\.v1008\.js\?v=1008/);
 });

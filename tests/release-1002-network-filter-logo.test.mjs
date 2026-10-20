@@ -4,10 +4,10 @@ import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 const root=new URL('../',import.meta.url);
 const load=path=>readFile(new URL(path,root),'utf8');
-const frontend=await load('assets/app.v1002.js');const markup=await load('index.html');
+const frontend=await load('assets/app.v1008.js');const markup=await load('index.html');
 const {default:worker}=await import('../worker/src/index.js');
 test('Page logo equals unchanged original wordmark; favicon pixels derive from Android OpenCL tab',async()=>{
- assert.match(markup,/class="brand"[^>]*><img src="assets\/openclscope_logo_horizontal\.png"/);
+ assert.match(markup,/class="brand"[^>]*><img[^>]*src="assets\/openclscope_logo_horizontal\.png"/);
  assert.match(markup,/rel="icon" type="image\/png"/);
  assert.match(markup,/opencl_tab_black_64\.png/);
  const mark=await readFile(new URL('assets/opencl_tab_black_64.png',root));assert.ok(mark.length>900);

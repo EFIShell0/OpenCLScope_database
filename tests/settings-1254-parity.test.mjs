@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
-const html=await read('index.html'),js=await read('assets/app.v1002.js');
+const html=await read('index.html'),js=await read('assets/app.v1008.js');
 
 test('VulkanScope Settings parity: four real categories with regional fields, clock and favorites',()=>{
  for(const cat of ['favorites','preferences','internet','information']){
@@ -34,7 +34,7 @@ test('Legacy tests are diagnosed and preserved in the repository',async()=>{
  try{
   await mkdir(join(temp,'tools'));await mkdir(join(temp,'tests'));
   await cp(new URL('tools/reconcile_repository.py',root),join(temp,'tools/reconcile_repository.py'));
-  const testFiles=['export-and-pagination.test.mjs','parity-live.test.mjs','release-1254-gate.test.mjs','reports-controls-parity.test.mjs','snapshot.test.mjs','vulkan-1412-visual-parity.test.mjs','settings-1254-parity.test.mjs','release-1000-visual-contract.test.mjs','release-1001-icon-scroll.test.mjs','release-1002-network-filter-logo.test.mjs'];
+  const testFiles=['export-and-pagination.test.mjs','parity-live.test.mjs','release-1254-gate.test.mjs','reports-controls-parity.test.mjs','snapshot.test.mjs','vulkan-1412-visual-parity.test.mjs','settings-1254-parity.test.mjs','release-1000-visual-contract.test.mjs','release-1001-icon-scroll.test.mjs','release-1002-network-filter-logo.test.mjs','release-1003-reference-parity.test.mjs','release-1004-rich-views.test.mjs','release-1006-statistics.test.mjs','release-1006-information.test.mjs','release-1008-interactions.test.mjs','release-1008-sort-and-evidence.test.mjs'];
   for(const name of testFiles)await writeFile(join(temp,'tests',name),'test content');
   const run=args=>spawnSync('python3',['-B','tools/reconcile_repository.py',...args],{cwd:temp,encoding:'utf8'});
   assert.equal(run(['--check']).status,0);

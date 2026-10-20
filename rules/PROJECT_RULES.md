@@ -188,3 +188,120 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Preserve VulkanScope 1.4.12 source geometry under pinned CSS and copy its table-scroll control interaction (touch, pointer, keyboard) for every evidence table.
 - Use the actual OpenCLScope Android black-backed logo in the header and favicon. Native OpenCL labels and technical evidence remain native, never synthesized Vulkan data.
 - Keep 1.0.19/10019 as the sole eligible new report producer, with historical stored reports readable; no server or catalog relaxation.
+
+## Database release 1.0.4 / OpenCLScope 1.0.21 acceptance supersession
+- Admit new POSTs only from exact OpenCLScope versionName 1.0.21 / versionCode 10021 and official registered cl.xml hash, with all schema, privacy and query-shape locks retained.
+- Previously stored 1.0.20 reports remain historically readable using the same 16-platform/210-device contract, without re-submission authorization.
+- Duplicated vendor tokens may be preserved in raw `CL_*_EXTENSIONS` property string; derived extension arrays must represent unique token membership.
+- OpenCL 3.x reported zero read/write-image capacity may produce `not_applicable` for the six kernel-read-and-write image queries; direct evidence values must be preserved, not inferred.
+- Browser snapshot-first caching and immutable VulkanScope 1.4.12 CSS reference must remain unchanged.
+
+## 1.0.5 app/Worker contract
+- New submissions require OpenCLScope 1.0.22/10022; historical valid 1.0.21/10021 submissions remain readable via validation only. Never allow older app producers to create new reports.
+- Public index includes immutable manufacturer/model and ISO 8601 UTC submission timestamps; the native Android UI localizes date/time without changing stored data.
+- Public report pages remain bounded to at most 50 records; strict SHA-256 checking is required when fetching complete report payloads.
+
+## Database 1.0.6 / OpenCLScope 1.0.23
+- Only exact OpenCLScope 1.0.23/10023 may create reports; strict schema/registry/privacy/complete-report requirements unchanged.
+- Previous 1.0.22/10022 records remain readable and verifiable, but cannot create new reports via POST.
+- This Worker contract follows the 1.0.23 Kotlin-only Material3 release-build fix, without changing native properties, database schema or site layout.
+
+## 3.0.1 Analysis / Database report workflow parity
+- Application and Database release identity are 3.0.1; new app producer is OpenCLScope 3.0.1 / 30001, while previously accepted historical reports remain readable under their original versions.
+- Analysis Database lookup mirrors VulkanScope 3.0.12: top-level lazy-list report cards, bounded 50-row public fetches, 200-item cache, pinned shared page navigation at 25 cards, GPU vendor badge, device manufacturer/model, API/platform/driver evidence and localized submitted timestamp.
+- Comparison selection changes to Report ID mode and clears stale remote evidence before fetching. Comparison summary and technical diff cards use the shared Analysis pager instead of a nested pager; differences are labeled Added/Removed/Changed/Unchanged without fabricating OpenCL driver-mode labels.
+- The OpenCL schema, registry and hardware evidence remain OpenCL-native. Strict 64-character report IDs, validated-Internet locks, successful-report hash integrity, bounded responses and explicit loading/error states must not be weakened.
+
+## 3.0.1 source/producer compatibility
+- New submissions are accepted only for 3.0.1 / 30001; 3.0.0 / 30000 and older approved producers remain read-only historical evidence.
+- Historical 3.0.0 producer records use the exact 16/210 query manifest and must never fall back to a legacy reduced schema.
+- No loss or rewriting of raw OpenCL driver evidence is allowed when the presentation-layer HTML metadata or NULL-handle description changes.
+
+## 3.0.2 matched app and Database release
+- New live submissions require 3.0.2 / 30002, preserving the complete 16 platform + 210 device per-record query contract and exact full-report source requirement.
+- 3.0.1 / 30001 remains an approved read-only historical producer; 3.0.0 and older approved producers remain readable without mutation.
+- The app presents distinct-format-pair counts without modifying the raw clGetSupportedImageFormats technical report, so no server-side renormalization is permitted.
+- A failed app collection cannot automatically become a successful or complete Database submission.
+
+## 3.0.4 registry compatibility
+- New 3.0.4 complete producer reports include the official legacy CL_DEVICE_MIN_DATA_TYPE_ALIGN_SIZE query and preserve canonical raw 3.1 keys; earlier 3.0.2 reports must pass historical validation using their exact old query set.
+- User-facing aliases are runtime-version-dependent; Database ingestion never substitutes display aliases for raw query evidence.
+
+## 3.0.4 searchable field and historical report lock
+- All OpenCLScope search inputs use a VulkanScope-style placeholder rather than an animated floating TextField label. In particular, Encyclopedia reference examples must not occupy a line across the focused field border.
+- Clear-button animation, bounded query state, current item filtering and search overflow fades remain intact.
+- New 3.0.4/30004 reports preserve the 16+211 query catalog; 3.0.3/30003 complete reports remain historically readable and cannot be newly POSTed. No claim of Android runtime validation without an actual test.
+
+## 3.0.7 PowerVR query-evidence compatibility
+- `CL_DEVICE_MAX_WORK_ITEM_SIZES` (0x1005) and `CL_DEVICE_MAX_CLOCK_FREQUENCY` (0x100C) use the Khronos size-probe query first. Only a real `CL_INVALID_VALUE` permits a strictly bounded direct query with the exact registered return size. The alternate call must not fabricate a value, conceal a failed direct call, or rewrite an error state.
+- `CL_DEVICE_SPIR_VERSIONS` (0x40E0) is a null-terminated `char[]` supplied by `cl_khr_spir`, not an opaque bit field or a SPIR-V feature. The original OpenCL query data remains authoritative throughout UI, TXT, HTML, and Database exports.
+- OpenCLScope 3.0.7 includes 16 platform and 211 device query rows; Database 3.0.7 accepts only complete 3.0.7 live producer reports for new submissions. Complete 3.0.4 records remain readable as historical evidence and are not valid new submissions.
+- Android/PowerVR behavior remains unverified until independently reproduced on a physical device; host mocks are not hardware evidence.
+
+## 3.0.7 platform/device extension evidence
+- Preserve `CL_PLATFORM_EXTENSIONS` and each `CL_DEVICE_EXTENSIONS` as independent raw runtime evidence; never synthesize platform extension membership from device reports.
+- Enumerate bounded platform devices before resolving four `cl_khr_semaphore`/`cl_khr_external_semaphore`/`cl_khr_external_memory` platform query prerequisites.
+- When the platform extension is absent but all fully enumerated devices report the required extension, use an ordinary bounded `clGetPlatformInfo` probe for the four registered platform queries. Preserve the real return status, numeric code and complete returned data. Do not fabricate a successful result from device capabilities.
+- If device enumeration or device extension evidence is incomplete, preserve `unknown` (synthetic -100013) for these four queries; if a complete device set does not share the prerequisite and platform also lacks it, preserve `not_applicable`.
+- Do not probe unrelated extension properties opportunistically. Keep the exact 16 platform/211 device query contract, complete-report semantics, and safe historical report validation.
+- Require positive/negative native driver simulation and a deliberate regression mutation. Device-only Qualcomm behavior is not confirmed by host tests.
+
+## 3.0.7 platform-device extension evidence
+- OpenCL core and extension queries are version- and runtime-advertisement-aware; no reported name is manufactured or silently changed.
+- Enumerate all devices with CL_DEVICE_TYPE_ALL; derive intersection only after complete device evidence is obtained.
+- Retain separate platform string, device string, versioned property and direct API-query evidence. Platform declarations are never synthesized from device declarations.
+- Report extension-consistency status separately from individual property runtime query state. Distinguish inconsistent from unknown on incomplete evidence.
+- Keep sorted, deduplicated derived lists while retaining all original CL_*_EXTENSIONS driver text as queried.
+- The complete new audit is included in JSON, TXT, HTML and Database, validated against the platform/device extension lists server-side. Historical pre-3.0.7 reports remain readable but cannot be resubmitted as fresh reports.
+- Do not treat non-null extension function pointers as sufficient runtime feature support; no intrusive probe is initiated during passive collection.
+
+
+## 3.0.8 Khronos platform-only advertisement correction
+- `CL_PLATFORM_EXTENSIONS` and `CL_DEVICE_EXTENSIONS` remain untouched authoritative observations. Their registered/parsed membership and versioned-list differences must be preserved.
+- Khronos `clGetPlatformInfo`: extensions common to **all** fully enumerated devices must be reported in `CL_PLATFORM_EXTENSIONS`; but platform-only extensions need not appear in device extension strings. `cl_khr_icd` is explicitly a platform extension.
+- `extensionAudit.platformOnly` is informational evidence and by itself MUST NOT cause status `inconsistent`; `missingFromPlatform`, `platformVersionedMismatch`, and `deviceVersionedMismatch` still do. Incomplete platform/device evidence must yield `unknown`. No raw data may be rewritten or support guessed.
+- Keep the audit JSON object and 16 platform / 211 device query manifests identical in shape. TXT/HTML/UI/Database distinguish platform-only declarations as informational.
+- Database 3.0.8 accepts only the complete 3.0.8/30008 new producer and independently recomputes current evidence. Old 3.0.7 archives remain readable under their historical classification algorithm (which treated platformOnly as inconsistent); they cannot be newly submitted.
+- Test native platform-only, real missing-all-device extension evidence, two-device intersections, versioned mismatches, unknown evidence, tampered Database results, and legacy archived 3.0.7 behavior. Host simulations must not be presented as physical driver evidence.
+
+## Database 3.0.9 — portable VulkanScope 1.4.12 interaction convergence
+- This is a Database UI and release-identity increment ONLY: keep the sole permitted new Android POST producer at OpenCLScope 3.0.8/30008; do not infer any later app version. Preserve legacy GET admission, schema 1, pinned OpenCL cl.xml, platform/device query manifests, and snapshot-first caching unchanged.
+- Use reference browser-compatibility gate, responsive layout assets, keyboard-accessible confirmed destructive local-state deletion; no silent local data deletion or native confirm dialog. Browser gate must disclose unsupported prerequisites without pretending that unavailable API evidence is unsupported device capability.
+- Additional filters operate only on the authoritative published report-index values: manufacturer, model, platform, submitted timestamp. Unreported fields may never be fabricated; an invalid submitted timestamp must not pass an age filter. Restore all filters on Clear.
+- Unavailable, unknown, error and not_applicable remain separate states. Include not_applicable in state filter. Always preserve OpenCL green brand and omit Vulkan-only WSI/HDR/Turnip query semantics.
+- Keep versioned frontend JS/CSS filenames in sync with HTML, Pages build, checks, test fixtures and clean-install maintenance tooling. Preserve pinned upstream/reference CSS and GPU icons byte-identically; do not claim complete VulkanScope pixel, feature, or live site identity without matching runtime/browser evidence.
+
+## Database 3.0.10 — Compare, Encyclopedia, detailed evidence and statistics parity stage 2
+- This is a web/Worker Database release only. The only eligible new producer stays OpenCLScope 3.0.8 / versionCode 30008. Preserve every historical complete-report validation path, OpenCL schema 1, 16 platform and 211 device query names, registry SHA, raw report JSON, full snapshot and metadata integrity.
+- Compare uses stable canonical platform/device/extension/image-format identities; distinguish Added, Removed, Changed, Unchanged without interpreting missing evidence as unsupported. Every visible comparison must originate in the two real complete reports the user explicitly selects; no sample records or inferred timestamps on public pages.
+- Encyclopedia displays the existing pinned cl.xml-derived encyclopedia.json (2,002 entries); registered symbols, types, commands and extensions are REFERENCE metadata and never runtime supported capabilities. Filtering, search, 25/50/100 page sizes, text escaping and keyboard-accessible details are mandatory. Do not alter official cl.xml or substitute Vulkan tokens.
+- Properties, Features, Memory and Formats detail screens must provide bounded filterable rows and status-aware views with separate unavailable / not_applicable / unknown / error. Raw JSON exports must retain every original observation, including repeated runtime image-format pairs.
+- Statistics rely only on actual completely loaded canonical reports; do not silently count unloaded indexed reports as zero or unsupported. Display coverage denominators and unloaded count.
+- Keep the VulkanScope 1.4.12 pinned CSS, upstream reference and vendor icon SHA-256 unchanged; new OpenCL-specific visual changes live in the versioned delta stylesheet. Browser tests and static source checks are not evidence of successful live Cloudflare publication or physical Android testing.
+
+## Database 3.0.11 — Statistics and report detail accessibility parity stage 3
+- The Android report producer remains precisely OpenCLScope 3.0.8/30008, with schema 1 and the unchanged 16 platform / 211 device query catalog. All prior historically valid complete reports must remain readable, and no synthetic production reports may be introduced.
+- Statistics counts **only** complete, actually loaded canonical reports matching the report-index filters; index summaries not loaded as full reports cannot enter detailed device, query, image, or extension statistics. Show explicit loaded/excluded denominators.
+- Device/vendor/type/API cohorts are each mutually exclusive within their particular denominator (all devices, all platforms, or all loaded reports), and chart labels must identify that denominator; do not portray them as market share. Bound donut display to 5/8/12 slices, aggregating the unshown groups as Other without discarding the underlying counts.
+- Platform and device extensions remain separate raw observations; extension occurrence is at most once per report per selected scope. Platform-only extensions are not device supported and individual extension memberships overlap, so extension frequency is a table, not a pie chart or unsupported claim. Search, namespace, minimum coverage and scope filters must not change the report evidence.
+- Preserve the canonical JSON, scoped image-format duplicates, not_applicable/unavailable/unknown/error distinction, previous Compare and Encyclopedia behavior, and pinned upstream VulkanScope 1.4.12 CSS and vendor assets unchanged. Report tabs must offer keyboard navigation and accessible names without inventing device evidence.
+- Verify browser and Worker regression tests; local fixtures and Chromium snapshots are not real GPU evidence or a deployed Cloudflare production test.
+
+## Database 3.0.12 — Information and settings parity stage 4
+- The VulkanScope Database 1.4.12 Information visual structure, release/dependency cards, local license-viewer control and regional settings navigation are reference behavior only. Information displayed for OpenCLScope derives solely from this release's actual declared dependencies and OpenCLScope's own trademarks and independence notice; never invent version or transitive dependency claims.
+- License documents are bundled local Markdown assets, read only by an allowlisted filename through a bounded viewer with proper focus return and Escape dismissal. Do not fetch arbitrary untrusted URLs or inject report data as HTML.
+- Preserve the exact 3.0.8/30008 new Android producer requirement, unchanged strict OpenCL schema and historical read contracts, the immutable VulkanScope reference assets, no fabricated device support, and distinct unknown/unavailable/not_applicable/error states.
+- The DB 3.0.12 release must not change application collection behavior or make a claim of live D1/Pages or full pixel-parity tests unless executed.
+
+## Database 3.0.14 — Compare sharing, local transfer, and bounded quick actions parity stage 5
+- This is a Database-only presentation/release increment. The sole eligible **new** Android report producer remains OpenCLScope 3.0.8/30008. Keep all prior validated reports historically readable, preserve complete schema 1 and exact 16 platform / 211 device query catalog. Never change cl.xml, pinned VulkanScope CSS/logo references, upload endpoints or raw evidence.
+- Compare must use only two explicitly selected fully loaded canonical reports and stable OpenCL semantic identities. The sticky/minimizable selector must remain keyboard accessible, with reduced-motion and mobile safeguards. URL routing must accept only exactly two 64-character lowercase SHA-256 report IDs and must not auto-upload or assert availability until full reports load.
+- Explicit Compare JSON/TXT export contains selected exact report IDs, the current filters, and all matching canonical observations (including state/code where reported); never translate absence into unsupported, or silently export only the visible page. Escaped display text never becomes executable HTML. Exports are local-only and do not modify canonical reports or Database records.
+- Favorites JSON import/export is strictly local and contains only 64-character report IDs. Reject unknown schema, bad hashes, over 300 entries or over 64 KiB of input, merge only after explicit file selection, and obey opt-in persistent storage. Failure must leave current favorites unchanged; session-only remains the default. No external or user report POST/DELETE is added.
+- A report quick-action menu must work with an explicit button, context click, touch long-press and keyboard Escape/arrow navigation. A moving touch must cancel pending long-press. Any action affecting Compare or favorites must be explicit. Keep screenshot/browser regression results separate from real Cloudflare D1/Worker/Pages deployment and physical-device testing.
+
+
+## Database 3.0.14 — Comparable evidence sorting and contextual row actions parity stage 6
+- Compare sorting is an explicitly chosen **presentation-only** transform of two fully loaded, selected reports, after semantic identity, query status and category filtering. Support name ascending/descending, change type, category, baseline value and target value. Preserve deterministic tie breaks; preserve missing-value evidence; never map absent queries to unsupported. Page boundaries and exported ordering must track the same fully filtered, sorted view; export filters disclose chosen sort.
+- Shared visible evidence rows and Compare rows expose a keyboard-focusable contextual action and optional context click/touch long-press. A moving touch cancels the pending action. Copy buttons only place already-present recorded evidence in the clipboard, with honest failure messages; no mutation to submitted report content, D1, local favorites or API state. Escape/arrow focus navigation and reduced-motion layout are required.
+- Keep VulkanScope 1.4.12 reference CSS/imagery immutable. Registry and OpenCL exact 16 platform / 211 device queries unchanged. New producer still OpenCLScope 3.0.8 / 30008, legacy stored reports immutable; no live deployment or pixel-perfect parity may be claimed absent direct proof.

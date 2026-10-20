@@ -9,5 +9,5 @@ if(index.schemaVersion!==1||snapshot.schemaVersion!==1||index.databaseReleaseVer
 await rm(destination,{recursive:true,force:true});
 await mkdir(destination,{recursive:true});
 for(const file of ['index.html','config.js'])await copyFile(join(root,file),join(destination,file));
-for(const folder of ['assets','data','registry'])await cp(join(root,folder),join(destination,folder),{recursive:true});
-process.stdout.write('Prepared allowlisted-only Pages artifact: index.html, config.js, assets/, data/, registry/\n');
+for(const folder of ['assets','data','registry','licenses'])await cp(join(root,folder),join(destination,folder),{recursive:true});
+process.stdout.write('Prepared allowlisted-only Pages artifact: index.html, config.js, assets/, data/, registry/, licenses/\n');

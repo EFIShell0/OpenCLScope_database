@@ -1,1 +1,8 @@
-{"schemaVersion":1,"databaseReleaseVersion":"1.0.2","generatedAt":null,"reports":[],"nextCursor":null,"reportCount":0}
+{
+  "schemaVersion": 1,
+  "databaseReleaseVersion": "3.0.14",
+  "generatedAt": null,
+  "reports": [],
+  "nextCursor": null,
+  "reportCount": 0
+}

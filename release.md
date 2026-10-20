@@ -1,32 +1,21 @@
-# OpenCLScope Database 1.0.2
+# OpenCLScope™ Database 3.0.14
 
-## Fixed
-- Original OpenCLScope horizontal page logo restored. The application OpenCL™ tab mark is used solely for the black favicon.
-- Device and Driver filters work, including listbox visibility, selection, keyboard input and clearing.
-- Internet settings expose request-scoped Cloudflare IPv4/IPv6 and network details with masked addresses, no invented DNS resolver or secondary IP.
-- Incorrect minimum producer shown in Worker health was corrected.
+## Fifth VulkanScope Database 1.4.12 portable interface parity stage
 
-## Changed
-- OpenCL™ brand accent consistent across interactive controls; no changes to technical data or snapshot-first cache.
-- New submission producer floor remains exactly OpenCLScope 1.0.19/10019.
+- **Compare header:** The report selectors and evidence filters use a responsive, keyboard-accessible pinned header that correctly adjusts to scrolling, viewport geometry and VulkanScope-style minimize/expand behavior. The pin geometry was tested in Chromium on mobile and desktop rather than assumed from CSS.
+- **Compare linking:** Two validated 64-character report IDs are represented in an explicit `#compare/<baseline>/<target>` URL. Missing report details are loaded only on user request and never silently reported as unsupported.
+- **Compare exports:** The full filtered semantic comparison (across all pages, not just the visible page) can be downloaded in JSON or TXT. Export fields record side presence and preserve raw status/code-bearing property values. Full original source reports are still available via the existing JSON report download.
+- **Local favorites:** Export/import an explicit local-only backup of report IDs. Strict schema, 64 KiB file cap, 300-item cap, SHA-256 report ID shape, deterministic duplicate removal, no automatic upload, no overwrite on invalid input. Persistence stays opt-in.
+- **Report quick actions:** Explicit more-actions button, mouse context click and touch long press; view, favorite, copy report ID, and set Compare baseline/target. Touch move cancels the pending long press. Menu closes with Escape or outside click and permits arrow key navigation.
+- **Site delivery:** Database and versioned frontend become **3.0.14 / app.v1008.js / site.v1008.css**; Pages build and release checks updated. The pinned VulkanScope layout, Khronos cl.xml, GPU art and the OpenCL Android producer rules remain unchanged.
 
----
-# OpenCLScope Database 1.0.0
+**Producer / Worker:** New POSTs still require exactly OpenCLScope **3.0.8 / 30008**, complete schema 1 with 16 platform and 211 device query observations. Existing complete historical reports remain readable. This is a Database-only release; no Android update is required.
 
-## Added
-- Black-backed OpenCLScope 1.0.19 master-logo favicon and full source-aligned VulkanScope 1.4.12 shared style geometry.
-- VulkanScope-style Reports table, real GPU vendor emblems, interactive report ID copying and favorites, consistent section/detail icons.
-- New-submission minimum OpenCLScope **1.0.19** with exact versionName/versionCode/native appVersion matching.
-- Canonical semantic report comparison by platform, device and OpenCL property/extension/format identity.
-- Statistics workspace with source-labeled report, vendor, OpenCL version and query-state distributions.
+**Verified:** 72 site and 19 Worker tests; responsive Chromium 1440×900 and 390×844 tests for Compare fixed geometry, minimize/expand, JSON download, quick menu, favorites JSON import/export and invalid-schema rejection, without JavaScript page errors or horizontal overflow. Production Cloudflare deployment and pixel-level entire-site VulkanScope parity were not tested.
 
-## Changed
-- Reference design loaded only once; OpenCL brand accent is green while surfaces, status/error colors and control geometry follow the upstream hierarchy.
-- Responsive Statistics chart cards, comparative grid, header and Settings icon arrangement refined.
-- Compare card density and responsive styling aligned with the VulkanScope Database 1.4.12 portable visual language.
-- Frontend JS/CSS release assets versioned as `v1000` and synchronized Worker, static snapshot and visible footer metadata.
 
-## Fixed
-- Reject old producer submissions and unknown future versions without deleting historical database records.
-- Prevent false Compare differences caused solely by query-array, extension or image-format enumeration ordering.
-- Correct stale footer, README and deploy command release identities.
+### 3.0.14: Compare sorting and evidence quick actions
+- Six deterministic comparison sort modes on canonical, fully loaded OpenCL report evidence.
+- Explicit evidence copy actions with desktop context menu and touch long press.
+- Mobile status tag and pinned selector safeguards; no report payload changes.
+- 76 site tests and 19 Worker tests passed; physical/cloud deployment not executed.

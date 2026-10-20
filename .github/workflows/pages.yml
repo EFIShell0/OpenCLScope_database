@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'assets/**'
+      - 'licenses/**'
       - 'data/**'
       - 'config.js'
       - 'registry/**'
@@ -52,7 +53,7 @@ jobs:
       - name: Check contract and static assets
         run: |
           python3 tools/reconcile_repository.py --check
-          node --check assets/app.v1002.js
+          node --check assets/app.v1008.js
           node --check worker/src/index.js
           node --test worker/tests/*.test.mjs
           node --test tests/*.test.mjs

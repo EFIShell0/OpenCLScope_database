@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const root = new URL('../',import.meta.url);
 const html = await readFile(new URL('index.html',root),'utf8');
-const js = await readFile(new URL('assets/app.v1002.js',root),'utf8');
-const css = await readFile(new URL('assets/site.v1002.css',root),'utf8');
+const js = await readFile(new URL('assets/app.v1008.js',root),'utf8');
+const css = await readFile(new URL('assets/site.v1008.css',root),'utf8');
 
 test('Report page has explicit editable bounded page field with usable navigation controls',()=>{
  for(const id of ['pageNumber','previousPage','nextPage','pageCounter','pageLimit','vendorFilter','versionFilter','stateFilter','sortFilter','globalSearch'])
@@ -24,8 +24,8 @@ test('Settings Close is contained with an SVG cross, not a free text link',()=>{
 });
 
 test('About has VulkanScope-styled warning and restrained captions',()=>{
- assert.match(html, /class="[^"]*independence-notice[^"]*"/);
- assert.match(html,/class="[^"]*trademark-note[^"]*"/);
+ assert.match(js, /independence-notice-card/);
+ assert.match(js,/trademark-note settings-message/);
  assert.match(css,/\.db-settings \.independence-notice/);
  assert.match(css, /--bg:\s*#000\b/);
 });
