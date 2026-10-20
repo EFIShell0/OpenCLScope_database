@@ -22,22 +22,22 @@ test('Original page wordmark and exact application CL tab icon have separate ass
  assert.doesNotMatch(html,/<link href="assets\/openclscope_title_master_black\.png" rel="icon"/);
 });
 test('Every OpenCL primary workspace has the corresponding VulkanScope SVG path',async()=>{
- const js=await read('assets/app.v1008.js');
+ const js=await read('assets/app.v1009.js');
  for(const view of ['reports','platforms','devices','features','memory','formats','extensions','profiles','compare','encyclopedia','statistics'])assert.match(js,new RegExp(`${view}:'(?:reports|instance|devices|features|memory|formats|extensions|profiles|compare|encyclopedia|trends)'`));
  assert.match(js,/installSettingsCategoryIcons\(\)/);
  assert.match(js,/ensureWorkspaceHeadingIcon\(\)/);
  assert.match(js,/databaseSvgIcon\(/);
 });
 test('Report table, statistics and comparison preserve evidence and semantics',async()=>{
- const js=await read('assets/app.v1008.js');const css=await read('assets/site.v1008.css');
+ const js=await read('assets/app.v1009.js');const css=await read('assets/site.v1008.css');
  for(const needle of ['function reportTableRow(',"node('table',{class:'reports-table opencl-reports-table'}",'function renderStatistics()','function semanticComparisonLeaves(','Not reported'])assert.ok(js.includes(needle),needle);
  for(const needle of ['.reports-table-wrap','.opencl-reports-table','.stats-charts','.compare-evidence-table','.table-favorite','.table-report-id'])assert.ok(css.includes(needle),needle);
  assert.match(js,/navigator\.clipboard\.writeText\(id\)/);
 });
-test('New submissions strictly require OpenCLScope 3.0.8, database release identity 3.0.14',async()=>{
+test('New submissions strictly require OpenCLScope 3.0.8, database release identity 3.0.15',async()=>{
  const worker=await read('worker/src/index.js'),html=await read('index.html');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.14'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.15'/);
  assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
  assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
- assert.match(html,/OpenCLScope Database 3\.0\.14/);
+ assert.match(html,/OpenCLScope Database 3\.0\.15/);
 });

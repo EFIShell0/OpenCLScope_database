@@ -14,11 +14,16 @@ function sorted(value,depth=0){
   if(value!==null&&typeof value==='object')return '{'+Object.keys(value).sort().map(k=>JSON.stringify(k)+':'+sorted(value[k],depth+1)).join(',')+'}';
   return JSON.stringify(value);
 }
+export class InvalidStoredReportContract extends Error {
+  constructor(id){super(`Historical report does not satisfy the pinned stored-report contract: ${id}`);this.name='InvalidStoredReportContract';this.reportId=id;}
+}
 function verifyEnvelope(full,id){
   if(!full||full.id!==id||full.schemaVersion!==1||typeof full.submittedAt!=='string'||!/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d/.test(full.submittedAt))throw Error(`Incorrect report identity/schema: ${id}`);
   const bare={...full};delete bare.id;delete bare.submittedAt;
-  if(!validateStoredReport(bare).ok)throw Error(`Invalid producer or report contract in published detail: ${id}`);
+  // Validate identity and payload integrity BEFORE considering archival contract
+  // compatibility. An invalid hash is never a recoverable legacy condition.
   if(createHash('sha256').update(sorted(bare)).digest('hex')!==id)throw Error(`Payload SHA-256 mismatch: ${id}`);
+  if(!validateStoredReport(bare).ok)throw new InvalidStoredReportContract(id);
   return full;
 }
 function verifyIndexRow(row){
@@ -56,7 +61,7 @@ export async function collectSnapshot(api,fetchImpl=fetch,options={}){
     if(page===Math.ceil(maxIndex/50))throw Error('Index traversal limit exceeded');
   }
   if(cursor)throw Error('Database report index was not fully retrieved');
-  const featured=[],featuredIds=new Set();let used=Buffer.byteLength('{"schemaVersion":1,"reports":[]}'),omittedForSize=0;
+  const featured=[],featuredIds=new Set(),skippedInvalidContractIds=[];let used=Buffer.byteLength('{"schemaVersion":1,"reports":[]}'),omittedForSize=0;
   const expected=options.requireId;
   if(expected&&!rows.some(r=>r.id===expected))throw Error('Just-submitted report is missing from published index');
   if(expected){
@@ -66,16 +71,29 @@ export async function collectSnapshot(api,fetchImpl=fetch,options={}){
     featured.push(required);featuredIds.add(expected);used+=bytes;
   }
   for(let i=0;i<Math.min(rows.length,maxFull);i+=4){
-    const batch=await Promise.all(rows.slice(i,i+4).filter(r=>!featuredIds.has(r.id)).map(async r=>verifyEnvelope(await getJson(api,`/v1/reports/${r.id}`,fetchImpl),r.id)));
+    const batch=await Promise.all(rows.slice(i,i+4).filter(r=>!featuredIds.has(r.id)).map(async r=>{
+      try{return verifyEnvelope(await getJson(api,`/v1/reports/${r.id}`,fetchImpl),r.id)}
+      catch(error){
+        // Preserve the complete public INDEX and don't preload a legacy detail
+        // whose provenance/shape fails today's archival contract. Never catch
+        // missing detail, failed API, malformed identities or SHA-256 failures.
+        if(!(error instanceof InvalidStoredReportContract))throw error;
+        skippedInvalidContractIds.push(r.id);
+        console.warn(`ARCHIVED REPORT NOT PRELOADED (contract invalid): ${r.id}`);
+        return null;
+      }
+    }));
     for(const value of batch){
+      if(value===null)continue;
       const size=Buffer.byteLength(JSON.stringify(value))+1;
       if(used+size>maxBytes){omittedForSize++;continue}
       used+=size;featured.push(value);featuredIds.add(value.id);
     }
   }
+  skippedInvalidContractIds.sort();
   const generatedAt=new Date().toISOString();
   const index={schemaVersion:1,databaseReleaseVersion:DATABASE_RELEASE_VERSION,generatedAt,reportCount:rows.length,reports:rows,nextCursor:null};
-  const snapshot={schemaVersion:1,databaseReleaseVersion:DATABASE_RELEASE_VERSION,generatedAt,reportCount:rows.length,preloadedReportCount:featured.length,omittedForSize,reports:featured};
+  const snapshot={schemaVersion:1,databaseReleaseVersion:DATABASE_RELEASE_VERSION,generatedAt,reportCount:rows.length,preloadedReportCount:featured.length,omittedForSize,skippedInvalidContractIds,reports:featured};
   if(Buffer.byteLength(JSON.stringify(snapshot))>maxBytes)throw Error('Final snapshot exceeded size cap');
   if(expected&&!snapshot.reports.some(r=>r.id===expected))throw Error('Just-submitted report is missing from required snapshot preload');
   return {index,snapshot};
@@ -95,5 +113,5 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).hr
   const requireId=String(process.env.REQUIRED_REPORT_ID||'').trim();
   if(requireId&&!ID.test(requireId))throw Error('Invalid required snapshot report ID');
   const result=await publishSnapshot(api,process.cwd(),fetch,{requireId});
-  process.stdout.write(`Snapshot: ${result.index.reportCount} indexed, ${result.snapshot.preloadedReportCount} full; omitted for size: ${result.snapshot.omittedForSize}\n`);
+  process.stdout.write(`Snapshot: ${result.index.reportCount} indexed, ${result.snapshot.preloadedReportCount} verified full; omitted for size: ${result.snapshot.omittedForSize}; archival contract exclusions: ${result.snapshot.skippedInvalidContractIds.length}\n`);
 }

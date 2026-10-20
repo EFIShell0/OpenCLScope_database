@@ -5,7 +5,7 @@ const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
 const html=await read('index.html');
 const css=await read('assets/site.v1008.css');
-const js=await read('assets/app.v1008.js');
+const js=await read('assets/app.v1009.js');
 const ref=await read('assets/vulkan-layout.v1412.css');
 const upstream=await read('assets/upstream-reference.css');
 const head=html.match(/<header[\s\S]*?<\/header>/)?.[0]||'';

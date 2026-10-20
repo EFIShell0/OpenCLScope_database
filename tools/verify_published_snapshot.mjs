@@ -19,6 +19,8 @@ for(let i=0;i<12;i++){
     if(!snapshotResponse.ok)throw Error(`Pages preload HTTP ${snapshotResponse.status}`);
     const snapshot=await snapshotResponse.json();
     if(snapshot.databaseReleaseVersion!==index.databaseReleaseVersion||snapshot.generatedAt!==index.generatedAt||snapshot.reportCount!==index.reportCount||snapshot.preloadedReportCount!==snapshot.reports.length)throw Error('Pages preload does not match published index');
+    const excluded=snapshot.skippedInvalidContractIds;
+    if(!Array.isArray(excluded)||excluded.length>60||new Set(excluded).size!==excluded.length||excluded.some(id=>!(/^[a-f0-9]{64}$/.test(id))||!index.reports.some(r=>r.id===id)||snapshot.reports.some(r=>r.id===id)))throw Error('Published archive exclusion evidence is invalid');
     if(required&&!snapshot.reports.some(r=>r.id===required))throw Error('Triggered report not in published preload');
     process.stdout.write(`PASS: published Pages snapshot indexed ${index.reportCount} reports; triggering report ${required||'(none)'} verified\n`);
     process.exit(0);

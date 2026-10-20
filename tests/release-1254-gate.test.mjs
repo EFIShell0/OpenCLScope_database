@@ -39,13 +39,13 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
 });
 
 test('Navigation, filters, default page size, and brand revisions are wired into current assets',async()=>{
-  const html=await read('index.html'),js=await read('assets/app.v1008.js'),css=await read('assets/site.v1008.css');
+  const html=await read('index.html'),js=await read('assets/app.v1009.js'),css=await read('assets/site.v1008.css');
   for(const id of ['navScrollLeft','navScrollRight','navEdgeLeft','navEdgeRight','clearFilters'])assert.ok(html.includes(`id="${id}"`));
   assert.match(js,/bindNavigationScroll\(\)/);
   assert.match(js,/\$\('clearFilters'\)\.onclick=clearWorkspaceFilters/);
   assert.match(js,/pageSize:25/);
-  assert.match(html,/OpenCLScope Database 3\.0\.14/);
-  assert.match(html,/app\.v1008\.js\?v=1008/);
+  assert.match(html,/OpenCLScope Database 3\.0\.15/);
+  assert.match(html,/app\.v1009\.js\?v=1009/);
   assert.match(css,/\.nav-scroll-button:disabled/);
   assert.doesNotMatch(html,/site\.v1204\.css/);
 });

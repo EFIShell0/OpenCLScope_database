@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
-const html=await read('index.html'),js=await read('assets/app.v1008.js');
+const html=await read('index.html'),js=await read('assets/app.v1009.js');
 
 test('VulkanScope Settings parity: four real categories with regional fields, clock and favorites',()=>{
  for(const cat of ['favorites','preferences','internet','information']){

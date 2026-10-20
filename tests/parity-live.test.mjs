@@ -37,26 +37,26 @@ test('freshest application producer shares Worker and snapshot validation; ID pr
 });
 test('historical producer accepted; unknown producer and poisoned published report rejected',async()=>{
   const past=report(upgrade('0.12.1',1201));assert.equal((await collectSnapshot('https://example.net',mockServer([past]))).index.reportCount,1);
-  const future=report(upgrade('0.99.9',9999));await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([future])),/Invalid producer or report contract/);
+  const future=report(upgrade('0.99.9',9999));const archived=await collectSnapshot('https://example.net',mockServer([future]));assert.equal(archived.index.reportCount,1);assert.deepEqual(archived.snapshot.skippedInvalidContractIds,[future.id]);assert.equal(archived.snapshot.preloadedReportCount,0);await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([future]),{requireId:future.id}),/pinned stored-report contract/);
   const tampered=structuredClone(past);tampered.technicalReport.platforms[0].devices[0].name='Forged';await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([tampered])),/SHA-256 mismatch/);
 });
 test('snapshot publication requires exact new report detail and no false success',async()=>{
   const entry=report(upgrade());await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([entry]),{requireId:'f'.repeat(64)}),/missing/);
   const invalid=structuredClone(entry);invalid.application.versionCode=1;
-  await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([invalid])),/Invalid producer or report contract/);
+  await assert.rejects(()=>collectSnapshot('https://example.net',mockServer([invalid])),/SHA-256 mismatch/);
 });
 test('workflow references existing versioned site asset, post-deploy verification and API snapshot',async()=>{
   const src=await readFile(new URL('../.github/workflows/pages.yml',import.meta.url),'utf8');
-  assert.match(src,/node --check assets\/app\.v1008\.js/);
+  assert.match(src,/node --check assets\/app\.v1009\.js/);
   assert.doesNotMatch(src,/app\.v0701\.js/);
   assert.match(src,/verify_published_snapshot\.mjs/);
   assert.match(src,/build_snapshot\.mjs/);
   const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(html,/assets\/app\.v1008\.js/);
+  assert.match(html,/assets\/app\.v1009\.js/);
 });
 
 test('cache-first browser code checks sync token before querying index and polls only when visible',async()=>{
-  const js=await readFile(new URL('../assets/app.v1008.js',import.meta.url),'utf8');
+  const js=await readFile(new URL('../assets/app.v1009.js',import.meta.url),'utf8');
   assert.match(js,/fetch\('\.\/data\/index\.json'/);
   assert.match(js,/const sync=await api\('\/v1\/sync'\)/);
   assert.match(js,/if\(!force&&same\)/);

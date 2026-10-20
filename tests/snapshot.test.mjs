@@ -11,3 +11,32 @@ test('complete snapshot has full index, checked JSON and no fabricated reports',
 test('deliberately corrupt detail payload rejected by digest',async()=>{const source=item();const fake=async url=>{const r=await endpoint([source])(url);if(new URL(url).pathname===`/v1/reports/${source.id}`){const wrong=structuredClone(source);wrong.device.model='Faked';return new Response(JSON.stringify(wrong))}return r};await assert.rejects(()=>collectSnapshot('https://api.example.com',fake),/SHA-256 mismatch/)});
 test('missing just-submitted report blocks publication, unrelated valid report passes control',async()=>{const source=item();const result=await collectSnapshot('https://api.example.com',endpoint([source]),{requireId:source.id});assert.equal(result.index.reportCount,1);await assert.rejects(()=>collectSnapshot('https://api.example.com',endpoint([source]),{requireId:'a'.repeat(64)}),/missing/)});
 test('snapshot size cap records omitted detail without hiding index records',async()=>{const items=[item(0),item(1)];const result=await collectSnapshot('https://api.example.com',endpoint(items),{maxBytes:1100});assert.equal(result.index.reportCount,2);assert.equal(result.snapshot.preloadedReportCount,0);assert.equal(result.snapshot.omittedForSize,2)});
+
+test('historical record with a valid SHA-256 but invalid archival contract never becomes a featured full report',async()=>{
+ const valid=item(1),invalid=item(0);
+ // Recompute the digest: this is authentic content that fails the known
+ // OpenCLScope producer allowlist, NOT a forgery or a hash mismatch.
+ const damaged={...invalid,application:{...invalid.application,versionName:'9.9.9',versionCode:90909}};
+ delete damaged.id;delete damaged.submittedAt;
+ const invalidId=createHash('sha256').update(sort(damaged)).digest('hex');
+ const archival={...damaged,id:invalidId,submittedAt:invalid.submittedAt};
+ const originalWarn=console.warn,warnings=[];
+ let snapshot;
+ try{console.warn=(...args)=>warnings.push(args.join(' '));snapshot=await collectSnapshot('https://api.example.com',endpoint([archival,valid]));}
+ finally{console.warn=originalWarn;}
+ assert.equal(snapshot.index.reportCount,2,'keep every indexed row');
+ assert.equal(snapshot.snapshot.preloadedReportCount,1,'do not preload invalid content');
+ assert.deepEqual(snapshot.snapshot.skippedInvalidContractIds,[invalidId]);
+ assert.equal(snapshot.snapshot.reports[0].id,valid.id);
+ assert.ok(warnings.some(w=>w.includes(invalidId)),'publish explicit audit warning');
+ await assert.rejects(()=>collectSnapshot('https://api.example.com',endpoint([archival,valid]),{requireId:invalidId}),/pinned stored-report contract/);
+});
+
+test('unrecognized legacy contract must never downgrade identity, digest, or API failure to an optional omission',async()=>{
+ const valid=item(1),bad=item(0);
+ const badHash={...bad,application:{...bad.application,versionName:'9.9.9'}};
+ // Digest stays the old hash, so this MUST abort the complete publication.
+ await assert.rejects(()=>collectSnapshot('https://api.example.com',endpoint([badHash,valid])),/Payload SHA-256 mismatch/);
+ const missing=async url=>{if(new URL(url).pathname===`/v1/reports/${bad.id}`)return new Response('{}',{status:503});return endpoint([bad,valid])(url)};
+ await assert.rejects(()=>collectSnapshot('https://api.example.com',missing),/returned 503/);
+});
