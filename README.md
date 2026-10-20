@@ -1,21 +1,21 @@
-# OpenCLScope Database 3.0.18
+# OpenCLScope™ Database 3.0.21
 
-Continued file-level comparison against **VulkanScope Database 1.4.12**, retaining OpenCL-specific evidence. Stage 9 adds evidence-modal controls and repairs invalid filters and chart labels; stage 8 network and accordion functionality is preserved. The app and Cloudflare Worker remain strict about raw OpenCL report identity; no invented Vulkan capabilities are introduced.
+Stage 12 of the **incremental comparison against VulkanScope Database 1.4.12**, preserving authentic OpenCL™ runtime evidence and the immutable pinned reference assets.
 
-## 3.0.18
+## New in 3.0.21
 
-- Stage 9: paginated 10/25/50 evidence modal, keyboard/backdrop handling and report-ID navigation; fixed irrelevant status filters and SVG chart counters.
-- Fixed false/zero evidence presentation without changing the report contract.
+- Extensions now supports cross-report per-device and per-platform declaration frequency, grouped independently by the exact observed extension name.
+- Namespace, query-status, coverage, device/platform scope, local search, evidence detail and individual-row views. Frequency denominators count only loaded matching platform/device enumerations, with indexed-only exclusions disclosed.
+- `Advertised`, `Not listed`, `Unknown`, `Unavailable`, `Not applicable` and `Error` are separate. A successful extensions query is required to conclude an extension is present/absent in a reported string; raw name presence is not proof that functionality works.
+- Detail dialogs show per-enumeration query status, return code and source report ID. A failed query never becomes an unsupported declaration.
+- The browser JS/CSS and release assets advance to `assets/app.v1015.js` and `assets/site.v1014.css` with a synchronized Worker/snapshot release marker. The pinned Vulkan 1.4.12 CSS is unchanged.
 
-- Internet settings: refresh every 60 seconds only when open, visible, and online; no polling while hidden. Mark failed or stale observations as old rather than current.
-- Explicit IP Show/Hide, automatic masking after 15 seconds, reset on switch/close; no IP persistent storage or report mutation.
-- Platform, device, extension and profile report panels now provide keyboard-accessible expandable evidence with Web Animations and reduced-motion fallback.
-- Matching release marker, frontend assets and Worker version; 16+211 OpenCL query catalog, `registry/cl.xml`, pinned VulkanScope reference CSS and GPU icons remain unmodified.
+## Contract and verification
 
-## Release policy
+The only eligible *new* Android report producer remains **OpenCLScope 3.0.8 / 30008** with the unchanged OpenCL schema 1, exact platform/device query manifests, published cache workflow and historical read contracts. No D1 migration, fabricated report or mutation of `registry/cl.xml`, source images, or pinned Vulkan stylesheet.
 
-New Android report submissions require **OpenCLScope 3.0.8 / 30008**. Historically valid existing reports are readable with their original contracts; Worker/D1 schema is not migrated. ZIP includes local tests, static Pages packaging tools and `DEPLOY_COMMANDS_POWERSHELL.txt`.
+The current ZIP includes all source tests and tools. **98 frontend tests and 19 Worker tests passed**, together with offline viewport smoke tests; production Pages/Cloudflare/physical Android validation and complete visual parity are **not** established. See `FULL_VULKAN_DESIGN_COMPARISON_3.0.21.md` and `QA_RESULTS.md`.
 
-## Limitations
+## Publishing
 
-Local tests are not proof of live Cloudflare / GitHub Pages operation or full visual pixel-parity. Remaining feature gaps are explicitly described in `FULL_VULKAN_DESIGN_COMPARISON_3.0.18.md`. See `QA_RESULTS.md` for verification.
+See `DEPLOY_COMMANDS_POWERSHELL.txt`. Cloudflare account configuration and credentials are external to this ZIP; no deployment was executed.

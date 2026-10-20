@@ -1,10 +1,10 @@
-if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.0.18');}
+if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.0.21');}
 'use strict';
 const API = String(window.OPENCLSCOPE_DATABASE_API || '').trim().replace(/\/$/,'');
 const PAGE = 25;
-const DATABASE_RELEASE_VERSION = '3.0.18';
+const DATABASE_RELEASE_VERSION = '3.0.21';
 const $ = id=>document.getElementById(id);
-const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',compareMinimized:false,compareSort:'evidence-asc',compareMobilePinnedExpanded:false};
+const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareSort:'evidence-asc',compareMobilePinnedExpanded:false};
 const panes={reports:['REPORTS','Latest submissions','Complete, explicitly shared technical reports'],platforms:['PLATFORMS','OpenCL platforms','Platform-reported versions, vendors and extensions'],devices:['DEVICES','Compute devices','Device identity, driver and capability evidence'],features:['FEATURES','Features and support','Canonical OpenCL property states, never inferred'],memory:['MEMORY','Memory & limits','Runtime-reported memory and SVM properties'],formats:['IMAGE FORMATS','Image formats','Actual clGetSupportedImageFormats query results'],extensions:['EXTENSIONS','Extensions','Runtime-enumerated device and platform extension names'],profiles:['PROFILES','Profiles','Informational checklist, not certification'],compare:['COMPARE','Compare reports','Compare exact values and query states'],encyclopedia:['ENCYCLOPEDIA','OpenCL registry','Bundled Khronos cl.xml reference tokens, not runtime support evidence'],statistics:['STATISTICS','Report statistics','Report-backed device, API and query-state distributions (loaded detail evidence only)']};
 function safeStorageGet(key){try{return localStorage.getItem(key)}catch{return null}}
 function safeStorageSet(key,value){try{localStorage.setItem(key,value)}catch{}}
@@ -74,9 +74,9 @@ function renderEvidenceModalPage(){
  const modal=ensureEvidenceModal(),body=modal.querySelector('#evidenceModalBody'),toolbar=modal.querySelector('.evidence-modal-toolbar');
  const count=evidenceModalFields.length,pages=Math.max(1,Math.ceil(count/evidenceModalPageSize));evidenceModalPage=Math.max(0,Math.min(evidenceModalPage,pages-1));
  const visible=evidenceModalFields.slice(evidenceModalPage*evidenceModalPageSize,(evidenceModalPage+1)*evidenceModalPageSize);
- const list=node('dl',{class:'evidence-modal-fields'},...visible.map(([name,value,status])=>{
+ const list=node('dl',{class:'evidence-modal-fields'},...visible.map(([name,value,status,sourceId])=>{
   const content=status&&status!=='available'&&['error','unavailable','not_applicable','unknown','supported','unsupported'].includes(status)?tag(status):node('code',{},value===null||value===undefined?'':text(value));
-  return node('div',{class:'evidence-modal-field'},node('dt',{},name),node('dd',{},content));
+  const details=node('dd',{},content);if(validComparisonId(sourceId)){const open=node('button',{type:'button',class:'evidence-modal-report-link','aria-label':`Open source report ${sourceId}`},'Source report →');open.onclick=()=>{closeEvidenceModal();openReport(sourceId)};details.append(open)}return node('div',{class:'evidence-modal-field'},node('dt',{},name),details);
  }));body.replaceChildren(list);
  if(validComparisonId(evidenceModalReportId)){
   const open=node('button',{type:'button',class:'evidence-modal-report-link'},'Open source report →');
@@ -115,6 +115,257 @@ function technicalEvidenceTable(entries){
  return node('div',{class:'table-wrap evidence-table-wrap'},node('table',{class:'evidence-table'},head,body));
 }
 function renderCards(entries){const query=state.query.toLowerCase().trim();let matched=entries.filter(e=>(!state.status||e.state===state.status)&&(!query||[e.title,e.subtitle,...e.fields.flat().map(text)].join(' ').toLowerCase().includes(query)));const total=matched.length;const pageCount=Math.max(1,Math.ceil(total/state.pageSize));state.page=Math.min(state.page,pageCount-1);matched=matched.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);const grid=technicalEvidenceTable(matched);$('contentView').replaceChildren(total?grid:empty());pager(total)}
+
+function queryCoverageModel(kind){
+ const selected=new Set(filteredRows().map(r=>r.id)),devices=[],universe=new Set();
+ const included=name=>kind==='features'?/(SUPPORT|CAPABILITIES|AVAILABLE|FP_CONFIG|VERSION)/.test(name):/(MEM|CACHE|ALLOC|SVM)/.test(name);
+ for(const [id,report] of state.reports){
+  if(!selected.has(id)||!Array.isArray(report?.technicalReport?.platforms))continue;
+  for(const platform of report.technicalReport.platforms){
+   for(const device of platform.devices||[]){
+    const queries=new Map();
+    for(const property of device.properties||[]){
+     if(typeof property.name!=='string'||!included(property.name))continue;
+     universe.add(property.name);
+     if(!queries.has(property.name))queries.set(property.name,property);
+    }
+    devices.push({id,name:device.name||'Unreported device',platform:platform.name||'Unreported platform',queries});
+   }
+  }
+ }
+ const statuses=['available','unavailable','not_applicable','unknown','error'];
+ const items=[...universe].sort((a,b)=>a.localeCompare(b)).map(name=>{
+  const counts=Object.fromEntries(statuses.map(s=>[s,0])),rows=[],values=new Map();let missing=0;
+  for(const device of devices){
+   const query=device.queries.get(name),raw=String(query?.status||'unknown'),status=statuses.includes(raw)?raw:'unknown';
+   counts[status]++;
+   if(!query)missing++;
+   const value=query?text(query.value):'Not reported';
+   if(query&&status==='available')values.set(value,(values.get(value)||0)+1);
+   rows.push({reportId:device.id,device:device.name,platform:device.platform,status,value,code:query?.code??'',recorded:!!query});
+  }
+  return {name,counts,missing,values,rows,total:devices.length};
+ });
+ return {items,loadedDevices:devices.length,loadedReports:new Set(devices.map(x=>x.id)).size,indexedReports:selected.size};
+}
+function renderCoverageView(kind){
+ const model=queryCoverageModel(kind),total=model.loadedDevices,searchTerms=[state.query,state.coverageSearch].map(x=>x.trim().toLowerCase()).filter(Boolean);
+ let items=model.items.filter(x=>{
+  if(state.status&&x.counts[state.status]===0)return false;
+  return searchTerms.every(query=>x.name.toLowerCase().includes(query)||x.rows.some(r=>[r.device,r.platform,r.value].some(v=>text(v).toLowerCase().includes(query))));
+ });
+ items=items.filter(x=>{
+  const distinct=x.values.size,missing=x.missing>0,available=x.counts.available,ratio=x.total?available/x.total:0;
+  const variation=state.coverageVariation,minimum=state.coverageMinimum;
+  return (variation==='all'||(variation==='varying'&&distinct>1)||(variation==='uniform'&&distinct===1&&!missing)||(variation==='missing'&&missing)) &&
+   (minimum==='all'||(minimum==='full'&&x.total>0&&available===x.total)||(minimum==='high'&&ratio>=.9)||(minimum==='mixed'&&available>0&&available<x.total)||(minimum==='zero'&&available===0)||(minimum==='unknown'&&x.counts.unknown>0));
+ });
+ const controls=node('div',{class:'coverage-controls'});
+ const choice=(label,values,current,onChange)=>{
+  const input=node('select',{'aria-label':label},...values.map(([value,name])=>node('option',{value},name)));input.value=current;input.onchange=()=>onChange(input.value);
+  return node('label',{},node('span',{},label),input);
+ };
+ controls.append(choice('Evidence view',[['coverage','Aggregate query coverage'],['raw','Individual reported rows']],state.coverageDisplay,value=>{state.coverageDisplay=value;state.page=0;render()}),
+ choice('Value variation',[['all','Any values'],['varying','Varies between devices'],['uniform','One value, none missing'],['missing','Missing in ≥1 device']],state.coverageVariation,value=>{state.coverageVariation=value;state.page=0;renderCoverageView(kind)}),
+ choice('Query coverage',[['all','Any coverage'],['full','100% available'],['high','90%+ available'],['mixed','Mixed availability'],['zero','0% available'],['unknown','Includes Unknown']],state.coverageMinimum,value=>{state.coverageMinimum=value;state.page=0;renderCoverageView(kind)}));
+ const search=node('input',{type:'search',value:state.coverageSearch,placeholder:'Filter query names and evidence…','aria-label':'Coverage property search'});
+ search.oninput=()=>{const position=search.selectionStart;state.coverageSearch=search.value;state.page=0;renderCoverageView(kind);const next=$('contentView').querySelector('input[aria-label="Coverage property search"]');if(next){next.focus();if(position!==null)next.setSelectionRange(position,position)}};
+ controls.append(node('label',{},node('span',{},'Query search'),search));
+ const intro=node('section',{class:'coverage-overview'},node('h3',{},`${kind==='features'?'Feature-related':'Memory-related'} OpenCL™ property query coverage`),
+  node('p',{class:'evidence-note'},`${total} devices across ${model.loadedReports} fully loaded matching reports; ${Math.max(0,model.indexedReports-model.loadedReports)} matching indexed reports excluded without full details. A reported Available query is not proof of feature support. Absent query evidence counts as Unknown, never Unsupported.`));
+ state.page=Math.min(state.page,Math.max(0,Math.ceil(items.length/state.pageSize)-1));
+ const current=items.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
+ const header=node('thead',{},node('tr',{},...['OpenCL property','Query availability','Unavailable','Not applicable','Unknown','Error','Values','Source evidence'].map(label=>node('th',{scope:'col'},label))));
+ const rows=current.map(x=>{
+  const pct=x.total?100*x.counts.available/x.total:0;
+  const meter=node('div',{class:'coverage-availability'},node('div',{class:'coverage-availability-track',role:'meter','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(Number(pct.toFixed(1))),'aria-label':`${x.name}: ${x.counts.available} of ${x.total} device queries available`},node('span',{class:'coverage-availability-fill'})),node('span',{},`${x.counts.available}/${x.total} · ${pct.toFixed(1)}%`));
+  meter.firstChild.firstChild.style.width=pct+'%';
+  const details=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open ${x.name} per-device source evidence`},`${x.rows.length} devices →`);
+  details.onclick=()=>openEvidenceModal({title:x.name,subtitle:`${x.rows.length} loaded-device observations · ${x.missing} unreported`,fields:x.rows.map((r,i)=>[`${i+1}. ${r.device} · ${r.platform} · ${r.reportId.slice(0,12)}`,`${r.status.toUpperCase()} · ${r.recorded?'Reported value: '+r.value:'No query entry'}${r.recorded?' · code: '+r.code:''} · SHA-256: ${r.reportId}`,undefined,r.reportId])},details);
+  const distinct=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open ${x.name} distinct reported values`},`${x.values.size} distinct`);
+  distinct.onclick=()=>openEvidenceModal({title:x.name,subtitle:'Distinct available query values across loaded devices',fields:[...x.values].map(([v,n])=>[`${n} device(s)`,v])},distinct);
+  return node('tr',{},node('td',{class:'code'},x.name),node('td',{},meter),node('td',{},String(x.counts.unavailable)),node('td',{},String(x.counts.not_applicable)),node('td',{},`${x.counts.unknown} (${x.missing} missing)`),node('td',{},String(x.counts.error)),node('td',{},distinct),node('td',{},details));
+ });
+ const table=node('div',{class:'table-wrap coverage-table-wrap'},node('table',{class:'evidence-table coverage-table'},header,node('tbody',{},...rows)));
+ $('contentView').replaceChildren(intro,controls,current.length?table:empty());pager(items.length,false);
+}
+function extensionCoverageModel(){
+ const selected=new Set(filteredRows().map(row=>row.id)),entities=[],names=new Set();
+ const scope=state.extensionScope==='platform'?'platform':state.extensionScope==='both'?'both':'device';
+ const add=(id,scope,name,platform,extensions,properties,queryName)=>{
+  const query=(properties||[]).find(q=>q?.name===queryName);
+  const raw=String(query?.status||'unknown');
+  const status=['available','unavailable','not_applicable','unknown','error'].includes(raw)?raw:'unknown';
+  const advertised=new Set(Array.isArray(extensions)?extensions.filter(n=>typeof n==='string'&&n.length):[]);
+  const valid=status==='available';
+  if(valid)for(const extension of advertised)names.add(extension);
+  entities.push({id,scope,name:text(name||'Unreported'),platform:text(platform||'Unreported'),status,code:query?.code??'',recorded:!!query,rawExtensions:[...advertised],advertised:valid?advertised:new Set()});
+ };
+ for(const [id,report] of state.reports){
+  if(!selected.has(id)||!Array.isArray(report?.technicalReport?.platforms))continue;
+  for(const platform of report.technicalReport.platforms){
+   if(scope!=='device')add(id,'platform',platform.name,platform.name,platform.extensions,platform.properties,'CL_PLATFORM_EXTENSIONS');
+   if(scope!=='platform')for(const device of platform.devices||[])add(id,'device',device.name,platform.name,device.extensions,device.properties,'CL_DEVICE_EXTENSIONS');
+  }
+ }
+ const items=[...names].sort((a,b)=>a.localeCompare(b)).map(name=>{
+  const counts={advertised:0,not_listed:0,unknown:0,unavailable:0,not_applicable:0,error:0},rows=[];
+  for(const e of entities){
+   const evidence=e.status==='available'?(e.advertised.has(name)?'advertised':'not_listed'):e.status;
+   counts[evidence]++;
+   rows.push({reportId:e.id,scope:e.scope,device:e.name,platform:e.platform,evidence,queryStatus:e.status,recorded:e.recorded,code:e.code});
+  }
+  return {name,counts,rows,total:entities.length,confirmed:counts.advertised+counts.not_listed};
+ });
+ return {items,entities,total:entities.length,loadedReports:new Set(entities.map(e=>e.id)).size,indexedReports:selected.size,scope};
+}
+function renderExtensionCoverage(){
+ const model=extensionCoverageModel(),mode=state.extensionDisplay==='raw'?'raw':'coverage';
+ const choices=(label,options,value,callback)=>{
+  const select=node('select',{'aria-label':label},...options.map(([key,title])=>node('option',{value:key},title)));
+  select.value=value;select.onchange=()=>{callback(select.value);state.page=0;renderExtensionCoverage()};
+  return node('label',{},node('span',{},label),select);
+ };
+ const controls=node('div',{class:'coverage-controls extension-controls'},
+  choices('Extension evidence view',[['coverage','Reported extension coverage'],['raw','Individual reported entries']],mode,v=>state.extensionDisplay=v),
+  choices('Extension scope',[['device','Device declarations'],['platform','Platform declarations'],['both','Device + platform declarations']],state.extensionScope,v=>state.extensionScope=v),
+  choices('Extension namespace',[['all','All namespaces'],['khr','cl_khr_*'],['ext','cl_ext_*'],['vendor','Other / vendor names']],state.extensionNamespace,v=>state.extensionNamespace=v),
+  choices('Advertisement coverage',[['all','Any coverage'],['full','100% reported'],['high','90%+ reported'],['mixed','Mixed reported/not listed'],['unknown','Missing or failed enumeration']],state.extensionMinimum,v=>state.extensionMinimum=v),
+  choices('Advertisement state',[['all','All states'],['advertised','Advertised'],['not_listed','Not listed'],['unknown','Unknown'],['unavailable','Unavailable'],['not_applicable','Not applicable'],['error','Error']],state.extensionEvidenceState,v=>state.extensionEvidenceState=v)
+ );
+ const search=node('input',{type:'search',value:state.extensionSearch,placeholder:'Extension name or source device…','aria-label':'Extension coverage search'});
+ search.oninput=()=>{const position=search.selectionStart;state.extensionSearch=search.value;state.page=0;renderExtensionCoverage();const next=$('contentView').querySelector('input[aria-label="Extension coverage search"]');if(next){next.focus();if(position!==null)next.setSelectionRange(position,position)}};
+ controls.append(node('label',{},node('span',{},'Extension search'),search),node('button',{type:'button',class:'filter-clear-button',onclick:()=>{state.extensionScope='device';state.extensionNamespace='all';state.extensionMinimum='all';state.extensionEvidenceState='all';state.extensionSearch='';state.extensionDisplay='coverage';state.page=0;renderExtensionCoverage()}},'Reset extension filters'));
+ const intro=node('section',{class:'coverage-overview'},node('h3',{},'OpenCL™ runtime extension advertisement'),
+  node('p',{class:'evidence-note'},`${model.total} ${model.scope==='both'?'device/platform enumerations':model.scope+' enumerations'} across ${model.loadedReports} fully loaded matching reports; ${Math.max(0,model.indexedReports-model.loadedReports)} indexed reports excluded without details. Only a successful CL_DEVICE_EXTENSIONS or CL_PLATFORM_EXTENSIONS query establishes an authoritative advertised list. Not listed is distinct from Unknown, and registration in cl.xml never implies runtime support.`));
+ if(mode==='raw'){
+  const list=model.entities.flatMap(e=>e.rawExtensions.map(extension=>({
+   reportId:e.id,title:extension,subtitle:`${e.scope==='device'?'Device':'Platform'} · ${e.name} · ${e.platform} · ${e.id.slice(0,10)}`,
+   state:e.status==='available'?undefined:e.status,
+   fields:[['Scope',e.scope],['Raw advertised-name array entry',extension],['Extension list query',e.status],['OpenCL return code',e.code],['Source SHA-256 report',e.id]]
+  }))).filter(entry=>{
+   const n=entry.title;
+   const reportState=entry.state||'available';
+   return (state.extensionEvidenceState==='all'||(state.extensionEvidenceState==='advertised'&&reportState==='available')||state.extensionEvidenceState===reportState)&&
+    (state.extensionNamespace==='all'||(state.extensionNamespace==='khr'&&n.startsWith('cl_khr_'))||(state.extensionNamespace==='ext'&&n.startsWith('cl_ext_'))||(state.extensionNamespace==='vendor'&&!n.startsWith('cl_khr_')&&!n.startsWith('cl_ext_')))&&
+    (!state.extensionSearch||[entry.title,entry.subtitle].some(v=>text(v).toLowerCase().includes(state.extensionSearch.toLowerCase())));
+  });
+  intro.append(node('p',{class:'evidence-note'},'Individual entries reproduce recorded extension-name arrays. A failed, missing or incomplete source list query remains labelled with its true query state and is not treated as a verified advertisement.'));
+  renderCards(list);$('contentView').prepend(intro,controls);return;
+ }
+ const query=state.extensionSearch.toLowerCase().trim();
+ const items=model.items.filter(item=>{
+  const n=item.name;
+  if(state.extensionNamespace==='khr'&&!n.startsWith('cl_khr_'))return false;
+  if(state.extensionNamespace==='ext'&&!n.startsWith('cl_ext_'))return false;
+  if(state.extensionNamespace==='vendor'&&(n.startsWith('cl_khr_')||n.startsWith('cl_ext_')))return false;
+  if(state.extensionEvidenceState!=='all'&&!item.counts[state.extensionEvidenceState])return false;
+  const a=item.counts.advertised,unknown=item.counts.unknown+item.counts.error+item.counts.unavailable+item.counts.not_applicable;
+  if(state.extensionMinimum==='full'&&!(item.total>0&&a===item.total))return false;
+  if(state.extensionMinimum==='high'&&!(item.total>0&&a/item.total>=.9))return false;
+  if(state.extensionMinimum==='mixed'&&!(a>0&&item.counts.not_listed>0))return false;
+  if(state.extensionMinimum==='unknown'&&unknown===0)return false;
+  return !query||n.toLowerCase().includes(query)||item.rows.some(r=>[r.device,r.platform,r.scope].some(v=>v.toLowerCase().includes(query)));
+ });
+ const total=items.length;state.page=Math.max(0,Math.min(state.page,Math.ceil(total/state.pageSize)-1));
+ const visible=items.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
+ const head=node('thead',{},node('tr',{},...['Extension','Advertised / all','Not listed','Unknown','Unavailable','Not applicable','Error','Source evidence'].map(x=>node('th',{scope:'col'},x))));
+ const rows=visible.map(item=>{
+  const percentage=item.total?100*item.counts.advertised/item.total:0;
+  const meter=node('div',{class:'coverage-availability'},node('div',{class:'coverage-availability-track',role:'meter','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':percentage.toFixed(1),'aria-label':`${item.name} reported by ${item.counts.advertised} of ${item.total} enumerations`},node('span',{class:'coverage-availability-fill'})),node('span',{},`${item.counts.advertised}/${item.total} · ${percentage.toFixed(1)}%`),node('small',{},`${item.confirmed} confirmed extension-list queries`));meter.firstChild.firstChild.style.width=percentage+'%';
+  const detail=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':'View source evidence for '+item.name},`${item.rows.length} entries →`);
+  detail.onclick=()=>openEvidenceModal({title:item.name,subtitle:`${item.rows.length} loaded enumeration observations; presence in list does not independently prove an extension function works`,fields:item.rows.map((r,i)=>[`${i+1}. ${r.scope}: ${r.device} · ${r.platform} · ${r.reportId.slice(0,12)}`,`${r.evidence.replace('_',' ')} · ${r.recorded?'Query '+r.queryStatus+' (code '+r.code+')':'No CL_*_EXTENSIONS query result'}`,null,r.reportId])},detail);
+  return node('tr',{},node('td',{class:'code'},item.name),node('td',{},meter),node('td',{},String(item.counts.not_listed)),node('td',{},String(item.counts.unknown)),node('td',{},String(item.counts.unavailable)),node('td',{},String(item.counts.not_applicable)),node('td',{},String(item.counts.error)),node('td',{},detail));
+ });
+ const table=node('div',{class:'table-wrap coverage-table-wrap'},node('table',{class:'evidence-table coverage-table extension-coverage-table'},head,node('tbody',{},...rows)));
+ $('contentView').replaceChildren(intro,controls,visible.length?table:empty());pager(total,false);
+}
+
+function imageFormatCoverageModel(){
+ const selected=new Set(filteredRows().map(r=>r.id)),devices=[],keys=new Map();
+ for(const [id,report] of state.reports){
+  if(!selected.has(id)||!Array.isArray(report?.technicalReport?.platforms))continue;
+  for(const platform of report.technicalReport.platforms){
+   for(const device of platform.devices||[]){
+    const groups=new Map();
+    for(const group of device.imageFormats||[]){
+     const key=JSON.stringify([group.imageType,group.flags]);
+     if(!keys.has(key))keys.set(key,{imageType:text(group.imageType),flags:text(group.flags)});
+     if(!groups.has(key))groups.set(key,group);
+    }
+    devices.push({reportId:id,device:text(device.name||'Unreported device'),platform:text(platform.name||'Unreported platform'),groups});
+   }
+  }
+ }
+ const statuses=['available','unavailable','not_applicable','unknown','error'];
+ const groups=[...keys].sort((a,b)=>a[0].localeCompare(b[0])).map(([key,identity])=>{
+  const counts=Object.fromEntries(statuses.map(x=>[x,0])),rows=[],pairs=new Map();let missing=0;
+  for(const device of devices){
+   const entry=device.groups.get(key),raw=text(entry?.status||'unknown'),status=statuses.includes(raw)?raw:'unknown';
+   counts[status]++;
+   if(!entry)missing++;
+   const reportedPairs=new Set();
+   if(entry&&status==='available'){
+    for(const format of entry.formats||[]){
+     const pairKey=JSON.stringify([text(format.orderValue??format.order),text(format.typeValue??format.dataType)]);
+     if(reportedPairs.has(pairKey))continue;
+     reportedPairs.add(pairKey);
+     if(!pairs.has(pairKey))pairs.set(pairKey,{order:text(format.order),dataType:text(format.dataType),orderValue:text(format.orderValue??''),typeValue:text(format.typeValue??''),reported:0,reports:new Set()});
+     const pair=pairs.get(pairKey);pair.reported++;pair.reports.add(device.reportId);
+    }
+   }
+   rows.push({reportId:device.reportId,device:device.device,platform:device.platform,status,code:entry?.code??'',recorded:!!entry,pairKeys:reportedPairs,formats:status==='available'?entry.formats||[]:[]});
+  }
+  return {...identity,key,counts,missing,rows,pairs,total:devices.length,queried:counts.available};
+ });
+ return {groups,loadedDevices:devices.length,loadedReports:new Set(devices.map(x=>x.reportId)).size,indexedReports:selected.size};
+}
+function renderImageFormatCoverage(){
+ const model=imageFormatCoverageModel(),mode=state.formatDisplay,words=[state.query,state.formatSearch].map(x=>x.trim().toLowerCase()).filter(Boolean);
+ let groups=model.groups.filter(g=>{
+  if(state.status&&!g.counts[state.status])return false;
+  const coverage=g.total?g.counts.available/g.total:0;
+  if(state.formatMinimum==='full'&&g.counts.available!==g.total)return false;
+  if(state.formatMinimum==='partial'&&!(g.counts.available>0&&g.counts.available<g.total))return false;
+  if(state.formatMinimum==='missing'&&!g.missing)return false;
+  if(state.formatMinimum==='zero'&&g.counts.available!==0)return false;
+  if(state.formatMinimum==='high'&&coverage<.9)return false;
+  return words.every(q=>[g.imageType,g.flags,...g.rows.map(x=>x.device),...g.pairs.values()].some(x=>text(x?.order?`${x.order} ${x.dataType}`:x).toLowerCase().includes(q)));
+ });
+ const choice=(label,values,current,change)=>{const control=node('select',{'aria-label':label},...values.map(([value,caption])=>node('option',{value},caption)));control.value=current;control.onchange=()=>change(control.value);return node('label',{},node('span',{},label),control)};
+ const controls=node('div',{class:'coverage-controls format-controls'},
+  choice('Format evidence view',[['groups','Group query coverage'],['pairs','Reported channel pairs'],['raw','Individual query groups']],mode,value=>{state.formatDisplay=value;state.page=0;render()}),
+  choice('Group coverage',[['all','Any availability'],['full','100% available'],['high','90%+ available'],['partial','Mixed availability'],['missing','Missing group queries'],['zero','0% available']],state.formatMinimum,value=>{state.formatMinimum=value;state.page=0;renderImageFormatCoverage()}));
+ const search=node('input',{type:'search',value:state.formatSearch,placeholder:'Image type, access or channel format…','aria-label':'Image format evidence search'});
+ search.oninput=()=>{const pos=search.selectionStart;state.formatSearch=search.value;state.page=0;renderImageFormatCoverage();const next=$('contentView').querySelector('input[aria-label="Image format evidence search"]');if(next){next.focus();if(pos!==null)next.setSelectionRange(pos,pos)}};
+ controls.append(node('label',{},node('span',{},'Format search'),search));
+ const intro=node('section',{class:'coverage-overview'},node('h3',{},'OpenCL™ image format query coverage'),node('p',{class:'evidence-note'},`${model.loadedDevices} devices from ${model.loadedReports} fully loaded matching reports; ${Math.max(0,model.indexedReports-model.loadedReports)} indexed reports excluded without complete detail. Available means the image format query completed successfully, even when its returned list is empty. Missing groups are Unknown, not unsupported. Each channel pair is counted once per device and only if returned by an Available group.`));
+ if(mode==='raw'){
+  const list=recordEntries('formats').filter(x=>groups.some(g=>x.title===g.imageType&&x.fields.some(f=>f[0]==='Access'&&f[1]===g.flags)));
+  renderCards(list);$('contentView').prepend(intro,controls);return;
+ }
+ const header=mode==='groups'?['Image type / flags','Query availability','Unavailable','Not applicable','Unknown','Error','Distinct pairs','Evidence']:['Image type / flags','Channel order / type','Reported by devices','Of queried devices','Other queried devices','Source evidence'];
+ let records=[];
+ if(mode==='groups')records=groups.map(g=>({group:g}));
+ else for(const group of groups)for(const [key,pair] of group.pairs)records.push({group,key,pair});
+ records=records.filter(({group,pair})=>!pair||words.every(w=>[group.imageType,group.flags,pair.order,pair.dataType].some(v=>text(v).toLowerCase().includes(w))));
+ const total=records.length;state.page=Math.min(state.page,Math.max(0,Math.ceil(total/state.pageSize)-1));
+ const visible=records.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
+ const rows=visible.map(({group:g,pair,key})=>{
+  const evidence=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open source evidence for ${g.imageType} ${g.flags}`},`${g.rows.length} devices →`);
+  evidence.onclick=()=>openEvidenceModal({title:`${g.imageType} · ${g.flags}`,subtitle:pair?`Returned channel pair: ${pair.order} / ${pair.dataType} · ${pair.reported} of ${g.queried} successfully queried devices`:`${g.rows.length} loaded-device group observations · ${g.missing} absent group queries`,fields:g.rows.map((row,i)=>[`${i+1}. ${row.device} · ${row.platform} · ${row.reportId.slice(0,12)}`,pair?(row.status==='available'?(row.pairKeys.has(key)?'Reported pair':'Pair not listed in returned formats'):`Group ${row.recorded?row.status:'not reported'}`):`${row.recorded?row.status.toUpperCase()+' · OpenCL code '+row.code:'No group entry'} · ${row.formats.length} returned pairs`,undefined,row.reportId])},evidence);
+  const name=node('td',{class:'code'},node('strong',{},g.imageType),node('small',{class:'format-flags'},g.flags));
+  if(pair){const fraction=g.queried?100*pair.reported/g.queried:0;return node('tr',{},name,node('td',{class:'code'},`${pair.order} / ${pair.dataType}`),node('td',{},`${pair.reported}/${g.total} loaded devices`),node('td',{},`${pair.reported}/${g.queried} · ${fraction.toFixed(1)}%`),node('td',{},String(g.queried-pair.reported)),node('td',{},evidence));}
+  const pct=g.total?100*g.counts.available/g.total:0;
+  const meter=node('div',{class:'coverage-availability'},node('div',{class:'coverage-availability-track',role:'meter','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(Number(pct.toFixed(1))),'aria-label':`${g.imageType} ${g.flags}: ${g.counts.available} of ${g.total} queried groups available`},node('span',{class:'coverage-availability-fill'})),node('span',{},`${g.counts.available}/${g.total} · ${pct.toFixed(1)}%`));meter.firstChild.firstChild.style.width=pct+'%';
+  const distinct=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`View reported pairs for ${g.imageType} ${g.flags}`},`${g.pairs.size} pairs`);
+  distinct.onclick=()=>openEvidenceModal({title:`${g.imageType} · ${g.flags}`,subtitle:'Unique format pairs returned by available queries. Pair counts do not imply unqueried-device support.',fields:[...g.pairs.values()].map(x=>[`${x.reported}/${g.queried} successful queries`,`${x.order} / ${x.dataType} (${x.orderValue}, ${x.typeValue})`])},distinct);
+  return node('tr',{},name,node('td',{},meter),node('td',{},String(g.counts.unavailable)),node('td',{},String(g.counts.not_applicable)),node('td',{},`${g.counts.unknown} (${g.missing} missing)`),node('td',{},String(g.counts.error)),node('td',{},distinct),node('td',{},evidence));
+ });
+ const table=node('div',{class:'table-wrap coverage-table-wrap'},node('table',{class:'evidence-table coverage-table format-coverage-table'},node('thead',{},node('tr',{},...header.map(x=>node('th',{scope:'col'},x)))),node('tbody',{},...rows)));
+ $('contentView').replaceChildren(intro,controls,visible.length?table:empty());pager(total,false);
+}
+
 function pager(total,remote=true){const count=Math.max(1,Math.ceil(total/state.pageSize));$('pageCounter').textContent=`/ ${count} · ${total} entries`;const number=$('pageNumber');if(document.activeElement!==number){number.value=String(Math.min(state.page+1,count));}number.max=String(count);number.dataset.total=String(total);number.disabled=count<=1;$('previousPage').disabled=state.page===0;$('nextPage').disabled=state.page>=count-1;$('pager').hidden=false;$('fetchNext').hidden=!remote||!API||!state.cursor}
 function setFavoriteFilterLabel(){const b=$('favoritesButton');if(!b)return;b.replaceChildren(databaseSvgIcon('profiles'),node('span',{},state.favoritesOnly?'Favorites only':'Favorites'))}
 let activeReportMenu=null;
@@ -365,7 +616,7 @@ function renderStatistics(){
  );
  const search=node('input',{type:'search',placeholder:'Extension name…','aria-label':'Search extension frequency',value:state.statisticsSearch});
  search.addEventListener('input',e=>{state.statisticsSearch=e.target.value;renderStatistics();const replacement=document.querySelector('input[aria-label="Search extension frequency"]');if(replacement){replacement.focus();replacement.setSelectionRange(e.target.selectionStart,e.target.selectionStart)}});
- controls.append(node('label',{},node('span',{},'Extension search'),search));
+ controls.append(node('label',{},node('span',{},'Extension search'),search),node('button',{type:'button',class:'filter-clear-button',onclick:()=>{state.extensionScope='device';state.extensionNamespace='all';state.extensionMinimum='all';state.extensionEvidenceState='all';state.extensionSearch='';state.extensionDisplay='coverage';state.page=0;renderExtensionCoverage()}},'Reset extension filters'));
  const charts=node('div',{class:'stats-charts stats-donut-grid'});
  if(loaded){
   charts.append(
@@ -407,7 +658,7 @@ function renderCatalog(){
  $('contentView').replaceChildren(node('div',{class:'encyclopedia-screen'},node('p',{class:'evidence-note'},'Registry relationships and symbol registration are reference metadata. They never replace evidence collected from a selected OpenCL device.'),overview,tools,shown.length?node('div',{class:'encyclopedia-results'},...rows):empty()));
  pager(matches.length,false);
 }
-function render(){const [eyebrow,title,desc]=panes[state.view];$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);$('globalSearchClear').hidden=!state.query;const statusView=['features','memory','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=state.view!=='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
+function render(){const [eyebrow,title,desc]=panes[state.view];$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);$('globalSearchClear').hidden=!state.query;const statusView=['features','memory','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=state.view!=='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();if(state.view==='formats')return renderImageFormatCoverage();if(state.view==='extensions')return renderExtensionCoverage();if(['features','memory'].includes(state.view)){if(state.coverageDisplay==='coverage')return renderCoverageView(state.view);const raw=node('div',{class:'coverage-controls'},node('button',{type:'button',class:'evidence-modal-launch',onclick:()=>{state.coverageDisplay='coverage';state.page=0;render()}},'← Aggregate query coverage'));renderCards(recordEntries(state.view));$('contentView').prepend(raw);return}renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
 async function api(path,opts={}){if(!API)throw Error('The database API is not configured; the published snapshot remains read-only.');const url=new URL(path,API+'/');if(url.origin!==new URL(API).origin||url.protocol!=='https:')throw Error('Invalid configured HTTPS API endpoint');const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),18000);try{const r=await fetch(url,{...opts,signal:controller.signal,cache:'no-store'});const value=await r.json();if(!r.ok)throw Error(`${r.status} · ${value.error||'API request failed'}`);return value}finally{clearTimeout(timer)}}
 async function loadReport(id){if(!/^[a-f0-9]{64}$/.test(id))throw Error('Report ID must contain 64 lowercase SHA-256 characters.');if(state.invalidPublishedContracts.has(id))throw Error('This indexed archive record failed the verified full-report contract and cannot be displayed as trusted evidence.');if(state.reports.has(id))return state.reports.get(id);const report=await api(`/v1/reports/${id}`);if(report.id!==id||!report.technicalReport)throw Error('Report ID or schema did not match');state.reports.set(id,report);addRows([report]);return report}
 function rowProps(rows){return rows.map(row=>[row.name,row.status==='available'?(row.value===null||row.value===undefined||row.value===''?'(empty)':row.value):`OpenCL ${row.code}`,row.status])}
@@ -732,7 +983,7 @@ async function loadNetworkObservation(force=false){
  finally{if(generation===networkProbeGeneration){networkBusy=false;renderNetworkInfo()}}
 }
 const SETTINGS_DEPENDENCIES=[
- {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.0.18',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
+ {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.0.19',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
  {scope:'Development / deployment',name:'Wrangler',version:'4.130.0',license:'MIT OR Apache-2.0',purpose:'Cloudflare Worker development and deployment CLI. Not sent to the browser.',source:'worker/package.json',file:'wrangler'},
  {scope:'Toolchain component',name:'sharp',version:'0.35.4',license:'Apache-2.0',purpose:'Pinned toolchain override for Cloudflare development tooling; not a Pages runtime dependency.',source:'worker/package.json override',file:'sharp'},
  {scope:'Toolchain component',name:'esbuild',version:'Resolved by Wrangler 4.130.0',license:'MIT',purpose:'Transitive JS build helper; this project does not pin its resolved transitive version.',source:'Wrangler toolchain dependency',file:'esbuild'},
@@ -750,7 +1001,7 @@ function initDependencyLicense(){if($('licenseViewerDialog'))return;const backdr
 }
 async function openDependencyLicense(file,name){if(!SETTINGS_LICENSE_FILES.has(file))return;initDependencyLicense();licenseReturnFocus=document.activeElement;const dialog=$('licenseViewerDialog');$('licenseViewerTitle').textContent=name+' license';$('licenseViewerSource').textContent='licenses/'+file+'.md';$('licenseViewerText').textContent='Loading license…';dialog.hidden=false;$('licenseViewerBackdrop').hidden=false;dialog.classList.add('open');$('licenseViewerBackdrop').classList.add('open');document.body.classList.add('license-viewer-open');$('licenseViewerClose').focus();try{const res=await fetch('./licenses/'+file+'.md',{cache:'no-store',credentials:'same-origin'});if(!res.ok)throw Error('HTTP '+res.status);const body=await res.text();if(body.length>524288)throw Error('Oversized document');if(!dialog.hidden)$('licenseViewerText').textContent=body}catch{if(!dialog.hidden)$('licenseViewerText').textContent='The local license document could not be loaded.'}}
 function renderSettingsInformation(){const host=$('settingsInformation');if(!host)return;const note=node('div',{class:'khronos-independence-notice independence-notice-card',role:'note'},node('span',{class:'independence-info-icon','aria-hidden':'true'},node('svg',{viewBox:'0 0 24 24'},node('circle',{cx:'12',cy:'12',r:'9'}),node('path',{d:'M12 10v6 M12 7h.01'}))),node('span',{},'OpenCLScope is independent and is not affiliated with the Khronos Group or an official Khronos Group project.'));
- const summary=node('div',{class:'settings-release-summary'},...[["Database release","3.0.18"],["Frontend dependencies","0 third-party runtime libraries"],["Worker direct npm dependencies","Wrangler 4.130.0 · development only"]].map(([k,v])=>node('div',{},node('span',{},k),node('strong',{},v))));
+ const summary=node('div',{class:'settings-release-summary'},...[["Database release","3.0.19"],["Frontend dependencies","0 third-party runtime libraries"],["Worker direct npm dependencies","Wrangler 4.130.0 · development only"]].map(([k,v])=>node('div',{},node('span',{},k),node('strong',{},v))));
  const explanation=node('p',{class:'settings-information-note'},'Only components declared by this repository or supplied by the browser/service are listed. Transitive toolchain versions are not invented. Local Markdown documents reproduce the corresponding pinned reference license notices. These packages are not bundled into the Pages frontend.');
  const cards=node('div',{class:'settings-library-list'});
  for(const item of SETTINGS_DEPENDENCIES){const card=node('article',{class:'settings-library-card'},node('div',{class:'settings-library-head'},node('div',{},node('span',{},item.scope),node('h4',{},item.name)),node('span',{class:'settings-library-license'},item.license)),node('dl',{},...[["Version",item.version],["Purpose",item.purpose],["Source / declaration",item.source]].map(([a,b])=>node('div',{},node('dt',{},a),node('dd',{},b)))));if(item.file){const button=node('button',{type:'button',class:'settings-license-read'},node('svg',{viewBox:'0 0 24 24','aria-hidden':'true'},node('path',{d:'M6 3h9l3 3v15H6z M14 3v4h4 M9 11h6 M9 15h6'})),node('span',{},'Read license (.md)'));button.onclick=()=>openDependencyLicense(item.file,item.name);card.append(node('div',{class:'settings-library-actions'},button))}cards.append(card)}

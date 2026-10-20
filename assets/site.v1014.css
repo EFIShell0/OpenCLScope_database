@@ -568,3 +568,28 @@ body.license-viewer-open{overflow:hidden}
 .evidence-modal button:focus-visible,.evidence-modal input:focus-visible,.evidence-modal select:focus-visible{outline:2px solid #84df7b;outline-offset:2px}
 @media(max-width:620px){.evidence-modal{padding:8px}.evidence-modal-dialog{max-height:calc(100dvh - 16px);border-radius:15px}.evidence-modal-head,.evidence-modal-body,.evidence-modal-toolbar{padding:13px}.evidence-modal-field{grid-template-columns:minmax(0,1fr);gap:5px}.evidence-modal-controls{justify-content:space-between;width:100%}.evidence-modal-range{width:100%}}
 @media(prefers-reduced-motion:reduce){.evidence-modal-dialog{animation:none!important}}
+
+
+.coverage-overview{margin:0 0 13px;padding:16px 18px;border-radius:18px;border:1px solid #2b3b2d;background:linear-gradient(145deg,#152018,#101412)}
+.coverage-overview h3{margin:0 0 6px;font-size:16px;font-weight:850;letter-spacing:.01em;color:#eaf4e9}
+.coverage-overview p{margin:0;line-height:1.5;font-size:12px}
+.coverage-controls{display:flex;flex-wrap:wrap;align-items:end;gap:10px;padding:12px;margin-bottom:12px;border:1px solid #283329;background:#101512;border-radius:17px}
+.coverage-controls label{display:grid;gap:5px;min-width:140px;flex:1 1 180px;color:#aebdb0;font-size:11px;font-weight:800}
+.coverage-controls select,.coverage-controls input{min-height:39px;min-width:0;width:100%;border:1px solid #354438;border-radius:11px;background:#161e18;color:#f3f8f3;padding:8px 10px;outline-offset:2px;accent-color:#3dae2b}
+.coverage-controls select:focus-visible,.coverage-controls input:focus-visible{outline:2px solid #3dae2b}
+.coverage-table{min-width:970px}
+.coverage-table td{vertical-align:middle}
+.coverage-table .code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+.coverage-availability{display:grid;gap:5px;min-width:115px;font-size:11px;font-variant-numeric:tabular-nums}
+.coverage-availability-track{height:7px;border-radius:12px;background:#253027;overflow:hidden}
+.coverage-availability-fill{display:block;height:100%;background:#3dae2b;border-radius:12px;transition:width .2s ease}
+@media(max-width:620px){.coverage-controls{padding:10px;gap:8px}.coverage-controls label{flex-basis:140px}.coverage-overview{padding:12px}.coverage-table-wrap{overflow-x:auto}}
+@media(prefers-reduced-motion:reduce){.coverage-availability-fill{transition:none}}
+
+.format-coverage-table{min-width:830px}.format-coverage-table .format-flags{display:block;margin-top:5px;color:#a4c2a7;font-size:11px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}.format-controls{align-items:end}.format-coverage-table td .code{overflow-wrap:anywhere}.format-coverage-table strong{font-weight:750}@media(max-width:620px){.format-coverage-table{min-width:760px}.format-controls label{flex-basis:140px}}
+
+/* Stage 12 — report-backed OpenCL extension advertisement coverage. */
+.extension-coverage-table{min-width:900px}
+.extension-coverage-table .coverage-availability small{display:block;font-size:11px;color:#9cae9e;font-weight:400}
+.extension-controls{align-items:end}
+@media(max-width:620px){.extension-coverage-table{min-width:790px}.extension-coverage-table td{padding:9px 7px}.extension-controls label{flex-basis:135px}}
