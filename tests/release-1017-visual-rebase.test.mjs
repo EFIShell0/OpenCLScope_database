@@ -3,18 +3,18 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const file = name => readFileSync(new URL('../'+name,import.meta.url),'utf8');
 const html=file('index.html');
-const js=file('assets/app.v1017.js');
-const patch=file('assets/parity.v1023.css');
+const js=file('assets/app.v1019.js');
+const patch=file('assets/parity.v1025.css');
 const reference=file('assets/vulkan-layout.v1412.css');
 const rules=file('rules/PROJECT_RULES.md');
 test('parity corrections are the final local stylesheet after the pinned upstream and original OpenCL layers',()=>{
- const order=['assets/vulkan-layout.v1412.css','assets/site.v1015.css','assets/parity.v1023.css'];
+ const order=['assets/vulkan-layout.v1412.css','assets/site.v1015.css','assets/parity.v1025.css'];
  assert.ok(order.every(x=>html.includes(x)));
  assert.ok(order.map(x=>html.indexOf(x)).every((n,i,list)=>n>=0&&(i===0||n>list[i-1])));
  assert.match(html,/data-workspace="reports"/);
  assert.match(js,/\$\('databaseHero'\)\.dataset\.workspace=state\.view/);
  assert.match(reference,/\.hero-v127\{position:relative;overflow:hidden/);
- assert.match(rules,/Database 3\.0\.23/);
+ assert.match(rules,/Database 3\.0\.25/);
 });
 test('OpenCL green is decorative, neutral surfaces and semantic error state survive',()=>{
  assert.match(patch,/:root\{--bg:#09090a;--panel:#111113;--panel2:#161619;--line:#292a2f/);
@@ -27,7 +27,7 @@ test('OpenCL green is decorative, neutral surfaces and semantic error state surv
 test('pagination is centered, bounded, and loads next remote page only for Reports',()=>{
  assert.match(js,/function pager\(total,remote=false\)/);
  const reports=js.split('function renderReports(){')[1].split('\nfunction comparisonStableValue',1)[0];
- assert.equal((reports.match(/pager\(rows\.length,true\)/g)||[]).length,2);
+ assert.equal((reports.match(/pager\(rows\.length,true\)/g)||[]).length,1);
  assert.match(js,/number\.disabled=count<=1/);
  assert.match(patch,/\.pagination\{display:flex;align-items:center;justify-content:center/);
  assert.match(patch,/\.pagination\[hidden\]\{display:none!important\}/);

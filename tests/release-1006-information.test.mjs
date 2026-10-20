@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-const src=readFileSync(new URL('../assets/app.v1017.js',import.meta.url),'utf8');
+const src=readFileSync(new URL('../assets/app.v1019.js',import.meta.url),'utf8');
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const css=readFileSync(new URL('../assets/site.v1015.css',import.meta.url),'utf8');
 test('Information cards use real declared versions and leave producer and technical collection intact',()=>{for(const name of ['Wrangler','sharp','esbuild','workerd','Cloudflare D1','Web Platform APIs'])assert.ok(src.includes("name:'"+name+"'"));assert.match(src,/version:'4\.130\.0'/);assert.match(src,/version:'0\.35\.4'/);assert.match(src,/version:'Resolved by Wrangler 4\.130\.0'/);assert.match(src,/renderSettingsInformation/);assert.match(html,/id="settingsInformation" class="settings-information"/);});

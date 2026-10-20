@@ -25,7 +25,7 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
   const dir=await mkdtemp(join(tmpdir(),'openclscope-pages-gate-'));
   try{
     for(const folder of ['tools','worker/src','data','assets','registry','licenses'])await mkdir(join(dir,folder),{recursive:true});
-    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v1017.js','assets/site.v1015.css']){
+    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v1019.js','assets/site.v1015.css']){
       const dest=join(dir,file);await copyFile(new URL(file,root),dest);
     }
     const run=()=>spawnSync(process.execPath,['tools/build_pages_artifact.mjs'],{cwd:dir,encoding:'utf8',timeout:12000});
@@ -43,13 +43,13 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
 });
 
 test('Navigation, filters, default page size, and brand revisions are wired into current assets',async()=>{
-  const html=await read('index.html'),js=await read('assets/app.v1017.js'),css=await read('assets/site.v1015.css');
+  const html=await read('index.html'),js=await read('assets/app.v1019.js'),css=await read('assets/site.v1015.css');
   for(const id of ['navScrollLeft','navScrollRight','navEdgeLeft','navEdgeRight','clearFilters'])assert.ok(html.includes(`id="${id}"`));
   assert.match(js,/bindNavigationScroll\(\)/);
   assert.match(js,/\$\('clearFilters'\)\.onclick=clearWorkspaceFilters/);
   assert.match(js,/pageSize:25/);
-  assert.match(html,/OpenCLScope Database 3\.0\.23/);
-  assert.match(html,/app\.v1017\.js\?v=1017/);
+  assert.match(html,/OpenCLScope Database 3\.0\.25/);
+  assert.match(html,/app\.v1019\.js\?v=1019/);
   assert.match(css,/\.nav-scroll-button:disabled/);
   assert.doesNotMatch(html,/site\.v1204\.css/);
 });

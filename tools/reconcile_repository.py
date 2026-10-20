@@ -29,6 +29,8 @@ ACTIVE = frozenset({
     'release-1015-extension-coverage.test.mjs',
     'release-1016-compare-duplicates.test.mjs',
     'release-1017-visual-rebase.test.mjs',
+    'release-1018-scrollbar-reports.test.mjs',
+    'release-1019-reports-sorting.test.mjs',
 })
 
 def check(apply=False):
@@ -55,18 +57,29 @@ def check(apply=False):
             source.rename(destination)
             print('Archived legacy/unreviewed test without deleting: '+name)
     outdated = [p for stem,extension in (('app','js'),('site','css')) for p in (ROOT/'assets').glob(f'{stem}.v*.{extension}')]
-    stale = sorted(p for p in outdated if p.name not in ('app.v1017.js','site.v1015.css'))
+    stale = sorted(p for p in outdated if p.name not in ('app.v1019.js','site.v1015.css'))
     if stale and not apply:
         print('FAIL: stale outdated browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
         return 1
     if stale:
         for old in stale:
-            latest = ROOT/'assets'/('app.v1017.js' if old.name.startswith('app.') else 'site.v1015.css')
+            latest = ROOT/'assets'/('app.v1019.js' if old.name.startswith('app.') else 'site.v1015.css')
             if not latest.exists():
                 print('FAIL: missing new replacement for '+old.name,file=sys.stderr)
                 return 1
             old.unlink()
             print('Removed old browser cache artifact: '+old.name)
+    stale_parity = sorted(p for p in (ROOT/'assets').glob('parity.v*.css') if p.name != 'parity.v1025.css')
+    if stale_parity and not apply:
+        print('FAIL: stale obsolete visual parity assets: '+', '.join(p.name for p in stale_parity),file=sys.stderr)
+        return 1
+    if stale_parity:
+        if not (ROOT/'assets'/'parity.v1025.css').exists():
+            print('FAIL: replacement parity.v1025.css missing',file=sys.stderr)
+            return 1
+        for old in stale_parity:
+            old.unlink()
+            print('Removed unreferenced previous parity asset: '+old.name)
     stale_worker = {
         'release-1256-opencl-c-version.test.mjs':'fadda3d9d78cd6d43c109e1ad8da78ff01512f6ca4f8a07fa2edb35ce0b59477',
         'release-1257-build-contract.test.mjs':'92356928e701000afcf65de67a845a16544044e15cdbbfd71db12e78355ee2bd',

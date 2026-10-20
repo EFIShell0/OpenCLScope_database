@@ -53,7 +53,7 @@ jobs:
       - name: Check contract and static assets
         run: |
           python3 tools/reconcile_repository.py --check
-          node --check assets/app.v1017.js
+          node --check assets/app.v1019.js
           node --check worker/src/index.js
           node --test worker/tests/*.test.mjs
           node --test tests/*.test.mjs

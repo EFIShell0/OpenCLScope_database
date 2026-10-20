@@ -365,3 +365,11 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 ## Database 3.0.23 — upstream visual baseline and controls
 - Preserve VulkanScope 1.4.12 pristine CSS while layering OpenCL green brand decoration onto neutral upstream surfaces. No Vulkan-specific technical data, red semantic errors, or hardware facts are changed.
 - Unify navigation, page controls, mobile filter geometry, evidence tables, the left-side settings drawer, and responsive overlays without weakening report/Worker contract validation.
+
+## Database 3.0.25 — VulkanScope 1.4.12 reference control parity
+- VulkanScope's immutable reference CSS remains byte-identical; OpenCL decorative accent alone uses #3DAE2B and true semantic error badges remain red.
+- Custom horizontal/vertical scrollbar chrome is neutral grey at rest, green on hover/drag, not borrowed Vulkan red.
+- Navigation button DOM uses the reference nav-button class and preserved accessible native button/tab events; responsive arrow controls retain disabled states.
+- Reports provides evidenced, reversible Submitted / Vendor / Type column disclosure with accurate aria-expanded, source-only date details in UTC, no inferred original device time zone.
+- Report row interaction must not hijack Copy ID, Favorite, Open or More controls; noninteractive cells can navigate to the exact SHA-256 report.
+- Worker schema, report canonicalization, D1 and cache logic must not be modified solely for UI parity.
