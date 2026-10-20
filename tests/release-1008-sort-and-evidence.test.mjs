@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1011.js',root),'utf8');
-const css=readFileSync(new URL('assets/site.v1010.css',root),'utf8');
+const app=readFileSync(new URL('assets/app.v1012.js',root),'utf8');
+const css=readFileSync(new URL('assets/site.v1011.css',root),'utf8');
 const rules=readFileSync(new URL('rules/PROJECT_RULES.md',root),'utf8');
 const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');
 const pure=app.slice(app.indexOf('function sortComparisonRecords('),app.indexOf('function compareCategory('));
@@ -46,9 +46,9 @@ test('context menu works on compare and evidence rows with no server writes',()=
  assert.match(css,/\.evidence-more:focus-visible/);
  assert.doesNotMatch(app.slice(app.indexOf('function evidenceQuickMenu('),app.indexOf('function bindReportLongPress(')),/fetch\(|api\(|localStorage\.setItem/);
 });
-test('3.0.17 remains a UI-only database version; producer remains exactly 3.0.8',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.17'/);
+test('3.0.18 remains a UI-only database version; producer remains exactly 3.0.8',()=>{
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.18'/);
  assert.match(worker,/versionName!==acceptedVersion/);
- assert.match(rules,/Database 3\.0\.17/);
+ assert.match(rules,/Database 3\.0\.18/);
  assert.match(rules,/3\.0\.8 \/ 30008/);
 });

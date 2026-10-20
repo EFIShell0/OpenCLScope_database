@@ -320,8 +320,15 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Live new-report notices must be derived exclusively from verified, genuinely new indexed report IDs and use a dismissible accessible UI, not fake reports or remote HTML. Client notifications do not mutate Worker/D1 and do not count missing detail as device unsupported.
 - Keep the pinned VulkanScope 1.4.12 visual layout CSS/logo/icon assets unmodified; new behavior-specific styling remains in the versioned OpenCLScope CSS delta. Do not claim full pixel/UI equivalence or a live Pages deployment without observing them.
 
-## Database 3.0.17 — observable network information and accessible report evidence, stage 8
+## Database 3.0.18 — observable network information and accessible report evidence, stage 8
 - New POST producer remains exactly OpenCLScope 3.0.8/30008, with the unmodified schema 1, historical read contracts, OpenCL cl.xml, 16 platform / 211 device queries, SHA-256 and Pages snapshot safeguards. No observed network property may be attached to or synthesized as a technical GPU report.
 - Internet observations are request-scoped and ephemeral. Poll only while the visible Internet settings panel is open, no more frequently than 60 seconds; do not store addresses in cookies, local storage, D1 or URLs. Values from a failed or offline refresh must be labeled previous/stale rather than current. IP values start masked, reveal by explicit Show only, auto-hide after 15 seconds or on panel closing. Missing IPv4/IPv6 cannot be inferred from the other family.
 - Report overview, diagnostics and categorical evidence accordions must be keyboard-operable with honest per-record values, cancelable transitions, and a reduced-motion path. No accordion interaction can modify raw report evidence.
 - Preserve pinned VulkanScope 1.4.12 immutable CSS/visual sources unchanged; new styling lives only in versioned OpenCL-specific CSS. Do not claim exact pixel parity or live Pages/D1 verification without actual proof.
+
+
+## Database 3.0.18 — staged upstream UI evidence parity
+- Only original report-supported OpenCL states can drive a query-state filter. Generic platform, device, profile and extension enumeration must never masquerade as Unknown, Unsupported or Available runtime query status.
+- Evidence drill-down pagination 10/25/50 requires the complete unmodified underlying recorded fields, keyboard focus containment, explicit close, and source-report links only with a genuine canonical ID.
+- Keep the 3.0.8 / 30008 new submission producer gate, existing historical read contracts, full 16+211 query manifest, pinned cl.xml and Vulkan 1.4.12 design source immutable.
+- A new UI release must update Worker index/snapshot/release metadata, versioned browser assets, QA and CI paths consistently. Do not represent fixture browser testing as live Cloudflare testing.
