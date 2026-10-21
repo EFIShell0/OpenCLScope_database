@@ -1,6 +1,6 @@
 {
-  "databaseVersion": "3.0.26",
-  "appJs": "assets/app.v1020.js",
-  "siteCss": "assets/site.v1015.css",
+  "databaseVersion": "3.0.27",
+  "appJs": "assets/app.v1027.js",
+  "siteCss": "assets/site.v1027.css",
   "generatedAt": null
 }

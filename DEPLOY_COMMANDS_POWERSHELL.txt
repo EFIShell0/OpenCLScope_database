@@ -5,5 +5,5 @@ cd worker
 npm run deploy
 cd ..
 git add -A
-git commit -m "Release OpenCLScope Database 3.0.26"
+git commit -m "Release OpenCLScope Database 3.0.27"
 git push origin main

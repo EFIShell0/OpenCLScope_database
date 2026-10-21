@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1020.js',root),'utf8');
+const app=readFileSync(new URL('assets/app.v1027.js',root),'utf8');
 const slice=app.slice(app.indexOf('function extensionCoverageModel(){'),app.indexOf('function renderExtensionCoverage(){'));
 const ids=['a'.repeat(64),'b'.repeat(64),'c'.repeat(64)];
 const prop=(name,status,code=0)=>({name,status,code});
@@ -48,6 +48,6 @@ test('Coverage UI exposes appropriate filters and source report modal with no in
  for(const term of ['renderExtensionCoverage()','extensionCoverageModel()','Extension scope','Extension namespace','Advertisement coverage','Advertisement state','Not listed is distinct from Unknown','openEvidenceModal','r.reportId','pager(total,false)'])assert.ok(app.includes(term),term);
  assert.ok(app.includes("if(state.view==='extensions')return renderExtensionCoverage()"));
  assert.doesNotMatch(slice,/status==='available'.*'supported'/);
- const css=readFileSync(new URL('assets/site.v1015.css',root),'utf8');const html=readFileSync(new URL('index.html',root),'utf8');
- assert.match(css,/\.extension-coverage-table/);assert.match(html,/assets\/app\.v1020\.js\?v=1020/);assert.match(html,/assets\/site\.v1015\.css\?v=1015/);
+ const css=readFileSync(new URL('assets/site.v1027.css',root),'utf8');const html=readFileSync(new URL('index.html',root),'utf8');
+ assert.match(css,/\.extension-coverage-table/);assert.match(html,/assets\/app\.v1027\.js\?v=1027/);assert.match(html,/assets\/site\.v1027\.css\?v=1027/);
 });

@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
 const html=await read('index.html');
-const css=await read('assets/site.v1015.css');
-const js=await read('assets/app.v1020.js');
+const css=await read('assets/site.v1027.css');
+const js=await read('assets/app.v1027.js');
 const ref=await read('assets/vulkan-layout.v1412.css');
 const upstream=await read('assets/upstream-reference.css');
 const head=html.match(/<header[\s\S]*?<\/header>/)?.[0]||'';
@@ -22,8 +22,8 @@ test('Reference CSS updated without changing immutable OpenCL reference',()=>{
 test('OpenCL keeps native filter values authoritative behind reference listboxes',()=>{
  for(const id of ['vendorFilter','versionFilter','stateFilter','sortFilter','pageLimit'])assert.ok(attrs(id,'select'));
  for(const fn of ['installCustomSelects','refreshCustomSelect','closeCustomSelects'])assert.ok(js.includes(`function ${fn}(`));
- assert.match(js,/select\.dispatchEvent\(new Event\('change'/);
- assert.match(js,/item\.onclick=\(\)=>/);
+ assert.match(js,/sel\.dispatchEvent\(new Event\('change'/);
+ assert.match(js,/optionsHost\.querySelectorAll\('\.custom-select-option'\)/);
  assert.match(js,/\$\('clearFilters'\)\.hidden=/);
 });
 test('Reference status loader, network and page-scrolling widgets are wired',()=>{
@@ -69,4 +69,23 @@ test('Statistics uses only loaded report evidence and is responsive',()=>{
 
 test('Portable compact navigation keeps a full-width scrollable row and a meaningful Statistics icon',()=>{
  assert.match(js,/statistics:'trends'/);assert.match(js,/selectedWorkspace\.getBoundingClientRect\(\)/);assert.match(css,/@media\(max-width:540px\)/);assert.match(css,/\.topbar-inner>\.nav-shell\{flex:0 0 100%/);
+});
+
+test('Vulkan 1.4.12 paginated filter widget is transplanted without replacing the native select',()=>{
+ assert.match(js,/function enhanceSelect\(sel\)/);
+ assert.match(js,/const CUSTOM_SELECT_OPTION_LIMIT=50/);
+ assert.match(js,/const renderOptions=\(\{resetScroll=false,ensureSelected=false\}/);
+ assert.match(js,/setOptionPage\(optionPage\+1/);
+ assert.match(js,/sel\.dispatchEvent\(new Event\('change',\{bubbles:true\}\)\)/);
+ assert.match(js,/\$\('filterPanel'\)/);
+ assert.match(js,/const clSafeText=value=>/);
+ assert.doesNotMatch(js,/menu\.replaceChildren\(\);for\(const option of select\.options\)/);
+});
+
+test('Vulkan 1.4.12 table scroller and surface scroll controls use reference structures',()=>{
+ assert.match(js,/function enhanceSurfaceScrollbar\(host\)/);
+ assert.match(js,/const syncSurfaceScrollbar=/);
+ assert.match(js,/function enhanceTableScroller\(s\)/);
+ assert.match(js,/\.table-scroll-track/);
+ assert.match(js,/thumb\.setAttribute\('aria-valuenow',String\(Math\.round\(max\?s\.scrollLeft\/max\*100:0\)\)\)/);
 });

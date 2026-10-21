@@ -1,10 +1,12 @@
-# OpenCLScope™ Database 3.0.26 — QA
+# OpenCLScope™ Database 3.0.27 — QA
 
-- Sources: OpenCLScope Database 3.0.25 and VulkanScope Database 1.4.12.
-- Exact producer gate unchanged: OpenCLScope 3.0.8/30008 for new submission; no fabricated query values.
-- Frontend unit/regression tests: **119/119 PASS**.
-- Worker tests: **19/19 PASS**.
-- Node syntax, `tools/reconcile_repository.py --check`, `tools/verify_release.py`: **PASS**.
-- Chromium offline inline-source smoke, 1440×900 and 390×844: filter row/pager/viewport and table scrollers are visible on Reports, no JS page error or document horizontal overflow. Statistics navigable with empty data: **PASS**.
-- Test browser operates on an empty bundled snapshot, so individual visual evidence rows and real populated Statistics bars have **not** been exercised end-to-end.
-- Production Cloudflare Worker/D1/Pages: **NOT TESTED**. Full all-pages pixel/animation parity: **NOT CLAIMED**.
+- Baseline: OpenCLScope Database 3.0.26; immutable design reference: VulkanScope Database 1.4.12.
+- Node UI: **121/121 PASS**; Worker: **19/19 PASS**.
+- `node --check assets/app.v1027.js`: PASS.
+- `tools/reconcile_repository.py --check`: PASS.
+- `tools/verify_release.py`: PASS.
+- `node tools/build_pages_artifact.mjs`: PASS.
+- Chromium isolated 1440x900 and 390x844: 11 native-backed custom selects, no JS errors, menu open/Escape, referenced surface scrollbars: PASS.
+- Dynamic custom select: 121 options, 50 visible per page, page 2, search narrowed to 1 item, selected original native value `gpu115`: PASS. Test-only synthetic options, not real report data.
+- Live Cloudflare D1/Worker/Pages: NOT TESTED; visual all-page pixel parity: NOT VERIFIED; real uploaded reports: NOT TESTED.
+- Exact reference CSS, original Khronos XML, GPU assets and Worker intake and D1 migration: unchanged.

@@ -4,8 +4,8 @@ import {readFileSync} from 'node:fs';
 const root = new URL('../', import.meta.url);
 const read = name => readFileSync(new URL(name,root),'utf8');
 const html=read('index.html');
-const app=read('assets/app.v1020.js');
-const css=read('assets/parity.v1026.css');
+const app=read('assets/app.v1027.js');
+const css=read('assets/parity.v1027.css');
 test('filters have a separate visible row independent of title',()=>{
  const section=html.indexOf('id="workspace"'),heading=html.indexOf('class="section-heading"',section),filters=html.indexOf('id="filterPanel"',section),lookup=html.indexOf('class="lookup-deck"',section);
  assert.ok(section>=0&&heading<section+250&&heading<filters&&filters<lookup);
@@ -16,8 +16,8 @@ test('filters have a separate visible row independent of title',()=>{
 });
 test('table track remains present, disabled without overflow, and reports actual scroll pixels',()=>{
  assert.match(css,/#workspace>\.db-content \.table-scroll-controls\{display:flex!important/);
- assert.match(app,/t\.setAttribute\('aria-valuemax',String\(Math\.round\(max\)\)\)/);
- assert.match(app,/t\.setAttribute\('aria-valuenow',String\(Math\.round\(s\.scrollLeft\)\)\)/);
+ assert.match(app,/const max=Math\.max\(0,s\.scrollWidth-s\.clientWidth\)/);
+ assert.match(app,/thumb\.setAttribute\('aria-valuenow',String\(Math\.round\(max\?s\.scrollLeft\/max\*100:0\)\)\)/);
  assert.match(app,/l\.disabled=!overflow\|\|atStart;r\.disabled=!overflow\|\|atEnd/);
  assert.match(css,/#viewportScrollbar\[hidden\]\{display:none!important/);
  assert.match(app,/node\('tr',\{class:'reports-empty-row'/);
@@ -32,6 +32,6 @@ test('statistics denominators use all loaded query rows rather than category max
 });
 test('immutable Vulkan reference remains present and original OpenCL reports are unmodified',()=>{
  assert.match(html,/assets\/vulkan-layout\.v1412\.css/);
- assert.match(html,/assets\/parity\.v1026\.css\?v=1026/);
- assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.0\.26'/);
+ assert.match(html,/assets\/parity\.v1027\.css\?v=1027/);
+ assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.0\.27'/);
 });

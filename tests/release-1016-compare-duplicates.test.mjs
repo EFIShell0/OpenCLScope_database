@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1020.js',root),'utf8');
+const app=readFileSync(new URL('assets/app.v1027.js',root),'utf8');
 const part=app.slice(app.indexOf('function comparisonStableValue('),app.indexOf('function validComparisonId('));
 const {semanticComparisonLeaves}=runInNewContext(part+';({semanticComparisonLeaves})',{text:v=>v==null?'':String(v),Map,Set,JSON,Object,Array});
 const prop=(name,value,status='available',code=0)=>({name,value,status,code});
@@ -38,8 +38,8 @@ test('query state, numeric code and literal false/zero/null/unknown remain disti
 test('Compare offers clickable counts, status filters and source navigation with safe unmodified backend',()=>{
  for(const token of ['compareChange','Filter comparison change type','compare-summary-filter','Open baseline report','Open target report','baselineReportId:state.compareA','targetReportId:state.compareB','state.compareChange===\'All\'','compareExportRecords(matched,\'json\')'])assert.ok(app.includes(token),token);
  const html=readFileSync(new URL('index.html',root),'utf8');
- assert.match(html,/app\.v1020\.js\?v=1020/);assert.match(html,/site\.v1015\.css\?v=1015/);
- const css=readFileSync(new URL('assets/site.v1015.css',root),'utf8');assert.match(css,/\.compare-summary-filter\[aria-pressed=/);
- const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.26'/);
+ assert.match(html,/app\.v1027\.js\?v=1027/);assert.match(html,/site\.v1027\.css\?v=1027/);
+ const css=readFileSync(new URL('assets/site.v1027.css',root),'utf8');assert.match(css,/\.compare-summary-filter\[aria-pressed=/);
+ const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.27'/);
  assert.match(worker,/versionName!==acceptedVersion/);
 });

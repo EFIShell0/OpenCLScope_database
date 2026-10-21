@@ -1,10 +1,1 @@
-{
-  "schemaVersion": 1,
-  "databaseReleaseVersion": "3.0.26",
-  "generatedAt": null,
-  "reports": [],
-  "reportCount": 0,
-  "preloadedReportCount": 0,
-  "omittedForSize": 0,
-  "skippedInvalidContractIds": []
-}
+{"schemaVersion":1,"databaseReleaseVersion":"3.0.27","generatedAt":null,"reports":[],"reportCount":0,"preloadedReportCount":0,"omittedForSize":0,"skippedInvalidContractIds":[]}

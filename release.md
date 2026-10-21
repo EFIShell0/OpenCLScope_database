@@ -1,12 +1,11 @@
-# OpenCLScope™ Database 3.0.26
+# OpenCLScope™ Database 3.0.27
 
-## Improved filter, table, scroll and statistics parity
+## VulkanScope™ 1.4.12 kaynak bileşeni uyarlaması
 
-- Filters use a separate, responsive control row rather than crowding workspace headings. Native values are still authoritative behind accessible listboxes.
-- Reports keeps its actual 12-column header, sorting/page limits and a visible horizontal slider even when the selected report set is empty. Empty rows are explicitly labeled, not synthesized as GPU data.
-- Slider arrows now reflect real scrollability and announce the real horizontal position. The viewport rail matches the upstream desktop/mobile size family, using neutral grey with OpenCL green interaction styling.
-- Statistics bars now represent the fraction of **all loaded queried property rows**. Error/Unavailable/Unknown/Not Applicable categories remain distinct. Statistics Reset no longer changes Extensions settings.
+Bu sürüm, önceki küçük CSS yamaları yerine VulkanScope Database 1.4.12'nin gerçek **filtre listbox**, **seçenek sayfalama**, **özel yüzey kaydırma** ve **tablo kaydırma** kodlarını uyarlıyor. Özgün OpenCL™ sorguları ve rapor doğrulaması korunmuştur.
 
-No mutation to canonical reports, worker submission floor, registry, report hashes or D1 schema. The immutable VulkanScope™ 1.4.12 reference is retained. OpenCL™ and the OpenCL logo are trademarks of The Khronos Group Inc.; this independent project is not endorsed by Khronos.
+Filtreler artık seçenek araması, 50 öğelik sayfalar, önceki/sonraki, klavye odağı ve Escape ile kapatma içerir. Asıl `select` değeri her zaman korunur. Mobil filtrelerde etiketlerin aşırı daralması giderilmiştir. Referans CSS ile çakışan 24 eski kural temizlenmiştir.
 
-**Local checks:** 119/119 UI, 19/19 Worker, release verifier, Pages artifact and empty-snapshot Chromium layout smoke. Live deployment and exact all-screen visual parity have **not** been confirmed.
+**Doğrulama:** 121/121 arayüz, 19/19 Worker testi; Chromium'da masaüstü/mobil etkileşim; release validator ve Pages artifact kontrolü. Bu testler, tüm ekranların piksel düzeyinde aynı olduğunu veya Cloudflare'ın canlı ortamda denendiğini göstermez.
+
+OpenCL™ ve OpenCL logosu The Khronos Group Inc. ticari markalarıdır. Proje Khronos'un resmî uygulaması değildir.

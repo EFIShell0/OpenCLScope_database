@@ -380,3 +380,9 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Horizontal evidence table controls remain visibly rendered even when there is no overflow, with inactive buttons and accessible range 0. They only scroll the real table and never synthesize records. The custom page rail is visible only with actual document overflow and retains keyboard/pointer scroll semantics.
 - Statistics property-state bar widths and meter bounds must be based on the entire fully loaded, filter-selected property-row denominator. Do not normalize the maximum category to 100%; Unknown, Error, Unavailable and Not Applicable stay distinct. A statistics reset must reset statistics state only.
 - Do not modify canonical reports, D1 migration or Worker validation solely for layout changes. The versioned JS and CSS, snapshot, marker, CI, documentation and QA evidence must align; isolated Chromium tests are not live Cloudflare evidence.
+
+## Database 3.0.27 — direct upstream UI-control transplantation
+- The exact pinned VulkanScope Database 1.4.12 stylesheet remains unchanged; UI-only implementation can copy upstream table-scroller, custom-select, page-jump, and surface-scrollbar code while adapting only data and OpenCL colors.
+- Maintain the authoritative native SELECT value and fire normal change events; search and paging of options are presentation-only. Preserve keyboard focus and Escape dismissal. Avoid HTML injection in driver-reported option strings.
+- Do not replace OpenCL runtime schema, technical states, source report IDs, D1/canonical payload admission or snapshot-first cache with Vulkan-specific semantics.
+- Keep native scrollbar/keyboard behavior functional without extra fake reports. No site-wide pixel identity claim without real populated reference screenshots.
