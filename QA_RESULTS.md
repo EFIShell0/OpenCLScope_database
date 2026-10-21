@@ -1,12 +1,13 @@
-# OpenCLScope™ Database 3.0.27 — QA
+# OpenCLScope Database 3.0.28 — QA
 
-- Baseline: OpenCLScope Database 3.0.26; immutable design reference: VulkanScope Database 1.4.12.
-- Node UI: **121/121 PASS**; Worker: **19/19 PASS**.
-- `node --check assets/app.v1027.js`: PASS.
-- `tools/reconcile_repository.py --check`: PASS.
-- `tools/verify_release.py`: PASS.
+- Başlangıç: 3.0.27; VulkanScope referansı 1.4.12.
+- Node arayüz regresyonları: **125/125 PASS** (yeni 4 ayrı test dahil).
+- Worker regresyonları: **19/19 PASS**.
+- `node --check assets/app.v1028.js`: PASS.
+- `python -B tools/reconcile_repository.py --check`: PASS.
+- `python -B tools/verify_release.py`: PASS.
 - `node tools/build_pages_artifact.mjs`: PASS.
-- Chromium isolated 1440x900 and 390x844: 11 native-backed custom selects, no JS errors, menu open/Escape, referenced surface scrollbars: PASS.
-- Dynamic custom select: 121 options, 50 visible per page, page 2, search narrowed to 1 item, selected original native value `gpu115`: PASS. Test-only synthetic options, not real report data.
-- Live Cloudflare D1/Worker/Pages: NOT TESTED; visual all-page pixel parity: NOT VERIFIED; real uploaded reports: NOT TESTED.
-- Exact reference CSS, original Khronos XML, GPU assets and Worker intake and D1 migration: unchanged.
+- Chromium izole DOM/CSS testleri: **1440×900** ve **390×844**; test-only rapor örneği bellek içinde. 5 chart, donut legend, 3 query-status bar, 1 unique dominant state, Extensions Reset izolasyonu, yatay overflow ve JS hata denetimleri: PASS.
+- Test-only örnek gerçek rapor değildir; yayımlanan `data/snapshot.json` boş ve değiştirilmiş test verisi içermez.
+- Orijinal Vulkan CSS ve Khronos OpenCL cl.xml SHA-256: korunmuştur.
+- **Gerçek D1/Cloudflare Pages veya gerçek cihaz raporlarıyla uçtan uca ve tüm ekranlarda piksel düzeyi karşılaştırma: YAPILMADI.**

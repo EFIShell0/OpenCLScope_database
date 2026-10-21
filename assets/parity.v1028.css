@@ -235,3 +235,39 @@ html,body,.table-wrap,.custom-select-menu,.settings-drawer-body,.evidence-modal-
 /* OpenCL filter label wrappers are an API-specific departure from Vulkan's flat filter markup.
    Preserve upstream control dimensions and avoid forced multi-line values on narrow screens. */
 @media(max-width:600px){#workspace>.filters.filter-panel{grid-template-columns:minmax(0,1fr)!important}#workspace>.filters.filter-panel .filter-control{grid-column:1 / -1;min-width:0!important}#workspace>.filters.filter-panel .custom-select{min-width:0!important;width:100%;max-width:100%}#workspace>.filters.filter-panel .custom-select-button{min-width:0!important}#workspace>.filters.filter-panel .filter-choice-label{min-width:0!important;max-width:100%;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;overflow-wrap:normal!important}}
+
+.stats-charts.distribution-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px;padding:0;margin:16px 0;align-items:stretch}
+.stats-charts .distribution-card{min-width:0;background:linear-gradient(180deg,#19191c,#111113)!important;border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column}
+.stats-charts .distribution-card>h3{margin:0 0 14px;font-size:15px;line-height:1.4}
+.stats-charts .donut-wrap{position:relative;width:188px;height:188px;margin:0 auto 16px;flex-shrink:0}
+.stats-charts .donut-chart{display:block;width:100%;height:100%;transform:rotate(-90deg);overflow:visible}
+.stats-charts .donut-track,.stats-charts .donut-segment{fill:none;stroke-width:15}
+.stats-charts .donut-track{stroke:#2e3034}
+.stats-charts .donut-segment{stroke-linecap:butt;transition:opacity .16s ease}
+.stats-charts .donut-segment:focus-visible{outline:none;opacity:.75;stroke-width:18}
+.stats-charts .donut-center{position:absolute;inset:0;display:grid;place-content:center;text-align:center;pointer-events:none}
+.stats-charts .donut-center strong{font-size:28px;line-height:1;letter-spacing:-.03em;color:var(--text)}
+.stats-charts .donut-center span{margin-top:4px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.12em}
+.stats-charts .chart-legend{list-style:none;margin:0;padding:0;display:grid;gap:7px;min-width:0}
+.stats-charts .chart-legend li{display:grid;grid-template-columns:10px minmax(0,1fr) auto auto;align-items:center;gap:8px;min-width:0;font-size:12px;color:var(--muted)}
+.stats-charts .chart-legend .chart-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.stats-charts .chart-legend strong{font-variant-numeric:tabular-nums;color:var(--text)}
+.stats-charts .chart-swatch{display:block;width:10px;height:10px;border-radius:3px}
+.stats-charts .chart-share{min-width:45px;text-align:right;font-variant-numeric:tabular-nums}
+.stats-charts .chart-stroke-0{stroke:#3dae2b}.stats-charts .chart-fill-0{background:#3dae2b}
+.stats-charts .chart-stroke-1{stroke:#80c77c}.stats-charts .chart-fill-1{background:#80c77c}
+.stats-charts .chart-stroke-2{stroke:#56a2a1}.stats-charts .chart-fill-2{background:#56a2a1}
+.stats-charts .chart-stroke-3{stroke:#668cc2}.stats-charts .chart-fill-3{background:#668cc2}
+.stats-charts .chart-stroke-4{stroke:#a291cc}.stats-charts .chart-fill-4{background:#a291cc}
+.stats-charts .chart-stroke-5{stroke:#bf9a65}.stats-charts .chart-fill-5{background:#bf9a65}
+.stats-charts .chart-stroke-6{stroke:#789d78}.stats-charts .chart-fill-6{background:#789d78}
+.stats-charts .chart-stroke-7{stroke:#94979f}.stats-charts .chart-fill-7{background:#94979f}
+.stats-charts .evidence-note{margin-top:auto;padding-top:12px}
+@media(max-width:600px){.stats-charts.distribution-grid{grid-template-columns:1fr}.stats-charts .donut-wrap{width:174px;height:174px}.stats-charts .distribution-card{padding:14px}}
+@media(prefers-reduced-motion:reduce){.stats-charts .donut-segment{transition:none}}
+
+.stats-status-panel .stats-bar:not(.is-dominant) .stats-bar-value{color:var(--text)}
+.stats-status-panel .stats-state-available.is-dominant .stats-bar-value{color:#85d18b}
+.stats-status-panel .stats-state-unavailable.is-dominant .stats-bar-value,.stats-status-panel .stats-state-not_applicable.is-dominant .stats-bar-value{color:#b3b4c0}
+.stats-status-panel .stats-state-unknown.is-dominant .stats-bar-value{color:#d2be84}
+.stats-status-panel .stats-state-error.is-dominant .stats-bar-value{color:#e18891}

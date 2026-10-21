@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,root),'utf8');
-const app=await read('assets/app.v1027.js');
-const css=await read('assets/site.v1027.css');
+const app=await read('assets/app.v1028.js');
+const css=await read('assets/site.v1028.css');
 const html=await read('index.html');
 const functionText=app.slice(app.indexOf('function queryCoverageModel(kind){'),app.indexOf('function renderCoverageView(kind){'));
 assert.ok(functionText.startsWith('function queryCoverageModel'));
@@ -38,5 +38,5 @@ test('Evidence modal links are sourced per-device from canonical report IDs and 
  for(const expected of ['sourceId','validComparisonId(sourceId)','openReport(sourceId)','function renderCoverageView(kind)','queryCoverageModel(kind)',"state.coverageDisplay==='coverage'",'Absent query evidence counts as Unknown',"['available','unavailable','not_applicable','unknown','error']"]){assert.ok(app.includes(expected),expected)}
  assert.match(app,/node\('td',\{class:'code'\},x\.name\)/);
  assert.match(css,/\.coverage-table/);assert.match(css,/prefers-reduced-motion:reduce/);
- assert.match(html,/app\.v1027\.js\?v=1027/);assert.match(html,/site\.v1027\.css\?v=1027/);
+ assert.match(html,/app\.v1028\.js\?v=1027/);assert.match(html,/site\.v1028\.css\?v=1027/);
 });

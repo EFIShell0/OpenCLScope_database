@@ -381,8 +381,14 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Statistics property-state bar widths and meter bounds must be based on the entire fully loaded, filter-selected property-row denominator. Do not normalize the maximum category to 100%; Unknown, Error, Unavailable and Not Applicable stay distinct. A statistics reset must reset statistics state only.
 - Do not modify canonical reports, D1 migration or Worker validation solely for layout changes. The versioned JS and CSS, snapshot, marker, CI, documentation and QA evidence must align; isolated Chromium tests are not live Cloudflare evidence.
 
-## Database 3.0.27 — direct upstream UI-control transplantation
+## Database 3.0.28 — direct upstream UI-control transplantation
 - The exact pinned VulkanScope Database 1.4.12 stylesheet remains unchanged; UI-only implementation can copy upstream table-scroller, custom-select, page-jump, and surface-scrollbar code while adapting only data and OpenCL colors.
 - Maintain the authoritative native SELECT value and fire normal change events; search and paging of options are presentation-only. Preserve keyboard focus and Escape dismissal. Avoid HTML injection in driver-reported option strings.
 - Do not replace OpenCL runtime schema, technical states, source report IDs, D1/canonical payload admission or snapshot-first cache with Vulkan-specific semantics.
 - Keep native scrollbar/keyboard behavior functional without extra fake reports. No site-wide pixel identity claim without real populated reference screenshots.
+
+## 3.0.28 Statistics reference component and filter isolation
+- Reuse upstream `distribution-grid`, `distribution-card`, `donut-chart`, `donut-center`, `chart-legend`, categorical `chart-stroke-*` and `chart-fill-*` DOM/CSS components, with OpenCL green/neutrals permitted as brand deviation; immutable Vulkan CSS MUST NOT be modified.
+- Donut counts use each actual fully loaded OpenCL report/device/platform denominator; enforce exact Other aggregation without guessing unavailable reports. Unknown, false and 0 query meanings stay unchanged.
+- Query state percent values are always based on total actual queried property rows; only a uniquely largest state's numeric label gets semantic state coloring, tied maxima remain neutral.
+- Extension Reset must reset only extension-specific state, never Statistics state.

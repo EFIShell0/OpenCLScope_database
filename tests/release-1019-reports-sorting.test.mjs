@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1027.js',root),'utf8');
+const app=readFileSync(new URL('assets/app.v1028.js',root),'utf8');
 const html=readFileSync(new URL('index.html',root),'utf8');
 const start=app.indexOf('const REPORT_SORT_OPTIONS=');
 const end=app.indexOf('function profiles(',start);
