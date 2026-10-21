@@ -1,24 +1,15 @@
-# OpenCLScope™ Database 3.0.25
+# OpenCLScope™ Database 3.0.26
 
-Stage 12 of the **incremental comparison against VulkanScope Database 1.4.12**, preserving authentic OpenCL™ runtime evidence and the immutable pinned reference assets.
+Independent, report-backed OpenCL™ database. This is a staged visual-and-behavior alignment with VulkanScope™ Database 1.4.12, **not an official Khronos project**.
 
-## New in 3.0.25
+## Changes in 3.0.26
 
-- Extensions now supports cross-report per-device and per-platform declaration frequency, grouped independently by the exact observed extension name.
-- Namespace, query-status, coverage, device/platform scope, local search, evidence detail and individual-row views. Frequency denominators count only loaded matching platform/device enumerations, with indexed-only exclusions disclosed.
-- `Advertised`, `Not listed`, `Unknown`, `Unavailable`, `Not applicable` and `Error` are separate. A successful extensions query is required to conclude an extension is present/absent in a reported string; raw name presence is not proof that functionality works.
-- Detail dialogs show per-enumeration query status, return code and source report ID. A failed query never becomes an unsupported declaration.
-- The browser JS/CSS and release assets advance to `assets/app.v1018.js` and `assets/site.v1015.css` with a synchronized Worker/snapshot release marker. The pinned Vulkan 1.4.12 CSS is unchanged.
+The filters now occupy a separate full-width row. The Reports table and its horizontal scrolling controls remain rendered when no reports match. Slider range/position and disabled arrow states use actual table geometry; the vertical page rail and floating page controls adopt the reference dimensions. Statistics status bars use the total real queried-property count for their percentages rather than normalizing by the maximum category. Statistics Reset now resets its own controls instead of Extensions.
 
-## Contract and verification
+All OpenCL report bytes, query state semantics, snapshot/D1 schema and exact producer validation requirements remain untouched. Original pinned Khronos® OpenCL registry and the immutable VulkanScope 1.4.12 reference sources are preserved.
 
-The only eligible *new* Android report producer remains **OpenCLScope 3.0.8 / 30008** with the unchanged OpenCL schema 1, exact platform/device query manifests, published cache workflow and historical read contracts. No D1 migration, fabricated report or mutation of `registry/cl.xml`, source images, or pinned Vulkan stylesheet.
+## Verify and publish
 
-The current ZIP includes all source tests and tools. **98 frontend tests and 19 Worker tests passed**, together with offline viewport smoke tests; production Pages/Cloudflare/physical Android validation and complete visual parity are **not** established. See `FULL_VULKAN_DESIGN_COMPARISON_3.0.25.md` and `QA_RESULTS.md`.
+Run `python -B tools/reconcile_repository.py --check`, `python -B tools/verify_release.py`, `node --test tests/*.test.mjs`, and `cd worker; npm test`. Build the Pages artifact using `node tools/build_pages_artifact.mjs` from the project root. Publish from the intended repository after authentic Cloudflare configuration is verified. See `DEPLOY_COMMANDS_POWERSHELL.txt`.
 
-## Publishing
-
-See `DEPLOY_COMMANDS_POWERSHELL.txt`. Cloudflare account configuration and credentials are external to this ZIP; no deployment was executed.
-
-## 3.0.25 comparison stage
-Reports now implements numeric-aware OpenCL driver/API/app version sorting, vendor/platform/device sorting, and visible empty-list controls. See `FULL_VULKAN_DESIGN_COMPARISON_3.0.25.md` for limits and remaining gaps.
+**Tests:** 119 frontend checks and 19 Worker checks passed locally. Isolated Chromium 1440×900 and 390×844 layout smoke checks passed on empty snapshot. Live Cloudflare and full pixel-matched visual parity remain unverified. Details in `QA_RESULTS.md` and `FULL_VULKAN_DESIGN_COMPARISON_3.0.26.md`.

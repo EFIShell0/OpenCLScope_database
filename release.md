@@ -1,27 +1,12 @@
-# OpenCLScope™ Database 3.0.25
+# OpenCLScope™ Database 3.0.26
 
-## VulkanScope™ Database 1.4.12 karşılaştırması — Aşama 15
+## Improved filter, table, scroll and statistics parity
 
-Bu sürüm, OpenCLScope Database 3.0.23 temel alınarak VulkanScope 1.4.12 arayüzündeki gezinme, kaydırma ve rapor tablosu kontrollerinin kaynak koduyla karşılaştırılması sonucu hazırlanmıştır.
+- Filters use a separate, responsive control row rather than crowding workspace headings. Native values are still authoritative behind accessible listboxes.
+- Reports keeps its actual 12-column header, sorting/page limits and a visible horizontal slider even when the selected report set is empty. Empty rows are explicitly labeled, not synthesized as GPU data.
+- Slider arrows now reflect real scrollability and announce the real horizontal position. The viewport rail matches the upstream desktop/mobile size family, using neutral grey with OpenCL green interaction styling.
+- Statistics bars now represent the fraction of **all loaded queried property rows**. Error/Unavailable/Unknown/Not Applicable categories remain distinct. Statistics Reset no longer changes Extensions settings.
 
-### Arayüz ve çalışma yapısı
+No mutation to canonical reports, worker submission floor, registry, report hashes or D1 schema. The immutable VulkanScope™ 1.4.12 reference is retained. OpenCL™ and the OpenCL logo are trademarks of The Khronos Group Inc.; this independent project is not endorsed by Khronos.
 
-- Tablo yatay sürükleme/klavye/kaydırma çubuğunun varsayılan kırmızı tonları kaldırıldı; pasif hâl nötr gri, etkileşim hâli OpenCL™ yeşili oldu. Dikey özel sayfa çubuğu da aynı prensibi izliyor. Kırmızı gerçek Error durumunu belirtmeye devam ediyor.
-- Gezinme sekmeleri VulkanScope'un gerçek `nav-button` sınıfı ve ok kontrolleriyle bağlandı. Aktif durum, düğme boyu, odak, kaydırma ve duyarlı yerleşimler yeniden düzenlendi.
-- AMOLED arka plan, üst çubuk, hero ve ortak koyu bileşen yüzeyleri VulkanScope'un geometrisine yaklaştırıldı. Marka rengi OpenCL™ yeşili kaldı.
-- Reports tablosu yeniden düzenlenerek ayrı Logo, OpenCL™ API, rapor sürümü, rapor ID ve işlem sütunları elde edildi. Submitted, Vendor ve Type başlıkları artık VulkanScope'taki gibi açılıp kapanan kontrollerdir.
-- Gösterilen tarih bilgileri server-side `submitted_at` kaydından UTC olarak türetiliyor; asıl cihazın gönderim saat dilimi veya DST durumu uydurulmuyor.
-- Reports toolbar sort/per-page kontrolleri genel filtrelerle aynı `state` üzerinden çalışır; doküman kurallarındaki 25/50/100 sayfa sınırları korunmuştur.
-- `false`, `0`, Unknown, Unavailable, Error, Not Applicable durumları, D1 şeması, cache, hash doğrulaması ve OpenCLScope 3.0.8 producer sözleşmesi değiştirilmedi.
-
-### Doğrulama sınırları
-
-Bu sürüm her sayfanın VulkanScope ile yüzde yüz piksel eşitliğini veya tüm canlı ağ davranışlarını doğrulamıyor. Sabit referans CSS değiştirilmedi. Tüm OpenCL kategorilerinin birebir Vulkan teknik alanlarına eşitlenmesi veri semantiği açısından uygun değildir. Detaylar `FULL_VULKAN_DESIGN_COMPARISON_3.0.25.md` ve `QA_RESULTS.md` içinde.
-
-## 3.0.25 — Reports control and sorting parity
-
-- Implemented 14 OpenCL-relevant report sort modes inspired by VulkanScope 1.4.12 without Vulkan-only fields.
-- Kept report toolbar visible when the index is empty or no filters match.
-- Matched disclosure button glyphs and synchronized horizontal track geometry after column animation.
-- Preserved pinned Khronos® OpenCL™ XML, Producer/Worker admission, registry, report cache and neutral scrollbar palette.
-- Live Cloudflare deployment was not attempted.
+**Local checks:** 119/119 UI, 19/19 Worker, release verifier, Pages artifact and empty-snapshot Chromium layout smoke. Live deployment and exact all-screen visual parity have **not** been confirmed.

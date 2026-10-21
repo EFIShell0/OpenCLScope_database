@@ -1,12 +1,10 @@
-# OpenCLScope™ Database 3.0.25 — QA
+# OpenCLScope™ Database 3.0.26 — QA
 
-- Baseline: 3.0.24 source ZIP (447 files), direct VulkanScope Database 1.4.12 source reference.
-- Browser UI tests: 115 tests (including three new Reports sort/control tests), PASS.
-- Worker tests: 19 tests, PASS.
-- `python tools/verify_release.py`: PASS.
-- `python tools/reconcile_repository.py`: PASS on clean source.
-- Desktop offline Chromium at 1440×900: toolbar on zero reports, real sort state, 3 disclosures, nav 11/11, neutral custom scrollbars, no page errors or horizontal body overflow — PASS.
-- Mobile offline Chromium at 390×844: same suite — PASS.
-- Chromium fixture is synthetic, injected only during test execution and **never** published into data/index.json, data/snapshot.json or D1.
-- Live Cloudflare Worker/D1/Pages verification: NOT PERFORMED.
-- Full pixel-by-pixel parity with populated VulkanScope dataset: NOT VERIFIED.
+- Sources: OpenCLScope Database 3.0.25 and VulkanScope Database 1.4.12.
+- Exact producer gate unchanged: OpenCLScope 3.0.8/30008 for new submission; no fabricated query values.
+- Frontend unit/regression tests: **119/119 PASS**.
+- Worker tests: **19/19 PASS**.
+- Node syntax, `tools/reconcile_repository.py --check`, `tools/verify_release.py`: **PASS**.
+- Chromium offline inline-source smoke, 1440×900 and 390×844: filter row/pager/viewport and table scrollers are visible on Reports, no JS page error or document horizontal overflow. Statistics navigable with empty data: **PASS**.
+- Test browser operates on an empty bundled snapshot, so individual visual evidence rows and real populated Statistics bars have **not** been exercised end-to-end.
+- Production Cloudflare Worker/D1/Pages: **NOT TESTED**. Full all-pages pixel/animation parity: **NOT CLAIMED**.

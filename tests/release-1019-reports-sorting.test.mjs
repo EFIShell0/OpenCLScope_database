@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFileSync} from 'node:fs';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1019.js',root),'utf8');
+const app=readFileSync(new URL('assets/app.v1020.js',root),'utf8');
 const html=readFileSync(new URL('index.html',root),'utf8');
 const start=app.indexOf('const REPORT_SORT_OPTIONS=');
 const end=app.indexOf('function profiles(',start);
@@ -34,7 +34,7 @@ test('Every report sort value exists in toolbar and native authoritative filter'
  for(const [mode] of options)assert.ok(html.includes('value="'+mode+'"'),'Missing native filter: '+mode);
  assert.match(app,/\.\.\.REPORT_SORT_OPTIONS\.map/);
  assert.match(app,/rows\.length\?`Showing/);
- assert.match(app,/visible\.length\?node\('div',\{class:'table-wrap reports-table-wrap'\},table\):empty\(\)/);
+ assert.match(app,/replaceChildren\(bar,node\('div',\{class:'table-wrap reports-table-wrap'\},table\)\)/);
 });
 test('Reference-style disclosure icon and post-transition scroll bar refresh are bound',()=>{
  assert.ok(app.includes("node('path',{d:'M5 7h14 M5 12h14 M5 17h14'})"));

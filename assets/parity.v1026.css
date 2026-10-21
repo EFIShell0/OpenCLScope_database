@@ -187,3 +187,47 @@ html,body,.table-wrap,.custom-select-menu,.settings-drawer-body,.evidence-modal-
 .detail-tabs .tab-button,.detail-tabs button,.back-button{background:#191a1d!important;border:1px solid #35373c!important;border-radius:10px!important;color:#b9bcc2!important}
 .detail-tabs .tab-button:hover,.detail-tabs .tab-button.active,.detail-tabs button:hover,.detail-tabs button.active,.back-button:hover{background:#1d2d22!important;border-color:#42694a!important;color:#ebffef!important}
 .table-scroll-track:focus-visible,.table-scroll-button:focus-visible,.nav-scroll-button:focus-visible{outline:2px solid #3dae2b!important;outline-offset:2px}
+
+#workspace>.filters.filter-panel{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,172px),1fr))!important;gap:9px!important;align-items:end!important;position:relative;z-index:8;overflow:visible;width:100%!important;max-width:100%;box-sizing:border-box;margin:0 0 16px!important;padding:12px!important;border:1px solid #303137!important;border-radius:14px!important;background:#141519!important}
+#workspace>.filters.filter-panel[hidden]{display:none!important}
+#workspace>.filters.filter-panel .filter-control{display:flex;flex-direction:column;gap:5px;min-width:0;max-width:none;width:100%;box-sizing:border-box;overflow:visible;color:#bfc0c8;font-size:12px;font-weight:750}
+#workspace>.filters.filter-panel .filter-control[hidden]{display:none!important}
+#workspace>.filters.filter-panel .filter-control .custom-select{width:100%;min-width:0;max-width:none}
+#workspace>.filters.filter-panel .filter-control .custom-select-button{height:40px;min-height:40px;width:100%;min-width:0;padding:7px 10px!important;border:1px solid #3a3c42!important;border-radius:10px!important;background:#1b1c20!important;color:#eeeef0!important;justify-content:space-between}
+#workspace>.filters.filter-panel .filter-control .custom-select-button:hover{background:#252729!important;border-color:#535760!important}
+#workspace>.filters.filter-panel .custom-select.open{z-index:30}
+#workspace>.filters.filter-panel .custom-select-menu{z-index:100;max-height:min(330px,50vh);overflow:auto;border-color:#404148;background:#1b1c20;box-shadow:0 16px 38px #000b}
+#workspace>.filters.filter-panel .filter-clear-button{min-height:40px;align-self:end;background:#1c1d21;color:#e7ebe7;border:1px solid #41434a;border-radius:10px}
+#workspace>.filters.filter-panel .filter-clear-button[hidden]{display:none!important}
+#workspace>.section-heading{display:flex;align-items:center;justify-content:space-between;min-width:0;margin-bottom:14px;padding-bottom:13px}
+#workspace>.section-heading>div:first-child{min-width:0;flex:1}
+#workspace>.db-content{min-width:0}
+#workspace>.db-content .table-scroll-shell{display:block;min-width:0;max-width:100%;overflow:hidden}
+#workspace>.db-content .table-scroll-controls{display:flex!important;min-height:38px;box-sizing:border-box;gap:9px;visibility:visible!important;opacity:1!important}
+#workspace>.db-content .table-scroll-track{position:relative;display:block;flex:1;min-width:0;height:13px;cursor:pointer;border-radius:999px;touch-action:none}
+#workspace>.db-content .table-scroll-thumb{position:absolute;top:2px;left:0;display:block;min-width:34px;height:7px;transform-origin:left center;transition:background .16s ease}
+#workspace>.db-content .table-scroll-button{visibility:visible;flex:none;min-width:32px;min-height:32px}
+#workspace>.db-content .table-scroll-button:disabled{opacity:.33;cursor:default}
+#viewportScrollbar.viewport-scrollbar{position:fixed;right:0;top:0;bottom:0;width:18px;height:auto;display:grid;grid-template-rows:18px minmax(0,1fr) 18px;align-items:stretch;gap:0;opacity:1;z-index:220;border-left:1px solid #2d2f34;background:#121317}
+#viewportScrollbar[hidden]{display:none!important}
+#viewportScrollbar .viewport-scrollbar-arrow{display:flex;align-items:center;justify-content:center;width:17px;height:18px;padding:0}
+#viewportScrollbar .viewport-scrollbar-track{position:relative;width:12px!important;min-height:0;justify-self:center;border:1px solid #34363c!important;border-radius:10px;background:#1b1c20!important}
+#viewportScrollbar .viewport-scrollbar-thumb{position:absolute;left:2px;right:2px;width:6px!important;min-height:0;border-radius:10px;background:linear-gradient(180deg,#575962,#767984)!important}
+#pageScrollControls.page-scroll-controls{right:30px;bottom:22px;z-index:218}
+#pageScrollControls.page-scroll-controls button{width:36px;height:36px;border-radius:10px;background:#1a1c20;border-color:#40434b}
+#pageScrollControls.page-scroll-controls button:hover:not(:disabled){background:#252b27;border-color:#53795a}
+.stats-status-panel .stats-bar{display:grid;grid-template-columns:minmax(125px,1fr) minmax(90px,2fr) minmax(98px,auto);align-items:center;gap:10px;margin:10px 0;min-width:0}
+.stats-status-panel .stats-bar-track{height:7px;min-width:0;overflow:hidden;border:none;border-radius:99px;background:#28282d}
+.stats-status-panel .stats-bar-fill{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#28673b,#61b66b);transition:width .18s ease}
+.stats-status-panel .stats-state-unavailable .stats-bar-fill,.stats-status-panel .stats-state-not_applicable .stats-bar-fill{background:linear-gradient(90deg,#62636d,#8b8c98)}
+.stats-status-panel .stats-state-unknown .stats-bar-fill{background:#8a8576}
+.stats-status-panel .stats-state-error .stats-bar-fill{background:#bd616a}
+.stats-status-panel .stats-bar-value{min-width:95px;white-space:nowrap;text-align:right;color:#e1e1e5;font-size:12px;font-variant-numeric:tabular-nums}
+.stats-status-panel .stats-bar-label{min-width:0;color:#dbdce0;font-size:12px;overflow-wrap:anywhere}
+.opencl-reports-table{min-width:max(100%,1050px);font-variant-numeric:tabular-nums}
+.opencl-reports-table tbody tr:hover td{background:#1c2420!important}
+@media(max-width:760px){#workspace>.filters.filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important;padding:10px!important;gap:8px!important}#viewportScrollbar.viewport-scrollbar{width:16px;grid-template-rows:16px minmax(0,1fr) 16px}#viewportScrollbar .viewport-scrollbar-arrow{width:15px;height:16px}#pageScrollControls.page-scroll-controls{right:25px}#workspace>.db-content .table-scroll-controls{padding:5px 6px!important}.stats-status-panel .stats-bar{grid-template-columns:minmax(0,1fr) auto;gap:6px}.stats-status-panel .stats-bar-track{grid-column:1/-1;grid-row:2}.stats-status-panel .stats-bar-value{min-width:0}}
+@media(max-width:430px){#workspace>.filters.filter-panel{grid-template-columns:repeat(2,minmax(0,1fr))!important}#workspace>.filters.filter-panel .filter-control{font-size:11px}#workspace>.filters.filter-panel .filter-control .custom-select-button{padding:6px 7px!important}}
+@media(prefers-reduced-motion:reduce){.stats-status-panel .stats-bar-fill,#workspace>.db-content .table-scroll-thumb{transition:none!important}}
+
+.opencl-reports-table .reports-empty-row td{height:72px;text-align:center;color:#a7a7ae!important;font-size:12px!important;font-weight:600;background:#111113!important}

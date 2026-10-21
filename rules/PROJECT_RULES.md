@@ -373,3 +373,10 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Reports provides evidenced, reversible Submitted / Vendor / Type column disclosure with accurate aria-expanded, source-only date details in UTC, no inferred original device time zone.
 - Report row interaction must not hijack Copy ID, Favorite, Open or More controls; noninteractive cells can navigate to the exact SHA-256 report.
 - Worker schema, report canonicalization, D1 and cache logic must not be modified solely for UI parity.
+
+## Database 3.0.26 — filter, viewport/table scrollbar, and statistics denominator parity
+- Preserve the immutable VulkanScope Database 1.4.12 CSS/engineering rules and official OpenCL registry. The OpenCL-only overlay may adjust visible controls, but not report evidence or Worker admission semantics.
+- Database filters occupy a separate always-visible layout row on normal workspaces; actual native select values remain authoritative. A hidden filter must remain hidden, and Compare/Encyclopedia must not show inapplicable dataset filters.
+- Horizontal evidence table controls remain visibly rendered even when there is no overflow, with inactive buttons and accessible range 0. They only scroll the real table and never synthesize records. The custom page rail is visible only with actual document overflow and retains keyboard/pointer scroll semantics.
+- Statistics property-state bar widths and meter bounds must be based on the entire fully loaded, filter-selected property-row denominator. Do not normalize the maximum category to 100%; Unknown, Error, Unavailable and Not Applicable stay distinct. A statistics reset must reset statistics state only.
+- Do not modify canonical reports, D1 migration or Worker validation solely for layout changes. The versioned JS and CSS, snapshot, marker, CI, documentation and QA evidence must align; isolated Chromium tests are not live Cloudflare evidence.
