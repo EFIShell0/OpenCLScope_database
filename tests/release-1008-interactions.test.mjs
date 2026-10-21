@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const [app,css,html,rules,worker]=await Promise.all(['assets/app.v1028.js','assets/site.v1028.css','index.html','rules/PROJECT_RULES.md','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
+const [app,css,html,rules,worker]=await Promise.all(['assets/app.v1030.js','assets/site.v1030.css','index.html','rules/PROJECT_RULES.md','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
 const getParser=()=>runInNewContext(`${app.slice(app.indexOf('function parseFavoriteImport('),app.indexOf('function renderSettingsFavorites('))};parseFavoriteImport`,{validComparisonId:id=>typeof id==='string'&&/^[a-f0-9]{64}$/.test(id)});
-test('3.0.28 preserves the pinned OpenCL report producer and integrity gate',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.28'/);
+test('3.0.30 preserves the pinned OpenCL report producer and integrity gate',()=>{
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.30'/);
  assert.match(worker,/versionName!==acceptedVersion/);
  assert.match(worker,/validateStoredReport/);
- assert.match(html,/app\.v1028\.js\?v=1027/);
- assert.match(html,/site\.v1028\.css\?v=1027/);
- assert.match(rules,/Database 3\.0\.28/);
+ assert.match(html,/app\.v1030\.js\?v=1030/);
+ assert.match(html,/site\.v1030\.css\?v=1030/);
+ assert.match(rules,/Database 3\.0\.30/);
 });
 test('Compare pinned header can be minimized and respects accessibility',()=>{
  assert.match(app,/compare-sticky-shell/);assert.match(app,/compareMinimized:false/);

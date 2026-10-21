@@ -1,6 +1,6 @@
 import {PLATFORM_KEYS, DEVICE_KEYS, DEVICE_KEYS_1016, DEVICE_KEYS_30002, LEGACY_PLATFORM_KEYS, LEGACY_DEVICE_KEYS, REGISTRY_SHA256} from './query-manifest.js';
 
-export const DATABASE_RELEASE_VERSION = '3.0.28';
+export const DATABASE_RELEASE_VERSION = '3.0.30';
 const RELEASE = DATABASE_RELEASE_VERSION;
 const MAX_BODY = 18 * 1024 * 1024;
 const MAX_REPORT = 16 * 1024 * 1024;
@@ -136,9 +136,9 @@ function validReport(t, producerVersion, legacy307=false) {
   }
   return total>0 && total<=64;
 }
-export function validateSubmission(p, legacy307=false) {
-  const acceptedVersion = legacy307 ? '3.0.7' : '3.0.8';
-  const acceptedCode = legacy307 ? 30007 : 30008;
+export function validateSubmission(p, legacy307=false, predecessor308=false) {
+  const acceptedVersion = predecessor308 ? '3.0.8' : legacy307 ? '3.0.7' : '3.0.9';
+  const acceptedCode = predecessor308 ? 30008 : legacy307 ? 30007 : 30009;
   if (!hasExactly(p,['schemaVersion','application','device','collection','registrySha256','technicalReport']) || p.schemaVersion!==1 || p.registrySha256!==REGISTRY_SHA256 || hasSensitive(p)) return {ok:false,reason:'envelope'};
   if (!hasExactly(p.application,['name','packageName','versionName','versionCode']) || p.application.name!=='OpenCLScope' || p.application.packageName!=='com.efishell.openclscope' || p.application.versionName!==acceptedVersion || p.application.versionCode!==acceptedCode) return {ok:false,reason:'application'};
   if (!hasExactly(p.device,['manufacturer','model','androidApi']) || !['manufacturer','model'].every(key=>typeof p.device[key]==='string' && p.device[key].length<=120) || !Number.isInteger(p.device.androidApi) || p.device.androidApi<31 || p.device.androidApi>200) return {ok:false,reason:'device'};
@@ -175,7 +175,8 @@ function validateHistoricalSubmission(p) {
   return {ok:true,reason:'ok'};
 }
 export function validateStoredReport(p) {
-  if (p?.application?.versionName==='3.0.8') return validateSubmission(p);
+  if (p?.application?.versionName==='3.0.9') return validateSubmission(p);
+  if (p?.application?.versionName==='3.0.8') return validateSubmission(p,false,true);
   if (p?.application?.versionName==='3.0.7') return validateSubmission(p,true);
   return validateHistoricalSubmission(p);
 }
@@ -247,7 +248,7 @@ export default {
     if(method==='OPTIONS') return new Response(null,{status:204,headers:cors(origin,allowed)});
     try {
       if(url.pathname==='/v1/network-info'&&method==='GET')return response(currentNetworkInfo(request),200,origin,allowed,{'cache-control':'no-store'});
-      if(url.pathname==='/v1/health'&&method==='GET') return response({status:'ok',databaseReleaseVersion:RELEASE,schemaVersion:1,minimumProducer:'OpenCLScope 3.0.8',snapshotAutomation:{configured:snapshotReady(env)}},200,origin,allowed);
+      if(url.pathname==='/v1/health'&&method==='GET') return response({status:'ok',databaseReleaseVersion:RELEASE,schemaVersion:1,minimumProducer:'OpenCLScope 3.0.9',snapshotAutomation:{configured:snapshotReady(env)}},200,origin,allowed);
       if(url.pathname==='/v1/sync'&&method==='GET') {
         const count=await env.DB.prepare('SELECT COUNT(*) AS total FROM reports').first();
         const latest=await env.DB.prepare('SELECT id,submitted_at FROM reports ORDER BY submitted_at DESC,id DESC LIMIT 1').first();

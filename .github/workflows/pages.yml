@@ -1,84 +1,263 @@
-name: OpenCLScope Database Pages
+name: Release OpenCLScope Database
+
 on:
   push:
     branches: [main]
-    paths:
-      - 'index.html'
-      - 'assets/**'
-      - 'licenses/**'
-      - 'data/**'
-      - 'config.js'
-      - 'registry/**'
-      - 'tools/**'
-      - '.github/workflows/pages.yml'
   workflow_dispatch:
     inputs:
       mode:
-        description: Refresh database snapshot and publish the updated Pages artifact
+        description: Release pipeline or new-report snapshot refresh
         required: true
-        default: snapshot
+        default: release
         type: choice
-        options: [snapshot]
+        options: [release, snapshot]
       report_id:
-        description: Require that a submitted report appears in the new snapshot index
+        description: Required SHA-256 report ID in snapshot mode
         required: false
+        default: ''
         type: string
       submitted_at:
-        description: Server-side receipt timestamp (diagnostic only)
+        description: Server-authored submission time (diagnostic only)
         required: false
+        default: ''
         type: string
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
 concurrency:
-  group: openclscope-database-pages
+  group: openclscope-database-${{ inputs.mode || 'release' }}
   cancel-in-progress: false
+
 jobs:
-  verify-publish:
+  windows-tooling:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'snapshot' }}
+    runs-on: windows-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install pinned image verifier
+        run: python -m pip install Pillow==11.3.0
+      - name: Verify immutable rules, sources and release markers
+        run: |
+          python tools/reconcile_repository.py --check
+          python tools/verify_release.py
+          node --check assets/app.v1030.js
+          node --check worker/src/index.js
+      - name: Run frontend and Worker regression suites on Windows
+        run: node tools/run_tests.mjs
+
+  build:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'snapshot' }}
+    needs: windows-tooling
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: python -m pip install Pillow==11.3.0
+      - name: Quality gate
+        run: |
+          python tools/reconcile_repository.py --check
+          python tools/verify_release.py
+          node tools/run_tests.mjs
+      - name: Stage and audit source-verified Pages template
+        run: |
+          node tools/build_pages_artifact.mjs
+          node tools/audit_pages_artifact.mjs _site
+      - name: Check deterministic GitHub Release packaging
+        run: |
+          python tools/package_release.py dist
+          python tools/package_release.py dist --verify-existing
+
+  release:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'snapshot' }}
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install Pillow==11.3.0
+      - name: Verify validated source and build release ZIP/SHA-256
+        run: |
+          python tools/reconcile_repository.py --check
+          python tools/verify_release.py
+          python tools/package_release.py dist
+      - name: Publish GitHub Release at the validated commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="v3.0.30"
+          ZIP="dist/OpenCLScope-Database-3.0.30.zip"
+          SHA="${ZIP}.sha256"
+          verify_tag() {
+            git fetch origin "+refs/tags/$TAG:refs/tags/$TAG" >/dev/null 2>&1 || true
+            if git rev-parse --verify "refs/tags/$TAG" >/dev/null 2>&1; then
+              FOUND="$(git rev-list -n 1 "$TAG")"
+              [ "$FOUND" = "$GITHUB_SHA" ] || { echo "Tag $TAG points to $FOUND, not $GITHUB_SHA; bump the version." >&2; exit 1; }
+              return 0
+            fi
+            return 1
+          }
+          for attempt in 1 2 3 4 5; do
+            if gh release view "$TAG" >/dev/null 2>&1; then
+              verify_tag
+              if OUT="$(gh release upload "$TAG" "$ZIP" "$SHA" --clobber 2>&1)"; then
+                echo "GitHub Release assets verified: $TAG"
+                exit 0
+              fi
+            else
+              if verify_tag; then
+                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --verify-tag --title "OpenCLScope Database 3.0.30" --generate-notes 2>&1)"; then exit 0; fi
+              else
+                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --target "$GITHUB_SHA" --title "OpenCLScope Database 3.0.30" --generate-notes 2>&1)"; then exit 0; fi
+              fi
+            fi
+            echo "$OUT" >&2
+            if ! printf '%s' "$OUT" | grep -Eqi 'HTTP 429|HTTP 5[0-9][0-9]|rate limit|temporarily unavailable'; then exit 1; fi
+            [ "$attempt" -lt 5 ] || exit 1
+            sleep "$((attempt * 5))"
+          done
+
+  deploy:
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.mode != 'snapshot' }}
+    needs: [build, release]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: openclscope-database-pages-deployment
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Install release image-verification dependency
-        run: python -m pip install Pillow==11.3.0
-      - name: Check contract and static assets
-        run: |
-          python3 tools/reconcile_repository.py --check
-          node --check assets/app.v1028.js
-          node --check worker/src/index.js
-          node --test worker/tests/*.test.mjs
-          node --test tests/*.test.mjs
-          python3 tools/verify_release.py
-      - name: Configure fixed production API and CSP
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: python -m pip install Pillow==11.3.0
+      - name: Confirm same release source and configure production origin
         env:
           OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
-        run: node tools/configure.mjs
-      - name: Produce and verify complete public index and featured full reports
+        run: |
+          python tools/reconcile_repository.py --check
+          python tools/verify_release.py
+          node tools/configure.mjs
+      - name: Fetch complete report index and bounded verified preload
+        env:
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+        run: node tools/build_snapshot.mjs
+      - name: Stage and audit release-ready Pages files
+        run: |
+          node tools/build_pages_artifact.mjs
+          node tools/audit_pages_artifact.mjs _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Verify published release and report index
+        env:
+          PUBLISHED_PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+        run: node tools/verify_published_snapshot.mjs
+
+  snapshot-refresh:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'snapshot' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: openclscope-database-pages-deployment
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Verify required report ID
+        shell: bash
+        env:
+          REQUIRED_REPORT_ID: ${{ inputs.report_id }}
+        run: |
+          [[ "$REQUIRED_REPORT_ID" =~ ^[a-f0-9]{64}$ ]] || { echo "Snapshot mode requires a lowercase SHA-256 report ID" >&2; exit 1; }
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: python -m pip install Pillow==11.3.0
+      - name: Verify current main and configure API
+        env:
+          OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
+        run: |
+          python tools/reconcile_repository.py --check
+          python tools/verify_release.py
+          node tools/configure.mjs
+      - name: Build required cryptographically verified report snapshot
         env:
           OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
           REQUIRED_REPORT_ID: ${{ inputs.report_id }}
         run: node tools/build_snapshot.mjs
-      - name: Build allowlisted-only public site (no Worker source, test fixtures or secrets)
-        run: node tools/build_pages_artifact.mjs
+      - name: Stage and audit snapshot
+        run: |
+          node tools/build_pages_artifact.mjs
+          node tools/audit_pages_artifact.mjs _site
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
-          path: ./_site
-      - id: deployment
-        uses: actions/deploy-pages@v4
-      - name: Verify the published Pages index and triggered report
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Verify triggering report in published Pages index and preload
         env:
           PUBLISHED_PAGES_URL: ${{ steps.deployment.outputs.page_url }}
           REQUIRED_REPORT_ID: ${{ inputs.report_id }}
           OPENCLSCOPE_DATABASE_API: ${{ vars.OPENCLSCOPE_DATABASE_API }}
         run: node tools/verify_published_snapshot.mjs
-

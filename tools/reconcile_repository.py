@@ -33,6 +33,7 @@ ACTIVE = frozenset({
     'release-1019-reports-sorting.test.mjs',
     'release-1020-filter-scroll-stats.test.mjs',
     'release-1028-statistics-parity.test.mjs',
+    'release-1030-cicd.test.mjs',
 })
 
 def check(apply=False):
@@ -59,25 +60,25 @@ def check(apply=False):
             source.rename(destination)
             print('Archived legacy/unreviewed test without deleting: '+name)
     outdated = [p for stem,extension in (('app','js'),('site','css')) for p in (ROOT/'assets').glob(f'{stem}.v*.{extension}')]
-    stale = sorted(p for p in outdated if p.name not in ('app.v1028.js','site.v1028.css'))
+    stale = sorted(p for p in outdated if p.name not in ('app.v1030.js','site.v1030.css'))
     if stale and not apply:
         print('FAIL: stale outdated browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
         return 1
     if stale:
         for old in stale:
-            latest = ROOT/'assets'/('app.v1028.js' if old.name.startswith('app.') else 'site.v1028.css')
+            latest = ROOT/'assets'/('app.v1030.js' if old.name.startswith('app.') else 'site.v1030.css')
             if not latest.exists():
                 print('FAIL: missing new replacement for '+old.name,file=sys.stderr)
                 return 1
             old.unlink()
             print('Removed old browser cache artifact: '+old.name)
-    stale_parity = sorted(p for p in (ROOT/'assets').glob('parity.v*.css') if p.name != 'parity.v1028.css')
+    stale_parity = sorted(p for p in (ROOT/'assets').glob('parity.v*.css') if p.name != 'parity.v1030.css')
     if stale_parity and not apply:
         print('FAIL: stale obsolete visual parity assets: '+', '.join(p.name for p in stale_parity),file=sys.stderr)
         return 1
     if stale_parity:
-        if not (ROOT/'assets'/'parity.v1028.css').exists():
-            print('FAIL: replacement parity.v1028.css missing',file=sys.stderr)
+        if not (ROOT/'assets'/'parity.v1030.css').exists():
+            print('FAIL: replacement parity.v1030.css missing',file=sys.stderr)
             return 1
         for old in stale_parity:
             old.unlink()

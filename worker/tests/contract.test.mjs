@@ -15,12 +15,12 @@ function makeAudit(platform,legacy307=false) {
  const audit={status:missing.length||(legacy307&&only.length)?'inconsistent':'consistent',versionedEvidence:'incomplete',checkedDevices:platform.devices.length,commonDeviceExtensions:common,missingFromPlatform:missing,platformOnly:only,platformVersionedMismatch:[],deviceVersionedMismatch:[]};
  return audit;
 }
-function fullProducer(value,versionName='3.0.8',versionCode=30008){
+function fullProducer(value,versionName='3.0.9',versionCode=30009){
   const current=clone(value);
   current.application.versionName=versionName;current.application.versionCode=versionCode;current.technicalReport.appVersion=versionName;
   const fill=(rows,keys)=>{const by=new Map(rows.map(row=>[row.name,row]));return [...keys].map(name=>by.get(name)||{name,value:'',status:'unavailable',code:-30})};
-  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
-  if (versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
+  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.0.9' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
+  if (versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
   return current;
 }
 class MockDatabase {
@@ -38,7 +38,7 @@ function req(path,method='GET',body=null,headers={}){return new Request('https:/
 const get=(e,path)=>worker.fetch(req(path),e,{});
 async function post(e,data,ctx={}){return worker.fetch(req('/v1/reports','POST',data),e,ctx)}
 const fixture=fullProducer(originalFixture);
-test('3.0.8/30008 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
+test('3.0.9/30009 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
  assert.deepEqual(validateSubmission(fixture),{ok:true,reason:'ok'});
  for(const [v,c] of [['0.2.0',200],['0.12.10',1210],['0.30.29',3029],['1.0.0',10000],['1.0.14',10014],['1.0.15',10015],['1.0.16',10016],['1.0.17',10017],['1.0.18',10018],['1.0.19',10019],['1.0.20',10020],['1.0.21',10021],['1.0.22',10022]]){
   const older=fullProducer(originalFixture,v,c);
@@ -48,6 +48,14 @@ test('3.0.8/30008 is the only new submission producer; older versions and unknow
  for(const mutate of [p=>p.application.versionCode=10018,p=>p.technicalReport.appVersion='1.0.18',p=>p.application.versionName='1.0.18',p=>p.collection.source='imported',p=>p.collection.status='partial',p=>p.technicalReport.status='partial',p=>p.technicalReport.platforms[0].devices[0].properties.pop(),p=>p.device.androidApi=1]){
   const p=clone(fixture);mutate(p);assert.equal(validateSubmission(p).ok,false);
  }
+});
+test('3.0.8 reports stay readable while 3.0.9 alone may be newly submitted',async()=>{
+ const predecessor=fullProducer(originalFixture,'3.0.8',30008);
+ assert.deepEqual(validateStoredReport(predecessor),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(predecessor).ok,false);
+ assert.equal((await post(env(),predecessor)).status,400);
+ const altered=clone(predecessor);altered.technicalReport.platforms[0].extensionAudit=null;
+ assert.equal(validateStoredReport(altered).ok,false);
 });
 test('complete 16/211 report accepted, duplicate ID stable, stored report and paginated list remain readable',async()=>{
  const e=env(),ctx=[];

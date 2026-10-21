@@ -1,13 +1,19 @@
-# OpenCLScope™ Database 3.0.28
+# OpenCLScope™ Database 3.0.30
 
-Independent report-backed OpenCL™ database; VulkanScope Database 1.4.12 is the immutable upstream UI reference. This is **not an official Khronos project**.
+Independent evidence-backed OpenCL™ database. VulkanScope Database 1.4.12 provides an immutable design/engineering reference. Not an official Khronos project.
 
-## What's new
+## Release and snapshot delivery
 
-The Statistics distribution charts now reuse VulkanScope's `distribution-card`, `donut-chart`, `donut-center`, `chart-legend` and `chart-stroke` component structure, with OpenCL-themed color tokens and honest device/platform/report denominators. Query state bars highlight the unique dominant percentage only. Extension Reset no longer clears Statistics preferences.
+A push to `main` starts the **Windows checks → Linux Build → GitHub Release → GitHub Pages** pipeline. The GitHub Release is created only from the exact validated commit, with a deterministic versioned source ZIP and SHA-256. If a prior tag points to a different commit, publishing fails closed. Pages is deployed only after successful validation and GitHub Release publication; its report index/snapshot are verified after deployment.
 
-## Verify and publish
+New report snapshot events use the separate **snapshot-refresh** job and require a genuine 64-character lowercase SHA-256 report ID in the index **and** the verified full-report preload. Historical read compatibility, complete paginated index collection, canonical SHA-256 and strict OpenCL producer gate remain unchanged.
 
-Run `python -B tools/reconcile_repository.py --check`, `python -B tools/verify_release.py`, `node --test tests/*.test.mjs`, then `node --test worker/tests/*.test.mjs`. Build the Pages artifact with `node tools/build_pages_artifact.mjs`; publish only after authentic Cloudflare configuration. See `DEPLOY_COMMANDS_POWERSHELL.txt`.
+Set GitHub Actions variable `OPENCLSCOPE_DATABASE_API` to the deployed, trusted API HTTPS origin. GitHub Actions must have GitHub Pages enabled for Actions deployment. Worker deployment is a separate Cloudflare action; the workflow does not imply or perform it. No Cloudflare secrets belong in the repository. See `DEPLOY_COMMANDS_POWERSHELL.txt`.
 
-**Local tests:** 125 frontend and 19 Worker tests passed. Isolated Chromium rendering passed at 1440×900 and 390×844 using test-only DOM data; live Cloudflare and pixel-level parity for all pages were not tested. `QA_RESULTS.md` and `FULL_VULKAN_DESIGN_COMPARISON_3.0.28.md` document scope and unresolved differences.
+## User interface
+
+The main dataset pagination now reuses the VulkanScope `page-jump` component family with Go and strict page input. The upstream stylesheet, Khronos `cl.xml`, and pinned GPU imagery have not been modified. Remaining pixel/behavior gaps are listed in `FULL_VULKAN_DESIGN_COMPARISON_3.0.30.md`.
+
+## Local verification
+
+Run `python -B tools/reconcile_repository.py --check`, `python -B tools/verify_release.py`, `node tools/run_tests.mjs`, `node tools/build_pages_artifact.mjs`, `node tools/audit_pages_artifact.mjs _site`, and `python -B tools/package_release.py dist`.

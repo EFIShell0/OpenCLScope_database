@@ -1,13 +1,9 @@
-# OpenCLScope™ Database 3.0.28
+# OpenCLScope™ Database 3.0.30
 
-## Statistics renderer parity
+## GitHub release and design-component parity
 
-- Replaced the custom Statistics donut renderer with VulkanScope's chart component architecture and accessibility roles, retaining the exact OpenCL evidence/counting rules.
-- Reused upstream ring, center number and legend layouts with scoped green/neutral styling.
-- Aligned unique-dominant percentage label emphasis with the reference's semantic-state hierarchy.
-- Fixed Extensions Reset so it only changes Extensions filter settings and not Statistics settings.
-- Retained original OpenCL™ query statuses, immutable Khronos® registry, existing D1/Worker report acceptance, cache and snapshot contracts.
+The 3.0.30 database release adopts the upstream VulkanScope Database 1.4.12 release pipeline architecture: Windows validation, Linux build/audit, version-tagged GitHub Release containing a deterministic ZIP and SHA-256 checksum, followed by GitHub Pages deployment and deployed-snapshot verification. New-report snapshot publishing runs separately without creating a new GitHub Release.
 
-## Verification and limitations
+The primary page-jump control now uses the reference design component and exposes a Go button with strict page-number validation. No synthetic reports or OpenCL capabilities were added. Producer admission remains OpenCLScope 3.0.9 (30009), and previously admitted archived reports remain read-only.
 
-125 frontend and 19 Worker tests passed; local Chromium DOM checks at desktop/mobile dimensions passed. Live Cloudflare deployment and complete VulkanScope pixel/behavior parity are not verified. See the comparison and QA files for details.
+This is a staged improvement, not a claim of full pixel-level parity or successful remote deployment. Refer to the included comparison and QA documents.

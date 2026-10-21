@@ -1,9 +1,25 @@
-cd C:\Users\Administrator\Desktop\OpenCLScope_database
+# Windows PowerShell — OpenCLScope Database 3.0.30
+# Run these commands after replacing the local project with the complete release ZIP.
+Set-Location 'C:\Users\Administrator\Desktop\OpenCLScope_database'
+python -B tools/reconcile_repository.py --apply
+if ($LASTEXITCODE -ne 0) { throw 'Legacy artifact repair failed' }
 python -B tools/reconcile_repository.py --check
+if ($LASTEXITCODE -ne 0) { throw 'Repository check failed' }
 python -B tools/verify_release.py
-cd worker
-npm run deploy
-cd ..
+if ($LASTEXITCODE -ne 0) { throw 'Release verification failed' }
+node tools/run_tests.mjs
+if ($LASTEXITCODE -ne 0) { throw 'Regression suite failed' }
+python -B tools/package_release.py dist
+if ($LASTEXITCODE -ne 0) { throw 'Release package failed' }
+git status --short
 git add -A
-git commit -m "Release OpenCLScope Database 3.0.28"
+git commit -m 'Release OpenCLScope Database 3.0.30'
 git push origin main
+# The push starts Windows QA -> Build -> GitHub Release -> Pages Deploy.
+# Separately, after checking your authenticated Cloudflare account and D1 target:
+# Set-Location .\worker
+# npm install
+# npx wrangler whoami
+# Verify the account is YOUR actual OpenCLScope Cloudflare account and database before continuing.
+# npm run deploy
+# A Worker deploy is NOT performed by the GitHub Pages workflow.

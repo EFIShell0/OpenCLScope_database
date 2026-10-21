@@ -8,11 +8,11 @@ import {PLATFORM_KEYS,DEVICE_KEYS,DEVICE_KEYS_1016} from '../worker/src/query-ma
 const fixture=JSON.parse(await readFile(new URL('../worker/tests/complete-report.json',import.meta.url),'utf8'));
 const canonical=v=>Array.isArray(v)?'['+v.map(canonical).join(',')+']':v&&typeof v==='object'?'{'+Object.keys(v).sort().map(k=>JSON.stringify(k)+':'+canonical(v[k])).join(',')+'}':JSON.stringify(v);
 function extensionAudit(p,legacy307=false){const unique=a=>[...new Set(a)].sort();const diff=(a,b)=>unique(a.filter(v=>!b.includes(v)));const common=p.devices.reduce((v,d,i)=>i?v.filter(x=>d.extensions.includes(x)):unique(d.extensions),[]);const missing=diff(common,p.extensions),only=diff(p.extensions,common);return {status:missing.length||(legacy307&&only.length)?'inconsistent':'consistent',versionedEvidence:'incomplete',checkedDevices:p.devices.length,commonDeviceExtensions:common,missingFromPlatform:missing,platformOnly:only,platformVersionedMismatch:[],deviceVersionedMismatch:[]}}
-function upgrade(version='3.0.8',code=30008){
+function upgrade(version='3.0.9',code=30009){
   const value=structuredClone(fixture);value.application.versionName=version;value.application.versionCode=code;value.technicalReport.appVersion=version;
   const fill=(rows,keys)=>{const by=new Map(rows.map(r=>[r.name,r]));return [...keys].map(key=>by.get(key)||{name:key,value:'',status:'unavailable',code:-30})};
-  for(const p of value.technicalReport.platforms){p.properties=fill(p.properties,PLATFORM_KEYS);for(const d of p.devices)d.properties=fill(d.properties,['1.0.21','1.0.22','1.0.23','3.0.1','3.0.3','3.0.4','3.0.5','3.0.7','3.0.8'].includes(version)?DEVICE_KEYS_1016:DEVICE_KEYS)}
-  if(version==='3.0.8'||version==='3.0.7')for(const p of value.technicalReport.platforms)p.extensionAudit=extensionAudit(p,version==='3.0.7');
+  for(const p of value.technicalReport.platforms){p.properties=fill(p.properties,PLATFORM_KEYS);for(const d of p.devices)d.properties=fill(d.properties,['1.0.21','1.0.22','1.0.23','3.0.1','3.0.3','3.0.4','3.0.5','3.0.7','3.0.9'].includes(version)?DEVICE_KEYS_1016:DEVICE_KEYS)}
+  if(version==='3.0.9'||version==='3.0.7')for(const p of value.technicalReport.platforms)p.extensionAudit=extensionAudit(p,version==='3.0.7');
   return value;
 }
 function report(value,time='2026-10-08T05:00:00.000Z'){
@@ -47,16 +47,16 @@ test('snapshot publication requires exact new report detail and no false success
 });
 test('workflow references existing versioned site asset, post-deploy verification and API snapshot',async()=>{
   const src=await readFile(new URL('../.github/workflows/pages.yml',import.meta.url),'utf8');
-  assert.match(src,/node --check assets\/app\.v1028\.js/);
+  assert.match(src,/node --check assets\/app\.v1030\.js/);
   assert.doesNotMatch(src,/app\.v0701\.js/);
   assert.match(src,/verify_published_snapshot\.mjs/);
   assert.match(src,/build_snapshot\.mjs/);
   const html=await readFile(new URL('../index.html',import.meta.url),'utf8');
-  assert.match(html,/assets\/app\.v1028\.js/);
+  assert.match(html,/assets\/app\.v1030\.js/);
 });
 
 test('cache-first browser code checks sync token before querying index and polls only when visible',async()=>{
-  const js=await readFile(new URL('../assets/app.v1028.js',import.meta.url),'utf8');
+  const js=await readFile(new URL('../assets/app.v1030.js',import.meta.url),'utf8');
   assert.match(js,/fetch\('\.\/data\/index\.json'/);
   assert.match(js,/const sync=await api\('\/v1\/sync'\)/);
   assert.match(js,/if\(!force&&same\)/);
