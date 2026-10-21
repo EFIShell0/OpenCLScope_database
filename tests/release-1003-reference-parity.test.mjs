@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const read=async file=>readFile(new URL('../'+file,import.meta.url),'utf8');
-const [html,app,css,compat,worker,rule]=await Promise.all(['index.html','assets/app.v1030.js','assets/site.v1030.css','assets/browser-compat.v1006.js','worker/src/index.js','rules/PROJECT_RULES.md'].map(read));
+const [html,app,css,compat,worker,rule]=await Promise.all(['index.html','assets/app.v1028.js','assets/site.v1028.css','assets/browser-compat.v1006.js','worker/src/index.js','rules/PROJECT_RULES.md'].map(read));
 test('Reference-style browser guard and network-independent fallback are structurally wired',()=>{
  for(const id of ['browserCompatibilityGate','browserDetected','browserRequirement','browserCompatibilityReason','appRoot'])assert.match(html,new RegExp(`id="${id}"`));
  assert.match(html,/browser-compat\.v1006\.js\?v=1008/);
@@ -30,16 +30,16 @@ test('Additional filters are backed by exact indexed metadata, not inferred GPU 
  assert.match(html,/value="not_applicable"/);
 });
 test('Frontend caches are versioned, while pinned VulkanScope layout is a separate unmodified source',()=>{
- assert.match(html,/site\.v1030\.css\?v=1030/);
- assert.match(html,/app\.v1030\.js\?v=1030/);
+ assert.match(html,/site\.v1028\.css\?v=1027/);
+ assert.match(html,/app\.v1028\.js\?v=1027/);
  assert.match(html,/vulkan-layout\.v1412\.css\?v=1008/);
  assert.match(css,/#3DAE2B/i);
- assert.match(rule,/Database 3\.0\.30/);
+ assert.match(rule,/Database 3\.0\.32/);
 });
 test('New database release never invents a newer app producer or loosens old evidence contracts',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.30'/);
- assert.match(worker,/legacy307 \? '3\.0\.7' : '3\.0\.9'/);
- assert.match(worker,/legacy307 \? 30007 : 30009/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.0\.32'/);
+ assert.match(worker,/legacy307 \? '3\.0\.7' : predecessor309 \? '3\.0\.9' : predecessor310 \? '3\.0\.10' : '3\.0\.11'/);
+ assert.match(worker,/legacy307 \? 30007 : predecessor309 \? 30009 : predecessor310 \? 30010 : 30011/);
  assert.match(worker,/validateStoredReport/);
  assert.match(worker,/CL_PLATFORM_/);
 });

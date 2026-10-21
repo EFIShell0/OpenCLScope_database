@@ -271,12 +271,3 @@ html,body,.table-wrap,.custom-select-menu,.settings-drawer-body,.evidence-modal-
 .stats-status-panel .stats-state-unavailable.is-dominant .stats-bar-value,.stats-status-panel .stats-state-not_applicable.is-dominant .stats-bar-value{color:#b3b4c0}
 .stats-status-panel .stats-state-unknown.is-dominant .stats-bar-value{color:#d2be84}
 .stats-status-panel .stats-state-error.is-dominant .stats-bar-value{color:#e18891}
-
-#pager .page-jump{display:inline-flex;align-items:center;justify-content:center;gap:7px;max-width:100%;min-width:0}
-#pager .page-jump .page-jump-input{background:#111216;color:#fff;border-color:#34353d;width:52px;height:36px;text-align:center;appearance:textfield;-moz-appearance:textfield}
-#pager .page-jump .page-jump-input::-webkit-inner-spin-button,#pager .page-jump .page-jump-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
-#pager .page-jump .page-jump-input:focus-visible{border-color:#3dae2b;box-shadow:0 0 0 3px rgba(61,174,43,.18)}
-#pager .page-jump .page-jump-go{height:36px;min-width:38px;color:#e6e6ea;background:linear-gradient(180deg,#1b1b1f,#121216);border:1px solid #34353d;border-radius:10px}
-#pager .page-jump .page-jump-go:hover:not(:disabled),#pager .page-jump .page-jump-go:focus-visible{border-color:#3dae2b;color:#e3f3e0}
-#pager .page-jump .page-jump-go:disabled{opacity:.38;cursor:default}
-@media(max-width:450px){#pager{gap:6px}#pager .page-jump{gap:3px}#pager .page-jump-prefix{display:none}#pager .page-jump .page-jump-input{width:38px;min-width:32px}#pager .page-jump-of{font-size:10px}#pager .page-jump .page-jump-go{min-width:30px;padding:0 5px}}

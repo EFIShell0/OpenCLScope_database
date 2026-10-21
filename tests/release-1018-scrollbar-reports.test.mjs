@@ -2,11 +2,11 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const load=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
-const html=load('index.html'), js=load('assets/app.v1030.js'), css=load('assets/parity.v1030.css'), rules=load('rules/PROJECT_RULES.md'), ref=load('assets/vulkan-layout.v1412.css');
+const html=load('index.html'), js=load('assets/app.v1028.js'), css=load('assets/parity.v1028.css'), rules=load('rules/PROJECT_RULES.md'), ref=load('assets/vulkan-layout.v1412.css');
 test('pinned Vulkan source is preserved, final OpenCL style is versioned',()=>{
- assert.ok(html.indexOf('vulkan-layout.v1412.css')<html.indexOf('site.v1030.css'));
- assert.ok(html.indexOf('site.v1030.css')<html.indexOf('parity.v1030.css'));
- assert.match(rules,/Database 3\.0\.30/);
+ assert.ok(html.indexOf('vulkan-layout.v1412.css')<html.indexOf('site.v1028.css'));
+ assert.ok(html.indexOf('site.v1028.css')<html.indexOf('parity.v1028.css'));
+ assert.match(rules,/Database 3\.0\.32/);
  assert.match(ref,/\.table-scroll-thumb\{position:absolute/);
 });
 test('reference navigation buttons and directional scrolling controls share the same DOM structure',()=>{
@@ -33,6 +33,6 @@ test('Worker contract and canonical browser sync are unchanged by presentation-o
  assert.match(js,/api\('\/v1\/sync'\)/);
  assert.match(js,/setInterval\(\(\)=>update\(\),10000\)/);
  assert.match(js,/function semanticComparisonLeaves\(report\)/);
- const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.0\.30'/);
- assert.match(worker,/legacy307 \? '3\.0\.7' : '3\.0\.9'/);
+ const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.0\.32'/);
+ assert.match(worker,/legacy307 \? '3\.0\.7' : predecessor309 \? '3\.0\.9' : predecessor310 \? '3\.0\.10' : '3\.0\.11'/);
 });

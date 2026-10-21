@@ -398,9 +398,25 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Previously accepted 3.0.8/30008 stored reports remain readable through the archived strict validator, but new 3.0.8 submissions are denied.
 - Runtime platform fallback cannot infer OpenCL support without live driver evidence. Public HTML/CSS layout and immutable Vulkan reference assets remain unchanged.
 
-## Database 3.0.30 — upstream release pipeline and page-jump parity
-- GitHub release publication is gated on independent Windows QA and Linux build checks; the versioned source archive and SHA-256 must represent the exact validated commit. A pre-existing tag pointing elsewhere is fatal; do not retarget. Published Pages deployment is gated on successful GitHub Release, has a separate artifact allowlist audit and post-deploy index/snapshot check.
-- Snapshot-triggered Pages publication has a separate branch, requires a lowercase 64-hex canonical report ID, and must verify the original report both in the complete index and the cryptographically verified preload. It never fabricates report content or creates an unrelated GitHub Release.
-- Worker Cloudflare authentication/account and D1 identity must not be borrowed from VulkanScope; no automatic Worker deployment from GitHub Pages CI. The user must verify their account before any local Worker deploy. GitHub release is not evidence of Cloudflare Worker success.
-- Main dataset pagination uses VulkanScope's accessible page-jump structure and Go action; malformed, partially numeric and out-of-range page values are rejected without silently choosing a different page. Do not change dataset filtering, source reports or canonical report state.
-- OpenCLScope 3.0.9 / 30009 remains the exact latest producer POST contract; older records remain strictly read-only under their pinned contracts. Upstream Vulkan CSS and Khronos cl.xml remain byte-identical. Isolated browser tests are not claims of complete pixel-level equivalence.
+
+## OpenCLScope Database 3.0.30 native compile hotfix pair
+- New POST producer: OpenCLScope 3.0.10 / 30010; existing OpenCLScope 3.0.9 / 30009, 3.0.8 / 30008 and 3.0.7 / 30007 are stored-evidence GET/snapshot only.
+- No report schema, registry contract, raw query evidence, privacy, pagination or visible UI behavior may be loosened to accommodate a version change.
+- Keep immutable VulkanScope reference assets and the official OpenCL registry byte-identical to the previous release.
+- The authoritative Worker, public release metadata, static verifier and tests must all use Database 3.0.30.
+
+
+## OpenCLScope Database 3.0.31 — runtime access diagnostics pair
+- New submissions require OpenCLScope 3.0.11 / 30011 with complete live OpenCL evidence and exact unchanged query catalog.
+- Historical complete reports from 3.0.10 / 30010, 3.0.9 / 30009, 3.0.8 / 30008 and 3.0.7 / 30007 remain readable only, never accepted as new POST uploads.
+- Runtime linker errors and no-driver statuses are never valid complete reports. Device identity or capabilities must not be inferred from Vulkan or GLES.
+- Pinned Khronos registry and VulkanScope reference assets are immutable.
+
+
+## OpenCLScope Database 3.0.32 — Windows CI and publication integrity
+- Checkout on Windows MUST preserve byte-for-byte immutable VulkanScope CSS and official OpenCL registry. Source files, JS tests and styles use Git-enforced LF; immutable XML/SVG bytes remain unmodified.
+- Cross-platform source extraction tests MUST accept LF and CRLF delimiters. Fixing a failure may not change pinned reference hashes or bypass the semantic Compare regression.
+- Windows and Linux quality jobs precede the same-commit GitHub Release; successful Release gates Pages deployment. Snapshot refresh remains independent of source release and requires an exact lowercase 64-character report ID.
+- Deterministic release source ZIP and SHA-256 must include this rulebook, source, tests, and workflows but exclude secrets, dependencies and generated files; public Pages artifacts contain only the allowlisted static site.
+- Current OpenCLScope application producer remains 3.0.11 / 30011. No changes to Worker schema, previous report compatibility, D1 identities, or runtime support assertions.
+- Offline tests do not establish live GitHub Actions, D1, Worker, or GitHub Pages publication success.

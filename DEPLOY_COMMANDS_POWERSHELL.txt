@@ -1,25 +1,13 @@
-# Windows PowerShell — OpenCLScope Database 3.0.30
-# Run these commands after replacing the local project with the complete release ZIP.
-Set-Location 'C:\Users\Administrator\Desktop\OpenCLScope_database'
-python -B tools/reconcile_repository.py --apply
-if ($LASTEXITCODE -ne 0) { throw 'Legacy artifact repair failed' }
-python -B tools/reconcile_repository.py --check
-if ($LASTEXITCODE -ne 0) { throw 'Repository check failed' }
-python -B tools/verify_release.py
-if ($LASTEXITCODE -ne 0) { throw 'Release verification failed' }
-node tools/run_tests.mjs
-if ($LASTEXITCODE -ne 0) { throw 'Regression suite failed' }
-python -B tools/package_release.py dist
-if ($LASTEXITCODE -ne 0) { throw 'Release package failed' }
-git status --short
-git add -A
-git commit -m 'Release OpenCLScope Database 3.0.30'
-git push origin main
-# The push starts Windows QA -> Build -> GitHub Release -> Pages Deploy.
-# Separately, after checking your authenticated Cloudflare account and D1 target:
-# Set-Location .\worker
-# npm install
-# npx wrangler whoami
-# Verify the account is YOUR actual OpenCLScope Cloudflare account and database before continuing.
-# npm run deploy
-# A Worker deploy is NOT performed by the GitHub Pages workflow.
+# New release ZIP 3.0.32: extract to a fresh directory first; do not overwrite a different live Git checkout.
+$zip = "$env:USERPROFILE\Downloads\OpenCLScope-Database-3.0.32.zip"
+$dest = "$env:USERPROFILE\Desktop\OpenCLScope_database_3.0.32"
+Expand-Archive -LiteralPath $zip -DestinationPath $dest -Force
+Set-Location $dest
+python -B tools\reconcile_repository.py --check
+python -B tools\verify_release.py
+node tools\run_tests.mjs
+node tools\build_pages_artifact.mjs
+node tools\audit_pages_artifact.mjs _site
+python -B tools\package_release.py dist
+python -B tools\package_release.py dist --verify-existing
+# Merge carefully with existing Git working tree after reviewing git diff; a push triggers GitHub Actions release/deploy.

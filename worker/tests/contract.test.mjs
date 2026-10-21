@@ -15,12 +15,12 @@ function makeAudit(platform,legacy307=false) {
  const audit={status:missing.length||(legacy307&&only.length)?'inconsistent':'consistent',versionedEvidence:'incomplete',checkedDevices:platform.devices.length,commonDeviceExtensions:common,missingFromPlatform:missing,platformOnly:only,platformVersionedMismatch:[],deviceVersionedMismatch:[]};
  return audit;
 }
-function fullProducer(value,versionName='3.0.9',versionCode=30009){
+function fullProducer(value,versionName='3.0.11',versionCode=30011){
   const current=clone(value);
   current.application.versionName=versionName;current.application.versionCode=versionCode;current.technicalReport.appVersion=versionName;
   const fill=(rows,keys)=>{const by=new Map(rows.map(row=>[row.name,row]));return [...keys].map(name=>by.get(name)||{name,value:'',status:'unavailable',code:-30})};
-  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.0.9' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
-  if (versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
+  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
+  if (versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
   return current;
 }
 class MockDatabase {
@@ -38,7 +38,7 @@ function req(path,method='GET',body=null,headers={}){return new Request('https:/
 const get=(e,path)=>worker.fetch(req(path),e,{});
 async function post(e,data,ctx={}){return worker.fetch(req('/v1/reports','POST',data),e,ctx)}
 const fixture=fullProducer(originalFixture);
-test('3.0.9/30009 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
+test('3.0.9/30011 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
  assert.deepEqual(validateSubmission(fixture),{ok:true,reason:'ok'});
  for(const [v,c] of [['0.2.0',200],['0.12.10',1210],['0.30.29',3029],['1.0.0',10000],['1.0.14',10014],['1.0.15',10015],['1.0.16',10016],['1.0.17',10017],['1.0.18',10018],['1.0.19',10019],['1.0.20',10020],['1.0.21',10021],['1.0.22',10022]]){
   const older=fullProducer(originalFixture,v,c);
@@ -57,6 +57,27 @@ test('3.0.8 reports stay readable while 3.0.9 alone may be newly submitted',asyn
  const altered=clone(predecessor);altered.technicalReport.platforms[0].extensionAudit=null;
  assert.equal(validateStoredReport(altered).ok,false);
 });
+
+test('3.0.9 complete archived evidence remains readable but never re-submittable',async()=>{
+ const archived=fullProducer(originalFixture,'3.0.9',30009);
+ assert.deepEqual(validateStoredReport(archived),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(archived).ok,false);
+ assert.equal((await post(env(),archived)).status,400);
+ const corrupted=clone(archived);
+ corrupted.technicalReport.platforms[0].devices[0].properties.pop();
+ assert.equal(validateStoredReport(corrupted).ok,false);
+});
+
+test('3.0.10 archived OpenCL evidence stays readable and cannot be resubmitted',async()=>{
+ const report=fullProducer(originalFixture,'3.0.10',30010);
+ assert.deepEqual(validateStoredReport(report),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(report).ok,false);
+ assert.equal((await post(env(),report)).status,400);
+ const malformed=clone(report);
+ malformed.technicalReport.platforms[0].devices[0].properties.pop();
+ assert.equal(validateStoredReport(malformed).ok,false);
+});
+
 test('complete 16/211 report accepted, duplicate ID stable, stored report and paginated list remain readable',async()=>{
  const e=env(),ctx=[];
  const first=await post(e,fixture,{waitUntil:x=>ctx.push(x)});assert.equal(first.status,201,await first.clone().text());

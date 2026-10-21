@@ -1,6 +1,6 @@
 import {PLATFORM_KEYS, DEVICE_KEYS, DEVICE_KEYS_1016, DEVICE_KEYS_30002, LEGACY_PLATFORM_KEYS, LEGACY_DEVICE_KEYS, REGISTRY_SHA256} from './query-manifest.js';
 
-export const DATABASE_RELEASE_VERSION = '3.0.30';
+export const DATABASE_RELEASE_VERSION = '3.0.32';
 const RELEASE = DATABASE_RELEASE_VERSION;
 const MAX_BODY = 18 * 1024 * 1024;
 const MAX_REPORT = 16 * 1024 * 1024;
@@ -136,9 +136,9 @@ function validReport(t, producerVersion, legacy307=false) {
   }
   return total>0 && total<=64;
 }
-export function validateSubmission(p, legacy307=false, predecessor308=false) {
-  const acceptedVersion = predecessor308 ? '3.0.8' : legacy307 ? '3.0.7' : '3.0.9';
-  const acceptedCode = predecessor308 ? 30008 : legacy307 ? 30007 : 30009;
+export function validateSubmission(p, legacy307=false, predecessor308=false, predecessor309=false, predecessor310=false) {
+  const acceptedVersion = predecessor308 ? '3.0.8' : legacy307 ? '3.0.7' : predecessor309 ? '3.0.9' : predecessor310 ? '3.0.10' : '3.0.11';
+  const acceptedCode = predecessor308 ? 30008 : legacy307 ? 30007 : predecessor309 ? 30009 : predecessor310 ? 30010 : 30011;
   if (!hasExactly(p,['schemaVersion','application','device','collection','registrySha256','technicalReport']) || p.schemaVersion!==1 || p.registrySha256!==REGISTRY_SHA256 || hasSensitive(p)) return {ok:false,reason:'envelope'};
   if (!hasExactly(p.application,['name','packageName','versionName','versionCode']) || p.application.name!=='OpenCLScope' || p.application.packageName!=='com.efishell.openclscope' || p.application.versionName!==acceptedVersion || p.application.versionCode!==acceptedCode) return {ok:false,reason:'application'};
   if (!hasExactly(p.device,['manufacturer','model','androidApi']) || !['manufacturer','model'].every(key=>typeof p.device[key]==='string' && p.device[key].length<=120) || !Number.isInteger(p.device.androidApi) || p.device.androidApi<31 || p.device.androidApi>200) return {ok:false,reason:'device'};
@@ -175,7 +175,9 @@ function validateHistoricalSubmission(p) {
   return {ok:true,reason:'ok'};
 }
 export function validateStoredReport(p) {
-  if (p?.application?.versionName==='3.0.9') return validateSubmission(p);
+  if (p?.application?.versionName==='3.0.11') return validateSubmission(p);
+  if (p?.application?.versionName==='3.0.10') return validateSubmission(p,false,false,false,true);
+  if (p?.application?.versionName==='3.0.9') return validateSubmission(p,false,false,true);
   if (p?.application?.versionName==='3.0.8') return validateSubmission(p,false,true);
   if (p?.application?.versionName==='3.0.7') return validateSubmission(p,true);
   return validateHistoricalSubmission(p);
