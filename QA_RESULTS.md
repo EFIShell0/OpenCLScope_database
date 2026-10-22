@@ -1,6 +1,8 @@
-# Database 3.4.4 local QA
+# OpenCLScope Database 3.4.8 local QA
 
-- 167 of 167 combined frontend and Worker tests passed.
-- Official OpenCL XML and immutable VulkanScope stylesheet hashes passed.
-- Sourced Settings and loading component parity tests passed.
-- Live D1, Pages deployment and populated pixel-perfect UI comparison were not executed.
+- 178/178 frontend and Worker tests: PASS.
+- Repository rules/release verification: PASS.
+- Pages allowlist artifact audit: PASS (309 public files).
+- Chromium report-detail isolated viewport tests 1440×900 and 390×844: PASS using an unshipped temporary worker test fixture.
+- Upstream rules, pinned VulkanScope styling and official OpenCL registry: immutable.
+- Cloudflare Worker, D1, live GitHub Pages, GitHub Actions and full pixel parity: unverified.

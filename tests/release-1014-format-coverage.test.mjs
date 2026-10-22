@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
 const read=path=>readFileSync(new URL(path,root),'utf8');
-const app=read('assets/app.v3404.js'),css=read('assets/site.v3404.css'),html=read('index.html');
+const app=read('assets/app.v3408.js'),css=read('assets/site.v3408.css'),html=read('index.html');
 const begin=app.indexOf('function imageFormatCoverageModel(){');
 const end=app.indexOf('function renderImageFormatCoverage(){');
 assert.ok(begin>0&&end>begin);
@@ -50,6 +50,6 @@ test('Exact numeric format pairs are not mixed just because display names agree'
 test('New grouped format view is accessible and version coherent without fake support claims',()=>{
  for(const term of ['renderImageFormatCoverage()','formatDisplay','formatMinimum','formatSearch','imageFormatCoverageModel()','pair.reported/g.queried','Missing groups are Unknown','state.view===\'formats\'','openEvidenceModal','row.reportId','pager(total,false)'])assert.ok(app.includes(term),term);
  assert.match(css,/\.format-coverage-table/);
- assert.match(html,/assets\/app\.v3404\.js\?v=3404/);assert.match(html,/assets\/site\.v3404\.css\?v=3404/);
+ assert.match(html,/assets\/app\.v3408\.js\?v=3408/);assert.match(html,/assets\/site\.v3408\.css\?v=3408/);
  assert.doesNotMatch(app,/IMAGE2D_SUPPORTED_BY_DRIVER/);
 });

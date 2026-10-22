@@ -33,10 +33,14 @@ ACTIVE = frozenset({
     'release-1019-reports-sorting.test.mjs',
     'release-1020-filter-scroll-stats.test.mjs',
     'release-1028-statistics-parity.test.mjs',
-    'release-3404-boot-deploy.test.mjs',
-    'release-3404-statistics-pager.test.mjs',
-    'release-3404-nonblocking.test.mjs',
-    'release-3404-strict-reference.test.mjs',
+    'release-3405-boot-deploy.test.mjs',
+    'release-3405-statistics-pager.test.mjs',
+    'release-3405-nonblocking.test.mjs',
+    'release-3405-shared-controls.test.mjs',
+    'release-3405-strict-reference.test.mjs',
+    'release-3408-reports-page-parity.test.mjs',
+    'release-3408-neutral-palette.test.mjs',
+    'release-3408-report-detail.test.mjs',
 })
 
 def check(apply=False):
@@ -63,29 +67,42 @@ def check(apply=False):
             source.rename(destination)
             print('Archived legacy/unreviewed test without deleting: '+name)
     outdated = [p for stem,extension in (('app','js'),('site','css')) for p in (ROOT/'assets').glob(f'{stem}.v*.{extension}')]
-    stale = sorted(p for p in outdated if p.name not in ('app.v3404.js','site.v3404.css'))
+    stale = sorted(p for p in outdated if p.name not in ('app.v3408.js','site.v3408.css'))
     if stale and not apply:
         print('FAIL: stale outdated browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
         return 1
     if stale:
         for old in stale:
-            latest = ROOT/'assets'/('app.v3404.js' if old.name.startswith('app.') else 'site.v3404.css')
+            latest = ROOT/'assets'/('app.v3408.js' if old.name.startswith('app.') else 'site.v3408.css')
             if not latest.exists():
                 print('FAIL: missing new replacement for '+old.name,file=sys.stderr)
                 return 1
             old.unlink()
             print('Removed old browser cache artifact: '+old.name)
-    stale_parity = sorted(p for p in (ROOT/'assets').glob('parity.v*.css') if p.name != 'parity.v3404.css')
+    stale_parity = sorted(p for p in (ROOT/'assets').glob('parity.v*.css') if p.name != 'parity.v3408.css')
     if stale_parity and not apply:
         print('FAIL: stale obsolete visual parity assets: '+', '.join(p.name for p in stale_parity),file=sys.stderr)
         return 1
     if stale_parity:
-        if not (ROOT/'assets'/'parity.v3404.css').exists():
-            print('FAIL: replacement parity.v3404.css missing',file=sys.stderr)
+        if not (ROOT/'assets'/'parity.v3408.css').exists():
+            print('FAIL: replacement parity.v3408.css missing',file=sys.stderr)
             return 1
         for old in stale_parity:
             old.unlink()
             print('Removed unreferenced previous parity asset: '+old.name)
+    stale_shell = sorted(p for p in (ROOT/'assets').glob('reference-shell.v*.css') if p.name != 'reference-shell.v3408.css')
+    stale_bootstrap = sorted(p for p in (ROOT/'assets').glob('release-bootstrap.v*.js') if p.name != 'release-bootstrap.v3408.js')
+    stale_color_assets = stale_shell + stale_bootstrap
+    if stale_color_assets and not apply:
+        print('FAIL: stale release shell/bootstrap assets: '+', '.join(p.name for p in stale_color_assets),file=sys.stderr)
+        return 1
+    if stale_color_assets:
+        if not (ROOT/'assets/reference-shell.v3408.css').is_file() or not (ROOT/'assets/release-bootstrap.v3408.js').is_file():
+            print('FAIL: active replacement shell/bootstrap not available',file=sys.stderr)
+            return 1
+        for old in stale_color_assets:
+            old.unlink()
+            print('Removed superseded release shell/bootstrap asset: '+old.name)
     stale_worker = {
         'release-1256-opencl-c-version.test.mjs':'fadda3d9d78cd6d43c109e1ad8da78ff01512f6ca4f8a07fa2edb35ce0b59477',
         'release-1257-build-contract.test.mjs':'92356928e701000afcf65de67a845a16544044e15cdbbfd71db12e78355ee2bd',

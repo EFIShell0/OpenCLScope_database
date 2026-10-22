@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 const read=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
-const code=read('assets/app.v3404.js'),style=read('assets/parity.v3404.css'),vulkan=read('assets/vulkan-layout.v1412.css');
+const code=read('assets/app.v3408.js'),style=read('assets/parity.v3408.css'),vulkan=read('assets/vulkan-layout.v1412.css');
 test('Vulkan distribution chart DOM architecture is reused without hard-coded red palette',()=>{
  for(const part of ['class:\'donut-chart\'','class:\'donut-track\'','class:`donut-segment chart-stroke-','class:\'donut-center\'','class:\'chart-legend\'','class:`chart-swatch chart-fill-','class:\'distribution-card stats-chart\'','class:\'stats-charts distribution-grid\''])assert.ok(code.includes(part),part);
  for(const rule of ['.distribution-card','.donut-chart','.donut-track','.chart-legend','.chart-swatch','.distribution-grid'])assert.ok(vulkan.includes(rule),'Reference selector '+rule);

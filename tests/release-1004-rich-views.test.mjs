@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
 const read=(p)=>readFile(new URL(p,root),'utf8');
-const [app,html,css,worker,registry]=await Promise.all(['assets/app.v3404.js','index.html','assets/site.v3404.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
+const [app,html,css,worker,registry]=await Promise.all(['assets/app.v3408.js','index.html','assets/site.v3408.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
 const data=JSON.parse(registry);
 test('Complete bundled OpenCL encyclopedia, not runtime support claims',()=>{
  assert.equal(data.entries.length,2002);
@@ -33,14 +33,14 @@ test('Detail evidence provides category-scoped search, status states and bounded
  for(const token of ['function detailEvidenceRows(',"['Properties','Features','Memory','Formats']",'state.detailPageSize','state.detailQuery','state.detailStatus','detailEvidenceToolbar','detail-evidence-pager'])assert.ok(app.includes(token),token);
  for(const status of ['available','not_applicable','unavailable','error','unknown'])assert.ok(app.includes("node('option',{value:k}"));
  assert.match(app,/state\.detailPage=Math\.min/);
- assert.match(app,/node\('pre',\{class:'raw-text'\},JSON\.stringify\(r,null,2\)\)/);
+ assert.match(app,/node\('pre',\{class:'raw-text raw-report-text'\},JSON\.stringify\(r,null,2\)\)/);
  assert.match(css,/\.detail-evidence-toolbar/);
 });
 test('Release 3.4.0 remains a strict producer lock',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.4'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.8'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
- assert.match(html,/app\.v3404\.js\?v=3404/);
- assert.match(html,/site\.v3404\.css\?v=3404/);
- assert.match(html,/browser-compat\.v1006\.js\?v=3404/);
+ assert.match(html,/app\.v3408\.js\?v=3408/);
+ assert.match(html,/site\.v3408\.css\?v=3408/);
+ assert.match(html,/browser-compat\.v1006\.js\?v=3408/);
  assert.match(app,/Full report details loaded/);
 });

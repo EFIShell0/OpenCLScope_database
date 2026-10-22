@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 const read=name=>readFile(new URL('../'+name,import.meta.url),'utf8');
 
 test('Network data stays request-scoped with bounded auto-refresh and no persisted IP evidence',async()=>{
- const app=await read('assets/app.v3404.js'),rules=await read('rules/PROJECT_RULES.md');
+ const app=await read('assets/app.v3408.js'),rules=await read('rules/PROJECT_RULES.md');
  for(const token of ['NETWORK_REFRESH_MS=60000','NETWORK_STALE_MS=120000','NETWORK_REVEAL_MS=15000','function networkPanelVisible()','syncNetworkInfoAutoRefresh()','stopNetworkInfoAutoRefresh()','networkObservationError','Previous observation','Last observation · refresh failed','hideTimer=setTimeout(hide,NETWORK_REVEAL_MS)'])assert.ok(app.includes(token),token);
  assert.match(app,/settingsActiveCategory==='internet'/);
  assert.match(app,/document\.visibilityState!=='hidden'/);
@@ -16,10 +16,10 @@ test('Network data stays request-scoped with bounded auto-refresh and no persist
 });
 
 test('Report detail accordions are controlled, cancelable, keyboard-accessible and motion-aware',async()=>{
- const app=await read('assets/app.v3404.js'),css=await read('assets/site.v3404.css');
- for(const token of ['function detailAccordionCard(entry,expandedInitially=false)','aria-expanded','currentAnimation?.cancel()','current!==token','prefers-reduced-motion: reduce','detailAccordionCard(e,tab==='])assert.ok(app.includes(token),token);
+ const app=await read('assets/app.v3408.js'),css=await read('assets/site.v3408.css');
+ for(const token of ['function detailAccordionCard(entry,expandedInitially=false)','aria-expanded','currentAnimation?.cancel()','current!==token','prefers-reduced-motion: reduce','reportPanel(e)'])assert.ok(app.includes(token),token);
  assert.match(css,/\.detail-accordion-trigger:focus-visible/);
  assert.match(css,/\.detail-accordion-panel\[hidden\]/);
- assert.match(app,/if\(tab==='Raw JSON'\)/);
+ assert.match(app,/if\(tab==='Raw JSON'\|\|tab==='Raw report'\)/);
  assert.match(app,/downloadCompleteReport\(state\.detail/);
 });

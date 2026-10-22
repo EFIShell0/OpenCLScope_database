@@ -87,7 +87,7 @@ body.settings-open #settingsDrawer.settings-drawer:not([hidden]){transform:trans
 
 
 html{background:#09090a}
-body{background:radial-gradient(circle at 12% -10%,rgba(61,174,43,.052),transparent 34%),#09090a!important;color:var(--text)!important}
+body{background:radial-gradient(circle at 12% -10%,rgba(61,174,43,.19),transparent 34%),#09090a!important;color:var(--text)!important}
 .topbar,.topbar:where(:not([hidden])){background:rgba(9,9,10,.94)!important;border-color:var(--line)!important}
 .topbar-inner{gap:12px;min-width:0}
 .brand img{object-fit:contain;max-width:100%;height:auto}
@@ -291,3 +291,19 @@ html,body,.table-wrap,.custom-select-menu,.settings-drawer-body,.evidence-modal-
 .statistics-page-jump .page-jump-input{width:52px;min-height:36px;text-align:center;border-radius:9px;border:1px solid var(--line);background:var(--panel);color:var(--text)}
 .statistics-page-jump .page-jump-go{min-width:38px}
 @media(max-width:650px){.statistics-pager-row .statistics-pagination{margin:0;width:100%;justify-content:center}.statistics-pager-row{justify-content:space-between}}
+
+html{scrollbar-color:#585b64 #151619!important}
+*:not(.main-nav):not(.table-wrap){scrollbar-color:#585b64 #151619}
+*::-webkit-scrollbar-track{background:#151619!important}
+*::-webkit-scrollbar-thumb{background:#585b64!important;border-color:#151619!important}
+*::-webkit-scrollbar-thumb:hover{background:#70747f!important}
+.main-nav{scrollbar-width:none!important}
+.table-wrap.reports-table-wrap,.table-wrap.evidence-table-wrap{scrollbar-width:none!important}
+.repo-icon{background:#222228!important;border-color:#34353b!important;color:var(--text)!important}
+.custom-select-button:hover,.custom-select.open .custom-select-button{background:#1b1b1f!important;border-color:#3a3a42!important}
+.custom-select-menu{background:rgba(18,18,21,.98)!important;border-color:#34353b!important}
+.custom-select-option:hover,.custom-select-option:focus-visible,.custom-select-option.focused{background:#222228!important;color:var(--text)!important}
+.custom-select-option.selected{background:#18331d!important;color:var(--text)!important}
+.custom-select-menu::-webkit-scrollbar-track{background:#151619!important}
+.custom-select-menu::-webkit-scrollbar-thumb{background:#585b64!important;border-color:#151619!important}
+.custom-select-menu::-webkit-scrollbar-thumb:hover{background:#70747f!important}
