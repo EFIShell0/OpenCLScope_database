@@ -1,11 +1,11 @@
-if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.4.9');}
+if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.4.11');}
 'use strict';
 const API = String(window.OPENCLSCOPE_DATABASE_API || '').trim().replace(/\/$/,'');
 const PAGE = 25;
-const DATABASE_RELEASE_VERSION = '3.4.9';
+const DATABASE_RELEASE_VERSION = '3.4.11';
 const $ = id=>document.getElementById(id);
-const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,reportPageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',statisticsPage:1,statisticsPageSize:25,coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareChange:'All',compareSort:'evidence-asc',compareMobilePinnedExpanded:false,reportSubmittedExpanded:false,reportVendorExpanded:false,reportTypeExpanded:false};
-const panes={reports:['REPORTS','Latest submissions','Complete, explicitly shared technical reports'],platforms:['PLATFORMS','OpenCL platforms','Platform-reported versions, vendors and extensions'],devices:['DEVICES','Compute devices','Device identity, driver and capability evidence'],features:['FEATURES','Features and support','Canonical OpenCL property states, never inferred'],memory:['MEMORY','Memory & limits','Runtime-reported memory and SVM properties'],formats:['IMAGE FORMATS','Image formats','Actual clGetSupportedImageFormats query results'],extensions:['EXTENSIONS','Extensions','Runtime-enumerated device and platform extension names'],profiles:['PROFILES','Profiles','Informational checklist, not certification'],compare:['COMPARE','Compare reports','Compare exact values and query states'],encyclopedia:['ENCYCLOPEDIA','OpenCL registry','Bundled Khronos cl.xml reference tokens, not runtime support evidence'],statistics:['STATISTICS','Report statistics','Report-backed device, API and query-state distributions (loaded detail evidence only)']};
+const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,reportPageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',statisticsPage:1,statisticsPageSize:25,statisticsChartFilter:null,coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareChange:'All',compareSort:'evidence-asc',compareMobilePinnedExpanded:false,reportSubmittedExpanded:false,reportVendorExpanded:false,reportTypeExpanded:false};
+const panes={reports:['REPORTS','Latest submissions','Complete, explicitly shared technical reports'],platforms:['PLATFORMS','OpenCL platforms','Platform-reported versions, vendors and extensions'],devices:['DEVICES','Compute devices','Device identity, driver and capability evidence'],properties:['PROPERTIES','Reported properties','Platform and device query evidence'],features:['FEATURES','Features and support','Canonical OpenCL property states, never inferred'],memory:['MEMORY','Memory & limits','Runtime-reported memory and SVM properties'],formats:['IMAGE FORMATS','Image formats','Actual clGetSupportedImageFormats query results'],extensions:['EXTENSIONS','Extensions','Runtime-enumerated device and platform extension names'],profiles:['PROFILES','Profiles','Informational checklist, not certification'],compare:['COMPARE','Compare reports','Compare exact values and query states'],encyclopedia:['ENCYCLOPEDIA','OpenCL registry','Bundled Khronos cl.xml reference tokens, not runtime support evidence'],statistics:['STATISTICS','Report statistics','Report-backed device, API and query-state distributions (loaded detail evidence only)']};
 function safeStorageGet(key){try{return localStorage.getItem(key)}catch{return null}}
 function safeStorageSet(key,value){try{localStorage.setItem(key,value)}catch{}}
 function text(value){return value===null||value===undefined?'':String(value)}
@@ -59,7 +59,7 @@ function sortReportSummaries(rows,mode='newest'){
  })
 }
 function profiles(d){const checks=[['Device available','CL_DEVICE_AVAILABLE','true'],['Compiler available','CL_DEVICE_COMPILER_AVAILABLE','true'],['Compute units present','CL_DEVICE_MAX_COMPUTE_UNITS','positive'],['Image support','CL_DEVICE_IMAGE_SUPPORT','true'],['Linker available','CL_DEVICE_LINKER_AVAILABLE','true'],['Sub-group forward progress','CL_DEVICE_SUB_GROUP_INDEPENDENT_FORWARD_PROGRESS','true'],['Non-uniform work-groups','CL_DEVICE_NON_UNIFORM_WORK_GROUP_SUPPORT','true'],['Work-group collectives','CL_DEVICE_WORK_GROUP_COLLECTIVE_FUNCTIONS_SUPPORT','true'],['SVM capability bits','CL_DEVICE_SVM_CAPABILITIES','positive']];return checks.map(([label,key,expected])=>{const p=d.properties.find(row=>row.name===key);const v=p?.status==='available'?p.value:null;const num=v===null?null: v.startsWith('0x')?Number.parseInt(v.slice(2),16):Number(v);const result=v===null?'unknown':expected==='true'?(v==='true'?'supported':'unsupported'):(Number.isFinite(num)?(num>0?'supported':'unsupported'):'unknown');return {label,key,value:v,result}})}
-function recordEntries(kind){const entries=[];const eligible=new Set(filteredRows().map(r=>r.id));for(const [id,r]of state.reports){if(!eligible.has(id))continue;const t=r.technicalReport;for(const p of t.platforms){const pd=`${p.name||'Platform'} · ${id.slice(0,10)}`;if(kind==='platforms')entries.push({reportId:id,title:p.name,subtitle:pd,fields:[['Vendor',p.vendor],['Version',p.version],['Profile',p.profile],['Extensions',p.extensions.length],['Devices',p.devices.length],['Enumeration',p.deviceEnumerationStatus]]});if(kind==='extensions')for(const ext of p.extensions)entries.push({reportId:id,title:ext,subtitle:`Platform · ${pd}`,fields:[['Scope','platform'],['Raw name',ext]]});for(const d of p.devices){const dd=`${d.name} · ${pd}`;if(kind==='devices')entries.push({reportId:id,title:d.name,subtitle:pd,fields:[['Vendor',d.vendor],['Type',d.type],['OpenCL version',d.version],['Driver',d.driverVersion],['Profile',d.profile],['Properties',d.properties.length],['Extensions',d.extensions.length]]});if(kind==='extensions')for(const ext of d.extensions)entries.push({reportId:id,title:ext,subtitle:`Device · ${dd}`,fields:[['Scope','device'],['Raw name',ext]]});if(kind==='profiles'){const checks=profiles(d);entries.push({reportId:id,title:d.name,subtitle:pd,fields:[['Met',checks.filter(c=>c.result==='supported').length],['Unmet',checks.filter(c=>c.result==='unsupported').length],['Unknown',checks.filter(c=>c.result==='unknown').length],...checks.map(c=>[c.label,c.value||'Not available',c.result])]})}if(kind==='formats')for(const g of d.imageFormats)entries.push({reportId:id,title:g.imageType,subtitle:`${g.flags} · ${dd}`,state:g.status,fields:[['Image type',g.imageType],['Access',g.flags],['OpenCL code',g.code],['Format pairs',g.formats.length],...g.formats.map((f,i)=>[`Pair ${i+1}`,`${f.order} / ${f.dataType}${f.specWarning?` · Spec warning: ${f.specWarning} (driver-reported)`:``}`])]});if(['features','memory'].includes(kind))for(const prop of d.properties){if(kind==='features'&&!/(SUPPORT|CAPABILITIES|AVAILABLE|FP_CONFIG|VERSION)/.test(prop.name))continue;if(kind==='memory'&&!/(MEM|CACHE|ALLOC|SVM)/.test(prop.name))continue;entries.push({reportId:id,title:prop.name,subtitle:dd,state:prop.status,fields:[['Exact name',prop.name],['Value',prop.value===null||prop.value===undefined?'(none)':prop.value,prop.status],['OpenCL code',prop.code]]})}}}}return entries}
+function recordEntries(kind){const entries=[];const eligible=new Set(filteredRows().map(r=>r.id));for(const [id,r]of state.reports){if(!eligible.has(id))continue;const t=r.technicalReport;for(const p of t.platforms){const pd=`${p.name||'Platform'} · ${id.slice(0,10)}`;if(kind==='platforms')entries.push({reportId:id,title:p.name,subtitle:pd,fields:[['Vendor',p.vendor],['Version',p.version],['Profile',p.profile],['Extensions',p.extensions.length],['Devices',p.devices.length],['Enumeration',p.deviceEnumerationStatus]]});if(kind==='properties')for(const prop of p.properties||[])entries.push({reportId:id,title:prop.name,subtitle:`Platform · ${pd}`,state:prop.status,fields:[['Scope','platform'],['Exact name',prop.name],['Value',prop.value===null||prop.value===undefined?'(none)':prop.value,prop.status],['OpenCL code',prop.code]]});if(kind==='extensions')for(const ext of p.extensions)entries.push({reportId:id,title:ext,subtitle:`Platform · ${pd}`,fields:[['Scope','platform'],['Raw name',ext]]});for(const d of p.devices){const dd=`${d.name} · ${pd}`;if(kind==='devices')entries.push({reportId:id,title:d.name,subtitle:pd,fields:[['Vendor',d.vendor],['Type',d.type],['OpenCL version',d.version],['Driver',d.driverVersion],['Profile',d.profile],['Properties',d.properties.length],['Extensions',d.extensions.length]]});if(kind==='extensions')for(const ext of d.extensions)entries.push({reportId:id,title:ext,subtitle:`Device · ${dd}`,fields:[['Scope','device'],['Raw name',ext]]});if(kind==='profiles'){const checks=profiles(d);entries.push({reportId:id,title:d.name,subtitle:pd,fields:[['Met',checks.filter(c=>c.result==='supported').length],['Unmet',checks.filter(c=>c.result==='unsupported').length],['Unknown',checks.filter(c=>c.result==='unknown').length],...checks.map(c=>[c.label,c.value||'Not available',c.result])]})}if(kind==='formats')for(const g of d.imageFormats)entries.push({reportId:id,title:g.imageType,subtitle:`${g.flags} · ${dd}`,state:g.status,fields:[['Image type',g.imageType],['Access',g.flags],['OpenCL code',g.code],['Format pairs',g.formats.length],...g.formats.map((f,i)=>[`Pair ${i+1}`,`${f.order} / ${f.dataType}${f.specWarning?` · Spec warning: ${f.specWarning} (driver-reported)`:``}`])]});if(['features','memory','properties'].includes(kind))for(const prop of d.properties){if(kind==='features'&&!/(SUPPORT|CAPABILITIES|AVAILABLE|FP_CONFIG|VERSION)/.test(prop.name))continue;if(kind==='memory'&&!/(MEM|CACHE|ALLOC|SVM)/.test(prop.name))continue;entries.push({reportId:id,title:prop.name,subtitle:dd,state:prop.status,fields:[['Exact name',prop.name],['Value',prop.value===null||prop.value===undefined?'(none)':prop.value,prop.status],['OpenCL code',prop.code]]})}}}}return entries}
 
 let evidenceModal=null;
 let evidenceModalReturnFocus=null;
@@ -144,6 +144,7 @@ function technicalEvidenceTable(entries){
 function renderCards(entries){const query=state.query.toLowerCase().trim();let matched=entries.filter(e=>(!state.status||e.state===state.status)&&(!query||[e.title,e.subtitle,...e.fields.flat().map(text)].join(' ').toLowerCase().includes(query)));const total=matched.length;const pageCount=Math.max(1,Math.ceil(total/state.pageSize));state.page=Math.min(state.page,pageCount-1);matched=matched.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);const grid=technicalEvidenceTable(matched);$('contentView').replaceChildren(total?grid:empty());pager(total)}
 
 function queryCoverageModel(kind){
+ if(kind==='properties')return propertyCoverageModel();
  const selected=new Set(filteredRows().map(r=>r.id)),devices=[],universe=new Set();
  const included=name=>kind==='features'?/(SUPPORT|CAPABILITIES|AVAILABLE|FP_CONFIG|VERSION)/.test(name):/(MEM|CACHE|ALLOC|SVM)/.test(name);
  for(const [id,report] of state.reports){
@@ -175,6 +176,42 @@ function queryCoverageModel(kind){
  });
  return {items,loadedDevices:devices.length,loadedReports:new Set(devices.map(x=>x.id)).size,indexedReports:selected.size};
 }
+function propertyCoverageModel(){
+ const selected=new Set(filteredRows().map(row=>row.id));
+ const entities=[],names=new Map(),statuses=['available','unavailable','not_applicable','unknown','error'];
+ for(const [id,report] of state.reports){
+  if(!selected.has(id)||!Array.isArray(report?.technicalReport?.platforms))continue;
+  for(const platform of report.technicalReport.platforms){
+   const add=(scope,device,properties)=>{
+    const queries=new Map();
+    for(const property of properties||[]){
+     if(!property||typeof property.name!=='string'||!property.name)continue;
+     const key=scope+'\u0000'+property.name;
+     names.set(key,{scope,name:property.name});
+     if(!queries.has(property.name))queries.set(property.name,property);
+    }
+    entities.push({id,scope,device,platform:text(platform.name||'Unreported platform'),queries});
+   };
+   add('platform',text(platform.name||'Unreported platform'),platform.properties);
+   for(const device of platform.devices||[])add('device',text(device.name||'Unreported device'),device.properties);
+  }
+ }
+ const items=[...names].sort(([a],[b])=>a.localeCompare(b)).map(([key,identity])=>{
+  const observations=entities.filter(e=>e.scope===identity.scope),counts=Object.fromEntries(statuses.map(s=>[s,0]));
+  const values=new Map(),rows=[];let missing=0;
+  for(const entity of observations){
+   const query=entity.queries.get(identity.name);
+   const status=statuses.includes(query?.status)?query.status:'unknown';
+   counts[status]++;
+   if(!query)missing++;
+   const value=query&&status==='available'?text(query.value):query?'No successful runtime value':'Not reported';
+   if(query&&status==='available')values.set(value,(values.get(value)||0)+1);
+   rows.push({reportId:entity.id,scope:entity.scope,device:entity.device,platform:entity.platform,status,value,code:query?.code??'',recorded:!!query});
+  }
+  return {...identity,key,counts,missing,values,rows,total:observations.length};
+ });
+ return {items,loadedDevices:entities.length,loadedReports:new Set(entities.map(e=>e.id)).size,indexedReports:selected.size};
+}
 function renderCoverageView(kind){
  const model=queryCoverageModel(kind),total=model.loadedDevices,searchTerms=[state.query,state.coverageSearch].map(x=>x.trim().toLowerCase()).filter(Boolean);
  let items=model.items.filter(x=>{
@@ -198,19 +235,19 @@ function renderCoverageView(kind){
  const search=node('input',{type:'search',value:state.coverageSearch,placeholder:'Filter query names and evidence…','aria-label':'Coverage property search'});
  search.oninput=()=>{const position=search.selectionStart;state.coverageSearch=search.value;state.page=0;renderCoverageView(kind);const next=$('contentView').querySelector('input[aria-label="Coverage property search"]');if(next){next.focus();if(position!==null)next.setSelectionRange(position,position)}};
  controls.append(node('label',{},node('span',{},'Query search'),search));
- const intro=node('section',{class:'coverage-overview'},node('h3',{},`${kind==='features'?'Feature-related':'Memory-related'} OpenCL™ property query coverage`),
-  node('p',{class:'evidence-note'},`${total} devices across ${model.loadedReports} fully loaded matching reports; ${Math.max(0,model.indexedReports-model.loadedReports)} matching indexed reports excluded without full details. A reported Available query is not proof of feature support. Absent query evidence counts as Unknown, never Unsupported.`));
+ const intro=node('section',{class:'coverage-overview'},node('h3',{},`${kind==='features'?'Feature-related':kind==='properties'?'Platform and device':'Memory-related'} OpenCL™ property query coverage`),
+  node('p',{class:'evidence-note'},`${total} ${kind==='properties'?'query sources':'devices'} across ${model.loadedReports} fully loaded matching reports; ${Math.max(0,model.indexedReports-model.loadedReports)} matching indexed reports excluded without full details. A reported Available query is not proof of feature support. Absent query evidence counts as Unknown, never Unsupported.`));
  state.page=Math.min(state.page,Math.max(0,Math.ceil(items.length/state.pageSize)-1));
  const current=items.slice(state.page*state.pageSize,(state.page+1)*state.pageSize);
  const header=node('thead',{},node('tr',{},...['OpenCL property','Query availability','Unavailable','Not applicable','Unknown','Error','Values','Source evidence'].map(label=>node('th',{scope:'col'},label))));
  const rows=current.map(x=>{
   const pct=x.total?100*x.counts.available/x.total:0;
-  const meter=node('div',{class:'coverage-availability'},node('div',{class:'coverage-availability-track',role:'meter','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(Number(pct.toFixed(1))),'aria-label':`${x.name}: ${x.counts.available} of ${x.total} device queries available`},node('span',{class:'coverage-availability-fill'})),node('span',{},`${x.counts.available}/${x.total} · ${pct.toFixed(1)}%`));
+  const meter=node('div',{class:'coverage-availability'},node('div',{class:'coverage-availability-track',role:'meter','aria-valuemin':'0','aria-valuemax':'100','aria-valuenow':String(Number(pct.toFixed(1))),'aria-label':`${x.name}: ${x.counts.available} of ${x.total} query observations available`},node('span',{class:'coverage-availability-fill'})),node('span',{},`${x.counts.available}/${x.total} · ${pct.toFixed(1)}%`));
   meter.firstChild.firstChild.style.width=pct+'%';
-  const details=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open ${x.name} per-device source evidence`},`${x.rows.length} devices →`);
-  details.onclick=()=>openEvidenceModal({title:x.name,subtitle:`${x.rows.length} loaded-device observations · ${x.missing} unreported`,fields:x.rows.map((r,i)=>[`${i+1}. ${r.device} · ${r.platform} · ${r.reportId.slice(0,12)}`,`${r.status.toUpperCase()} · ${r.recorded?'Reported value: '+r.value:'No query entry'}${r.recorded?' · code: '+r.code:''} · SHA-256: ${r.reportId}`,undefined,r.reportId])},details);
+  const details=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open ${x.name} per-device source evidence`},`${x.rows.length} sources →`);
+  details.onclick=()=>openEvidenceModal({title:x.name,subtitle:`${x.rows.length} loaded ${kind==='properties'?'platform/device':'device'} observations · ${x.missing} unreported`,fields:x.rows.map((r,i)=>[`${i+1}. ${r.device} · ${r.platform} · ${r.reportId.slice(0,12)}`,`${r.status.toUpperCase()} · ${r.recorded?'Reported value: '+r.value:'No query entry'}${r.recorded?' · code: '+r.code:''} · SHA-256: ${r.reportId}`,undefined,r.reportId])},details);
   const distinct=node('button',{type:'button',class:'evidence-modal-launch','aria-haspopup':'dialog','aria-label':`Open ${x.name} distinct reported values`},`${x.values.size} distinct`);
-  distinct.onclick=()=>openEvidenceModal({title:x.name,subtitle:'Distinct available query values across loaded devices',fields:[...x.values].map(([v,n])=>[`${n} device(s)`,v])},distinct);
+  distinct.onclick=()=>openEvidenceModal({title:x.name,subtitle:'Distinct available query values across loaded report evidence',fields:[...x.values].map(([v,n])=>[`${n} observation(s)`,v])},distinct);
   return node('tr',{},node('td',{class:'code'},x.name),node('td',{},meter),node('td',{},String(x.counts.unavailable)),node('td',{},String(x.counts.not_applicable)),node('td',{},`${x.counts.unknown} (${x.missing} missing)`),node('td',{},String(x.counts.error)),node('td',{},distinct),node('td',{},details));
  });
  const table=node('div',{class:'table-wrap coverage-table-wrap'},node('table',{class:'evidence-table coverage-table'},header,node('tbody',{},...rows)));
@@ -645,16 +682,32 @@ function renderCompare(){
 }
 function statsDistribution(values){const counts=new Map();for(const value of values){const key=text(value).trim()||'Unreported';counts.set(key,(counts.get(key)||0)+1)}return [...counts].map(([label,count])=>({label,count})).sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label))}
 const statisticsPageWindow=(entries,page,pageSize)=>{const size=[25,50,100].includes(Number(pageSize))?Number(pageSize):25,pages=Math.max(1,Math.ceil(entries.length/size)),current=Math.max(1,Math.min(pages,Math.trunc(Number(page)||1))),start=(current-1)*size;return {items:entries.slice(start,start+size),current,pages,start,total:entries.length,size}};
-function statsDonut(title,data,denominator,unit){
+function statisticsMatchesCohort(report,filter){
+ if(!filter)return true;
+ const platforms=report?.technicalReport?.platforms||[];
+ const devices=platforms.flatMap(platform=>platform.devices||[]);
+ const normalized=value=>text(value).trim()||'Unreported';
+ if(filter.dimension==='vendor')return devices.some(device=>normalized(device.vendor)===filter.value);
+ if(filter.dimension==='version')return devices.some(device=>normalized(device.version)===filter.value);
+ if(filter.dimension==='type')return devices.some(device=>normalized(device.type)===filter.value);
+ if(filter.dimension==='manufacturer')return normalized(report?.device?.manufacturer)===filter.value;
+ if(filter.dimension==='platform')return platforms.some(platform=>normalized(platform.name)===filter.value);
+ return false;
+}
+function statsDonut(title,data,denominator,unit,dimension){
  const cut=Math.min(12,Math.max(3,state.statisticsSliceLimit));
- const items=data.length>cut?[...data.slice(0,cut-1),{label:`Other (${data.length-cut+1} groups)`,count:data.slice(cut-1).reduce((sum,item)=>sum+item.count,0)}]:data;
+ const items=data.length>cut?[...data.slice(0,cut-1),{label:`Other (${data.length-cut+1} groups)`,count:data.slice(cut-1).reduce((sum,item)=>sum+item.count,0),other:true}]:data;
+ const selected=state.statisticsChartFilter;
+ const selectValue=(value)=>{state.statisticsChartFilter=selected?.dimension===dimension&&selected?.value===value?null:{dimension,value};state.statisticsPage=1;renderStatistics();const targets=document.querySelectorAll('.chart-filter-button');for(const target of targets){if(target.dataset.chartDimension===dimension&&target.dataset.chartValue===value){target.focus({preventScroll:true});break}}};
  const ring=node('svg',{class:'donut-chart',viewBox:'0 0 120 120',role:'img','aria-label':`${title}: ${denominator} ${unit} across ${data.length} groups`},node('circle',{class:'donut-track',cx:'60',cy:'60',r:'46'}));
  let offset=0;
  for(let index=0;index<items.length;index++){
   const item=items[index],percentage=denominator?Math.min(100,Math.max(0,100*item.count/denominator)):0;
   if(percentage>0){
-   const segment=node('circle',{class:`donut-segment chart-stroke-${index%8}`,cx:'60',cy:'60',r:'46',pathLength:'100','stroke-dasharray':`${percentage.toFixed(4)} ${(100-percentage).toFixed(4)}`,'stroke-dashoffset':`${(-offset).toFixed(4)}`,tabindex:'0','aria-label':`${item.label}, ${item.count} ${unit}, ${percentage.toFixed(1)} percent`});
+   const interactive=!item.other&&!!dimension,active=interactive&&selected?.dimension===dimension&&selected.value===item.label;
+   const segment=node('circle',{class:`donut-segment chart-stroke-${index%8}${interactive?' donut-interactive':''}${active?' is-selected':''}`,cx:'60',cy:'60',r:'46',pathLength:'100','stroke-dasharray':`${percentage.toFixed(4)} ${(100-percentage).toFixed(4)}`,'stroke-dashoffset':`${(-offset).toFixed(4)}`,...(interactive?{tabindex:'0',role:'button','aria-pressed':String(active),'aria-label':`${active?'Clear':'Filter'} ${title} ${active?'filter for':'to'} ${item.label}`}:{})});
    segment.append(node('title',{},`${item.label} · ${item.count} / ${denominator} · ${percentage.toFixed(1)}%`));
+   if(interactive){segment.addEventListener('click',()=>selectValue(item.label));segment.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();selectValue(item.label)}})}
    ring.append(segment);
   }
   offset+=percentage;
@@ -662,14 +715,17 @@ function statsDonut(title,data,denominator,unit){
  const center=node('div',{class:'donut-center'},node('strong',{},String(denominator)),node('span',{},unit));
  const legend=node('ul',{class:'chart-legend'});
  for(let index=0;index<items.length;index++){
-  const item=items[index],percentage=denominator?100*item.count/denominator:0;
-  legend.append(node('li',{},node('span',{class:`chart-swatch chart-fill-${index%8}`}),node('span',{class:'chart-label',title:item.label},item.label),node('strong',{},String(item.count)),node('span',{class:'chart-share'},`${percentage.toFixed(1)}%`)));
+  const item=items[index],percentage=denominator?100*item.count/denominator:0,active=!item.other&&selected?.dimension===dimension&&selected.value===item.label;
+  const label=item.other||!dimension?node('span',{class:'chart-label',title:item.label},item.label):node('button',{type:'button',class:`chart-filter-button${active?' is-selected':''}`,'aria-pressed':String(active),dataset:{chartDimension:dimension,chartValue:item.label},title:item.label,onclick:()=>selectValue(item.label)},item.label);
+  legend.append(node('li',{},node('span',{class:`chart-swatch chart-fill-${index%8}`,'aria-hidden':'true'}),label,node('strong',{},String(item.count)),node('span',{class:'chart-share'},`${percentage.toFixed(1)}%`)));
  }
- return node('article',{class:'distribution-card stats-chart'},node('h3',{},title),node('div',{class:'donut-wrap'},ring,center),legend,node('p',{class:'evidence-note'},`Denominator: ${denominator} loaded ${unit}; each ${unit==='reports'?'report':unit==='platforms'?'platform':'device'} contributes once.`));
+ return node('article',{class:'distribution-card stats-chart'},node('h3',{},title),node('div',{class:'donut-wrap'},ring,center),legend);
 }
 function renderStatistics(){
  const eligible=new Set(filteredRows().map(r=>r.id));
- const reports=[...state.reports.values()].filter(r=>r?.technicalReport?.platforms&&eligible.has(r.id));
+ const availableReports=[...state.reports.values()].filter(r=>r?.technicalReport?.platforms&&eligible.has(r.id));
+ const reports=availableReports.filter(r=>statisticsMatchesCohort(r,state.statisticsChartFilter));
+ const unloadedReportDetails=Math.max(0,eligible.size-availableReports.length);
  const loaded=reports.length,devices=[],platforms=[],states=new Map(),extensionCounts=new Map();
  let propertyCount=0;
  const addStatus=value=>states.set(value||'unknown',(states.get(value||'unknown')||0)+1);
@@ -690,7 +746,7 @@ function renderStatistics(){
  }
  const coverage=node('section',{class:'stats-coverage'},
   card('Indexed reports',[['Published index',state.rows.length],['Full report details loaded',state.reports.size],['Still not loaded',Math.max(0,state.rows.length-state.reports.size)]],'Index summaries are not complete technical evidence.'),
-  card('Filtered evidence coverage',[['Matching report index',eligible.size],['Loaded full reports used',loaded],['Unloaded report details excluded',Math.max(0,eligible.size-loaded)]],'All charts use the loaded, filtered report subset only.'),
+  card('Filtered evidence coverage',[['Matching report index',eligible.size],['Loaded full reports used',loaded],['Unloaded report details excluded',unloadedReportDetails]],'All charts use the loaded, filtered report subset only.'),
   card('Loaded technical evidence',[['Platforms',platforms.length],['Devices',devices.length],['Property query rows',propertyCount]],'Property states are raw observations, not inferred feature support.')
  );
  const controls=node('section',{class:'stats-filter-controls','aria-label':'Statistics chart controls'});
@@ -704,15 +760,19 @@ function renderStatistics(){
  const search=node('input',{type:'search',placeholder:'Extension name…','aria-label':'Search extension frequency',value:state.statisticsSearch});
  search.addEventListener('input',e=>{state.statisticsSearch=e.target.value;state.statisticsPage=1;renderStatistics();const replacement=document.querySelector('input[aria-label="Search extension frequency"]');if(replacement){replacement.focus();replacement.setSelectionRange(e.target.selectionStart,e.target.selectionStart)}});
  controls.append(node('label',{},node('span',{},'Extension search'),search),node('button',{type:'button',class:'filter-clear-button',onclick:()=>{state.statisticsSliceLimit=8;state.statisticsExtensionScope='both';state.statisticsNamespace='all';state.statisticsMinimum=0;state.statisticsSearch='';state.statisticsPage=1;renderStatistics()}},'Reset extension filters'));
+ const cohort=state.statisticsChartFilter?node('div',{class:'statistics-cohort-filter',role:'status'},node('span',{},`Filtered by ${state.statisticsChartFilter.dimension}: ${state.statisticsChartFilter.value}`),node('button',{type:'button',class:'chart-cohort-clear',onclick:()=>{state.statisticsChartFilter=null;state.statisticsPage=1;renderStatistics()}},'Clear filter')):null;
  const charts=node('div',{class:'stats-charts distribution-grid'});
  const chartHeader=node('section',{class:'statistics-heading'},node('div',{},node('span',{class:'eyebrow'},'INTERACTIVE DISTRIBUTIONS'),node('h3',{},'Filtered OpenCL™ statistics')),node('p',{},'Complete loaded report evidence only. Each distribution uses its own explicit device, platform, or report denominator.'));
  if(loaded){
   charts.append(
-   statsDonut('GPU vendor distribution',statsDistribution(devices.map(x=>x.device.vendor)),devices.length,'devices'),
-   statsDonut('OpenCL device versions',statsDistribution(devices.map(x=>x.device.version)),devices.length,'devices'),
-   statsDonut('OpenCL device types',statsDistribution(devices.map(x=>x.device.type)),devices.length,'devices'),
-   statsDonut('Android manufacturers',statsDistribution(reports.map(r=>r.device?.manufacturer)),loaded,'reports'),
-   statsDonut('OpenCL platforms',statsDistribution(platforms.map(x=>x.platform.name)),platforms.length,'platforms')
+   statsDonut('GPU vendors',statsDistribution(devices.map(x=>x.device.vendor)),devices.length,'devices','vendor'),
+   statsDonut('Device OpenCL API',statsDistribution(devices.map(x=>x.device.version)),devices.length,'devices','version'),
+   statsDonut('OpenCL device types',statsDistribution(devices.map(x=>x.device.type)),devices.length,'devices','type'),
+   statsDonut('Android manufacturers',statsDistribution(reports.map(r=>r.device?.manufacturer)),loaded,'reports','manufacturer'),
+   statsDonut('OpenCL platforms',statsDistribution(platforms.map(x=>x.platform.name)),platforms.length,'platforms','platform'),
+   statsDonut('OpenCL driver versions',statsDistribution(devices.map(x=>x.device.driverVersion)),devices.length,'devices',null),
+   statsDonut('OpenCLScope versions',statsDistribution(reports.map(r=>r.application?.versionName)),loaded,'reports',null),
+   statsDonut('OpenCL platform vendors',statsDistribution(platforms.map(x=>x.platform.vendor)),platforms.length,'platforms',null)
   );
  }
  const distribution=[...states].map(([label,count])=>({label,count})).sort((a,b)=>b.count-a.count||a.label.localeCompare(b.label));
@@ -730,7 +790,7 @@ function renderStatistics(){
  const jump=node('span',{class:'page-jump statistics-page-jump'},node('span',{class:'page-jump-prefix'},'Page'),node('input',{class:'page-jump-input',type:'text',inputmode:'numeric',autocomplete:'off','aria-label':`Page number, 1 to ${page.pages}`,value:String(page.current),'data-page-max':String(page.pages)}),node('span',{class:'page-jump-of'},'of ',node('span',{class:'page-jump-max'},String(page.pages))),node('button',{class:'page-jump-go',type:'button','aria-label':`Go to page ${page.current}`},node('span',{},'Go')));
  const extensionPager=node('div',{class:'statistics-pager-row'},node('label',{class:'statistics-page-limit'},node('span',{},'Rows per page'),limit),node('span',{class:'statistics-page-range'},entries.length?`${page.start+1}–${page.start+page.items.length} of ${entries.length}`:'0 results'),node('nav',{class:'pagination statistics-pagination','aria-label':'Extension frequency pages'},previous,jump,next));
  const extSection=node('section',{class:'stats-chart stats-extension-panel'},node('h3',{},'Extension frequency'),node('p',{class:'evidence-note'},`Found ${entries.length} matching extension names across ${loaded} loaded reports. Each extension is counted at most once per report. Scope: ${state.statisticsExtensionScope}. Extensions overlap, so these percentages must not be shown as slices of a pie.`),page.items.length?node('div',{class:'table-wrap stats-extension-table-wrap'},extensionTable):node('p',{class:'settings-empty'},'No matching extension evidence.'),extensionPager);
- $('contentView').replaceChildren(coverage,controls,chartHeader,charts,loaded?stateSection:node('p',{class:'settings-empty'},'Open a complete indexed report to populate statistics.'),extSection);
+ $('contentView').replaceChildren(coverage,controls,...(cohort?[cohort]:[]),chartHeader,charts,loaded?stateSection:node('p',{class:'settings-empty'},'Open a complete indexed report to populate statistics.'),extSection);
  bindPageJump(jump,{getCurrent:()=>state.statisticsPage,getPages:()=>page.pages,onGo:value=>{state.statisticsPage=value;renderStatistics()}});
  $('pager').hidden=true;$('fetchNext').hidden=true;
 }
@@ -754,7 +814,7 @@ function renderCatalog(){
  $('contentView').replaceChildren(node('div',{class:'encyclopedia-screen'},node('p',{class:'evidence-note'},'Registry relationships and symbol registration are reference metadata. They never replace evidence collected from a selected OpenCL device.'),overview,tools,shown.length?node('div',{class:'encyclopedia-results'},...rows):empty()));
  pager(matches.length,false);
 }
-function render(){syncWorkspaceTitle();const [eyebrow,title,desc]=panes[state.view];$('databaseHero').dataset.workspace=state.view;$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);syncGlobalSearchClear();const statusView=['features','memory','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=true;$('pageLimit').closest('.filter-control').hidden=state.view==='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();if(state.view==='formats')return renderImageFormatCoverage();if(state.view==='extensions')return renderExtensionCoverage();if(['features','memory'].includes(state.view)){if(state.coverageDisplay==='coverage')return renderCoverageView(state.view);const raw=node('div',{class:'coverage-controls'},node('button',{type:'button',class:'evidence-modal-launch',onclick:()=>{state.coverageDisplay='coverage';state.page=0;render()}},'← Aggregate query coverage'));renderCards(recordEntries(state.view));$('contentView').prepend(raw);return}renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
+function render(){syncWorkspaceTitle();const [eyebrow,title,desc]=panes[state.view];$('databaseHero').dataset.workspace=state.view;$('viewEyebrow').textContent=eyebrow;$('viewTitle').textContent=title;ensureWorkspaceHeadingIcon();$('viewDescription').textContent=desc;$('heroWorkspaceEyebrow').textContent=eyebrow;$('heroWorkspaceTitle').textContent=title;$('heroWorkspaceDescription').textContent=desc;for(const btn of document.querySelectorAll('[data-view]')){btn.classList.toggle('active',btn.dataset.view===state.view);btn.setAttribute('aria-current',btn.dataset.view===state.view?'page':'false');btn.setAttribute('aria-selected',String(btn.dataset.view===state.view))}const selectedWorkspace=document.querySelector('[data-view="'+state.view+'"]');if(selectedWorkspace){const nav=$('mainNav');const bounds=selectedWorkspace.getBoundingClientRect(),clip=nav.getBoundingClientRect();if(bounds.left<clip.left+6||bounds.right>clip.right-6){const dest=nav.scrollLeft+(bounds.left+bounds.width/2)-(clip.left+clip.width/2);nav.scrollTo({left:Math.max(0,dest),behavior:document.body.classList.contains('reduce-motion')?'instant':'smooth'})}}$('filterPanel').hidden=state.view==='compare'||state.view==='encyclopedia';closeCustomSelects();$('clearFilters').hidden=!(state.query||state.vendor||state.version||state.device||state.driver||state.status||state.sort!=='newest'||state.manufacturer||state.model||state.platform||state.submittedAge);syncGlobalSearchClear();const statusView=['features','memory','properties','formats'].includes(state.view);if(!statusView&&state.status){state.status='';$('stateFilter').value=''}$('stateFilter').closest('.filter-control').hidden=!statusView;$('sortFilter').closest('.filter-control').hidden=true;$('pageLimit').closest('.filter-control').hidden=state.view==='reports';for(const id of ['vendorFilter','versionFilter','deviceFilter','driverFilter','manufacturerFilter','modelFilter','platformFilter','submissionAgeFilter'])$(id).closest('.filter-control').hidden=false;$('pager').hidden=state.view==='compare';if(state.view==='reports')return renderReports();if(state.view==='compare')return renderCompare();if(state.view==='statistics')return renderStatistics();if(state.view==='encyclopedia')return renderCatalog();if(state.view==='formats')return renderImageFormatCoverage();if(state.view==='extensions')return renderExtensionCoverage();if(['features','memory','properties'].includes(state.view)){if(state.coverageDisplay==='coverage')return renderCoverageView(state.view);const raw=node('div',{class:'coverage-controls'},node('button',{type:'button',class:'evidence-modal-launch',onclick:()=>{state.coverageDisplay='coverage';state.page=0;render()}},'← Aggregate query coverage'));renderCards(recordEntries(state.view));$('contentView').prepend(raw);return}renderCards(recordEntries(state.view));$('fetchNext').hidden=state.view!=='reports'}
 async function api(path,opts={}){if(!API)throw Error('The database API is not configured; the published snapshot remains read-only.');const url=new URL(path,API+'/');if(url.origin!==new URL(API).origin||url.protocol!=='https:')throw Error('Invalid configured HTTPS API endpoint');const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),18000);try{const r=await fetch(url,{...opts,signal:controller.signal,cache:'no-store'});const value=await r.json();if(!r.ok)throw Error(`${r.status} · ${value.error||'API request failed'}`);return value}finally{clearTimeout(timer)}}
 async function loadReport(id){if(!/^[a-f0-9]{64}$/.test(id))throw Error('Report ID must contain 64 lowercase SHA-256 characters.');if(state.invalidPublishedContracts.has(id))throw Error('This indexed archive record failed the verified full-report contract and cannot be displayed as trusted evidence.');if(state.reports.has(id))return state.reports.get(id);const report=await api(`/v1/reports/${id}`);if(report.id!==id||!report.technicalReport)throw Error('Report ID or schema did not match');state.reports.set(id,report);addRows([report]);return report}
 function rowProps(rows){return rows.map(row=>[row.name,row.status==='available'?(row.value===null||row.value===undefined||row.value===''?'(empty)':row.value)+(row.decoded?` · Decoded: ${row.decoded.value} ${row.decoded.unit} (raw ${row.decoded.rawHex})`:``):`OpenCL ${row.code}`,row.status])}
@@ -912,7 +972,7 @@ const workspacePositions=new Map();
 function reducedAnimation(){return document.body.classList.contains('reduce-motion')||matchMedia('(prefers-reduced-motion: reduce)').matches}
 function cancelWorkspaceAnimations(el){for(const animation of el?.getAnimations?.()||[])try{animation.cancel()}catch{}}
 const APP_TITLE='OpenCLScope Database';
-const WORKSPACE_TITLES={reports:'Reports',platforms:'Platforms',devices:'Devices',features:'Features',memory:'Memory',formats:'Formats',extensions:'Extensions',profiles:'Profiles',statistics:'Statistics',compare:'Compare',encyclopedia:'Encyclopedia'};
+const WORKSPACE_TITLES={reports:'Reports',platforms:'Platforms',devices:'Devices',properties:'Properties',features:'Features',memory:'Memory',formats:'Formats',extensions:'Extensions',profiles:'Profiles',statistics:'Statistics',compare:'Compare',encyclopedia:'Encyclopedia'};
 function syncWorkspaceTitle(){
  if(state.detail){
   const p=state.detail.technicalReport?.platforms||[];
@@ -1176,7 +1236,7 @@ async function loadNetworkObservation(force=false){
  finally{if(generation===networkProbeGeneration){networkBusy=false;renderNetworkInfo()}}
 }
 const SETTINGS_DEPENDENCIES=[
- {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.4.9',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
+ {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.4.11',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
  {scope:'Development / deployment',name:'Wrangler',version:'4.130.0',license:'MIT OR Apache-2.0',purpose:'Cloudflare Worker development and deployment CLI. Not sent to the browser.',source:'worker/package.json',file:'wrangler'},
  {scope:'Toolchain component',name:'sharp',version:'0.35.4',license:'Apache-2.0',purpose:'Pinned toolchain override for Cloudflare development tooling; not a Pages runtime dependency.',source:'worker/package.json override',file:'sharp'},
  {scope:'Toolchain component',name:'esbuild',version:'Resolved by Wrangler 4.130.0',license:'MIT',purpose:'Transitive JS build helper; this project does not pin its resolved transitive version.',source:'Wrangler toolchain dependency',file:'esbuild'},

@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const LOCAL='3.4.9',KEY='3409',AUTO_KEY='openclscope.autoReleaseReload',TIMEOUT=5000,EARLY_RETRIES=[2500,6500,15000],STEADY_RETRY=30000;
+const LOCAL='3.4.11',KEY='3411',AUTO_KEY='openclscope.autoReleaseReload',TIMEOUT=5000,EARLY_RETRIES=[2500,6500,15000],STEADY_RETRY=30000;
 let busy=false,navigating=false,pendingRemote='',announcedRemote='';
 const cmp=(a,b)=>{const A=String(a||'').split('.').map(Number),B=String(b||'').split('.').map(Number);for(let i=0;i<3;i++){const d=(A[i]||0)-(B[i]||0);if(d)return d}return 0};
 const enabled=()=>{try{return localStorage.getItem(AUTO_KEY)==='yes'}catch{return false}};

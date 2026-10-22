@@ -2,15 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const load=name=>readFileSync(new URL('../'+name,import.meta.url),'utf8');
-const html=load('index.html'), js=load('assets/app.v3409.js'), css=load('assets/parity.v3409.css'), rules=load('rules/PROJECT_RULES.md'), ref=load('assets/vulkan-layout.v1412.css');
+const html=load('index.html'), js=load('assets/app.v3411.js'), css=load('assets/parity.v3411.css'), rules=load('rules/PROJECT_RULES.md'), ref=load('assets/vulkan-layout.v1412.css');
 test('pinned Vulkan source is preserved, final OpenCL style is versioned',()=>{
- assert.ok(html.indexOf('vulkan-layout.v1412.css')<html.indexOf('site.v3409.css'));
- assert.ok(html.indexOf('site.v3409.css')<html.indexOf('parity.v3409.css'));
+ assert.ok(html.indexOf('vulkan-layout.v1412.css')<html.indexOf('site.v3411.css'));
+ assert.ok(html.indexOf('site.v3411.css')<html.indexOf('parity.v3411.css'));
  assert.match(rules,/Database 3\.2\.0/);
  assert.match(ref,/\.table-scroll-thumb\{position:absolute/);
 });
 test('reference navigation buttons and directional scrolling controls share the same DOM structure',()=>{
- assert.equal((html.match(/class="nav-button(?: active)?" data-view="/g)||[]).length,11);
+ assert.equal((html.match(/class="nav-button(?: active)?" data-view="/g)||[]).length,12);
  assert.match(html,/nav-scroll-button nav-scroll-left/);
  assert.match(html,/nav-scroll-button nav-scroll-right/);
  assert.match(css,/\.main-nav \.nav-button/);
@@ -33,6 +33,6 @@ test('Worker contract and canonical browser sync are unchanged by presentation-o
  assert.match(js,/api\('\/v1\/sync'\)/);
  assert.match(js,/setInterval\(\(\)=>update\(\),10000\)/);
  assert.match(js,/function semanticComparisonLeaves\(report\)/);
- const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.4\.9'/);
+ const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.4\.11'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
 });

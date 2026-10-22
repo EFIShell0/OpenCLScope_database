@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 const root=new URL('../',import.meta.url);
 const load=path=>readFile(new URL(path,root),'utf8');
 const bytes=path=>readFile(new URL(path,root));
-const app=await load('assets/app.v3409.js'),css=await load('assets/site.v3409.css'),html=await load('index.html');
+const app=await load('assets/app.v3411.js'),css=await load('assets/site.v3411.css'),html=await load('index.html');
 
 test('Horizontal page logo restored and OpenCL tab favicon is on black',async()=>{
  const site=await bytes('assets/openclscope_logo_horizontal.png');assert.ok(site.length>1000);
@@ -36,8 +36,8 @@ test('Viewport scrollbar tracks thumb drag, keyboard and true source status',()=
 
 test('Complete OpenCL report evidence remains gated at application 3.0.9',async()=>{
  const worker=await load('worker/src/index.js');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.9'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.11'/);
  assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
  assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
- assert.match(html,/assets\/app\.v3409\.js\?v=3409/);
+ assert.match(html,/assets\/app\.v3411\.js\?v=3411/);
 });

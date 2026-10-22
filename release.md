@@ -1,10 +1,18 @@
-# OpenCLScope Database 3.4.9
+# OpenCLScope Database 3.4.11
 
 Paired to OpenCLScope 3.4.0/30400. Strict new report admission, historical read-only 3.2.0/30200, Image format `specWarning` integrity and native QCOM typed byte decoding; preserve pinned VulkanScope CSS, OpenCL registry and report-scoped evidence.
 
+## Database 3.4.11 — Video-guided Properties parity
+
+- Compared the user's 2:37 4K VulkanScope user-interface recording against the pinned VulkanScope Database 1.4.12 HTML/CSS/JavaScript and OpenCLScope Database 3.4.10 source.
+- Added Properties navigation and a source-backed aggregate table with per-scope available/unavailable/not-applicable/unknown/error distributions, source SHA-256 drilldowns and distinct values.
+- Raw Properties evidence includes both platform and device query entries. Neither fabricated OpenCL results nor Vulkan-only options were introduced.
+- Retained the reference's neutral visual component geometry, OpenCL green accent, 25/50/100 page size, global search, keyboard modal behavior, and mobile overflow isolation.
+- The strict 3.4.0/30400 new-report producer admission and all prior historical-read validators are unchanged. No live Cloudflare or GitHub deploy was executed during preparation.
+
 # OpenCLScope 3.4.0 — Release notes
 
-**Paired components:** OpenCLScope Android 3.4.0 (30400) / OpenCLScope Database 3.4.9. Based on immutable 3.2.0 predecessor archives; no 3.3.0 intermediary claimed. Engineering baseline: bundled `rules/PROJECT_RULES.md` and immutable VulkanScope reference, Khronos OpenCL unified API, and Android native library rules.
+**Paired components:** OpenCLScope Android 3.4.0 (30400) / OpenCLScope Database 3.4.11. Based on immutable 3.2.0 predecessor archives; no 3.3.0 intermediary claimed. Engineering baseline: bundled `rules/PROJECT_RULES.md` and immutable VulkanScope reference, Khronos OpenCL unified API, and Android native library rules.
 
 ## Corrections
 
@@ -65,8 +73,14 @@ Paired to OpenCLScope 3.4.0/30400. Strict new report admission, historical read-
 
 ## Database 3.4.9 — 22 October 2026
 
-- Aligned browser tab titles with VulkanScope: root Reports app title, workspace title with a hyphen and the current report GPU/tab when a detail view is open.
-- Added the OpenCL favicon `.ico` shortcut and explicit PNG/Apple icon dimensions.
-- Removed 44 legacy root documents, inventories and README from the packaged source. Current release notes and changelog are retained; external QA/comparison files remain available separately.
-- Added hash-guarded cleanup of legacy root documents when applying the ZIP over an older checkout; user-edited versions are protected.
-- Preserved registry, Worker submission validation, report data and immutable upstream styles. Existing cross-product table/chart visual gaps still require actual browser comparison; live deployment not tested.
+- Aligned tab titles and favicon roles with the VulkanScope reference (OpenCL technology substitution).
+- Excluded 44 old root comparison/QA documents and redundant README from the release source ZIP.
+- Hash-guarded removal of exact old root files when extracting over a previous checkout.
+
+## Database 3.4.11 — 22 October 2026
+
+- Implemented the original VulkanScope interactive Statistics donut and legend interactions in the OpenCL presentation layer. Named categories can be selected with pointer, touch, Enter and Space, and deselected without losing the user's main section. Synthetic Other remains nonselectable.
+- Eight reported-data distributions now share the upstream chart controls. Each device, platform, or report denominator is kept explicit, with no extrapolated support or market-share claims.
+- Cohort-filtered loaded reports are no longer counted as missing report details. Extension ranking remains report-scoped and evidence backed.
+- Refreshed versioned assets and deploy readiness marker. Historical reports, new submission producer 3.4.0/30400, schema 1, immutable Khronos OpenCL registry, pinned VulkanScope CSS, Worker and D1 rules are unchanged.
+- Local/regression tests and isolated Chromium checks were run; live Cloudflare/GitHub deployment and full visual parity have not been verified.

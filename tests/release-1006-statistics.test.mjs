@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const [app,css,html,worker]=await Promise.all(['assets/app.v3409.js','assets/site.v3409.css','index.html','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
+const [app,css,html,worker]=await Promise.all(['assets/app.v3411.js','assets/site.v3411.css','index.html','worker/src/index.js'].map(x=>readFile(new URL(x,root),'utf8')));
 test('Statistics distribution is deterministic, correct and never loses unknown observations',()=>{
  const code=app.match(/function statsDistribution\(values\)\{[^\n]*\}/)?.[0];
  assert.ok(code);
@@ -12,7 +12,7 @@ test('Statistics distribution is deterministic, correct and never loses unknown 
  assert.deepEqual(Array.from(d,x=>[x.label,x.count]),[['GPU-A',3],['GPU-B',2],['Unreported',1]]);
 });
 test('Charts distinguish loaded report, platform and device denominators',()=>{
- for(const fragment of ['statsDonut','statisticsSliceLimit','statsDistribution(devices.map','statsDistribution(platforms.map','Denominator:',"reports=[...state.reports.values()].filter","new Set(filteredRows().map","Only downloaded full reports","Full report details loaded"]){
+ for(const fragment of ['statsDonut','statisticsSliceLimit','statsDistribution(devices.map','statsDistribution(platforms.map','unloadedReportDetails',"availableReports=[...state.reports.values()].filter","new Set(filteredRows().map","Only downloaded full reports","Full report details loaded"]){
    if(fragment==='Only downloaded full reports')continue;
    assert.ok(app.includes(fragment),fragment);
  }
@@ -26,9 +26,9 @@ test('Charts distinguish loaded report, platform and device denominators',()=>{
 });
 test('Report tabs support keyboard, and previous evidence/producer contracts stay locked',()=>{
  for(const token of ["setAttribute('role','tablist')","'ArrowLeft','ArrowRight','Home','End'","'aria-controls':'detailContent'","setAttribute('role','tabpanel')","'available','not_applicable','unavailable','error','unknown'"])assert.ok(app.includes(token),token);
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.9'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.11'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
- assert.match(html,/app\.v3409\.js\?v=3409/);
- assert.match(html,/site\.v3409\.css\?v=3409/);
- assert.match(html,/browser-compat\.v1006\.js\?v=3409/);
+ assert.match(html,/app\.v3411\.js\?v=3411/);
+ assert.match(html,/site\.v3411\.css\?v=3411/);
+ assert.match(html,/browser-compat\.v1006\.js\?v=3411/);
 });

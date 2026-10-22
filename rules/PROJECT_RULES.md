@@ -1,4 +1,4 @@
-# OpenCLScope Database Engineering Rules — 3.4.9
+# OpenCLScope Database Engineering Rules — 3.4.11
 
 This rulebook is adapted from the complete immutable VulkanScope Database 1.4.12 rulebook, with OpenCLScope schema 1, the current strictly pinned 3.4.0/30400 submission producer, and original historical-report compatibility. `UPSTREAM_REFERENCE_RULES.md` preserves the original unmodified for comparison. Vulkan display/Surface/Turnip/driver-mode semantics MUST NOT be fabricated as OpenCL device facts.
 
@@ -498,9 +498,22 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Escape report strings through DOM text nodes; do not conflate unknown, absent, false, 0, error or unavailable query evidence. New CSS loads last without mutating the byte-pinned reference stylesheet. Preserve OpenCL TXT/HTML/JSON exports, SHA-256 links, keyboard traversal, legal notices, user refresh consent, and Worker/D1 contracts.
 - Compare populated upstream and OpenCL pages in mobile and desktop browsers; source checks and blank snapshots are not proof of live/pixel-perfect parity. Document unresolved differences.
 
-## Database 3.4.9 — strict browser-title and ZIP root parity
+## Database 3.4.11 — strict browser-title and ZIP root parity
 - Match VulkanScope 1.4.12 browser document titles for the Reports workspace, each other workspace and each loaded GPU report/tab, changing only technology/product names. Switching report tabs MUST update the document title without losing the current route.
 - Match the upstream favicon link roles (regular PNG, shortcut ICO, Apple touch image) while using the actual OpenCL CL icon and black background.
 - The source ZIP MUST NOT ship accumulated old COMPARISON/QA/FULL_VULKAN_DESIGN_COMPARISON markdown documents, old UI audit TSV files, a redundant README.md, or stale root SHA inventories. Keep current changelog.md and release.md, mandatory immutable rules, source/test/Worker assets and current manifest verification. Release QA and audit documents are separately distributed.
 - When extracting over a previous checkout, `reconcile_repository.py --apply` must clean only exact previously released historical root files (known hashes), and never erase user-edited local files.
 - Existing immutable reference CSS, cl.xml, GPU icon source files, submission contract and Cloudflare D1 configuration remain unchanged.
+
+## Database 3.4.11 — VulkanScope-interactive statistics and evidence integrity
+- Copy the pinned VulkanScope 1.4.12 distribution interaction pattern for corresponding OpenCL Statistics: donut segments and named legend entries activate the same cohort filter using mouse, touch, Enter and Space; an active filter has aria-pressed and visible selection, an explicit clear action and retained keyboard focus. A synthetic Other slice is an aggregate, not an independently reportable GPU or runtime cohort.
+- Statistics cohort filtering uses only fully loaded, user-filter-matching canonical OpenCL reports. GPU vendor, device API/version, device type, reported Android manufacturer and platform name are derived from real report fields; driver/app/platform-vendor dimensions are displayed as observations, never invented support verdicts. Report-overlapping extension memberships must remain frequency rankings rather than a pie chart.
+- Respect correct denominator units (reports, platforms, devices, property rows) independently. Reports excluded by an interactive cohort filter are still loaded; never count them as missing/unloaded. Unloaded index entries never become inferred evidence. Preserve exact false/0, unknown, unavailable, not_applicable and error results.
+- Preserve exact immutable VulkanScope stylesheet, registry/cl.xml, producer 3.4.0/30400 gating, historical records, Worker and D1 data. Latest presentation assets require fresh versioned JS/CSS URLs and release-manifest/deploy checks; release CI must fail when the interaction tests regress.
+- This update is a tested Statistics subset and MUST NOT be presented as complete UI parity. Keep unresolved Reports/Compare/Settings and screenshot parity gaps explicit.
+
+## Database 3.4.11 — video-observed Properties workspace parity
+- The pinned 157-second VulkanScope 1.4.12 UI recording establishes that Properties is a distinct navigation workspace, with a dense sortable-style availability table and a distinct-values evidence modal; do not claim full visual parity on the strength of a static screenshot.
+- Expose an OpenCL-native Properties workspace using actual, fully loaded immutable CL_PLATFORM_* and CL_DEVICE_* query evidence; never merge platform counts into device denominators. Missing entries are Unknown, not Unavailable or Unsupported. Preserve exact `false`, `0`, empty and failed values.
+- Provide aggregate property availability and distinct-value evidence controls with per-source report links, bounded pages, keyboard controls and mobile horizontal overflow protection. The raw query view must include platform and device properties.
+- Retain pinned reference CSS, registry/cl.xml, strict existing producer and historical acceptance, Worker/D1 data, user-permitted deploy refresh and cross-platform release pipeline. Additional video's Settings, Reports, Compare, Formats and responsive-detail differences remain separately open until proven with equivalent populated fixtures.
