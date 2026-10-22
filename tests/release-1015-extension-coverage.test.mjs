@@ -49,5 +49,5 @@ test('Coverage UI exposes appropriate filters and source report modal with no in
  assert.ok(app.includes("if(state.view==='extensions')return renderExtensionCoverage()"));
  assert.doesNotMatch(slice,/status==='available'.*'supported'/);
  const css=readFileSync(new URL('assets/site.v1028.css',root),'utf8');const html=readFileSync(new URL('index.html',root),'utf8');
- assert.match(css,/\.extension-coverage-table/);assert.match(html,/assets\/app\.v1030\.js\?v=3401/);assert.match(html,/assets\/site\.v1028\.css\?v=3401/);
+ assert.match(css,/\.extension-coverage-table/);assert.match(html,/assets\/app\.v1030\.js\?v=3402/);assert.match(html,/assets\/site\.v1028\.css\?v=3402/);
 });

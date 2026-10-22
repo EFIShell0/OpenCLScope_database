@@ -451,3 +451,9 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Automatic full-page reload requires prior explicit user opt-in, and preserves the current hash; no reload occurs for incomplete or older deployments.
 - Filters are a sibling of the workspace heading. Styling targets the real DOM; hidden controls remain hidden and native select value remains authoritative.
 - Live Cloudflare, GitHub Releases and production reports require separate confirmation; never infer success from local tests.
+
+## Database 3.4.2 — statistics evidence pagination and scrollbar accessibility
+- Statistics extension frequency MUST paginate all matching extension names; it must not silently hide matches beyond the first 100. Each loaded report contributes at most once to an extension and denominators MUST exclude unloaded reports.
+- Statistics page-number, Go, Previous/Next and 25/50/100 limit controls use reference-compatible bounded input rules and preserve search/filter state. Global report pagination MUST not display a misleading zero-row pager on Statistics.
+- Scrollbar thumbs MUST not be keyboard-focusable when their scroll container is not visible or not scrollable, and real available thumbs MUST expose a valid value range.
+- Preserve official Khronos XML and immutable VulkanScope rules/CSS byte-for-byte, schema 1 report ID admission, Worker/D1 contracts, and previous staged CI/release/deploy pipeline.

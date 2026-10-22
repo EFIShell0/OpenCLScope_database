@@ -1,4 +1,4 @@
-$zip = "$env:USERPROFILE\Downloads\OpenCLScope-Database-3.4.1.zip"
+$zip = "$env:USERPROFILE\Downloads\OpenCLScope-Database-3.4.2.zip"
 $repo = "C:\Users\Administrator\Desktop\OpenCLScope_database"
 Expand-Archive -LiteralPath $zip -DestinationPath $repo -Force
 Set-Location $repo
@@ -10,5 +10,5 @@ Set-Location (Join-Path $repo 'worker')
 npm run deploy
 Set-Location $repo
 git add -A
-git commit -m "Release OpenCLScope Database 3.4.1"
+git commit -m "Release OpenCLScope Database 3.4.2"
 git push origin main

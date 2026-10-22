@@ -36,8 +36,8 @@ test('Viewport scrollbar tracks thumb drag, keyboard and true source status',()=
 
 test('Complete OpenCL report evidence remains gated at application 3.0.9',async()=>{
  const worker=await load('worker/src/index.js');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
  assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
- assert.match(html,/assets\/app\.v1030\.js\?v=3401/);
+ assert.match(html,/assets\/app\.v1030\.js\?v=3402/);
 });

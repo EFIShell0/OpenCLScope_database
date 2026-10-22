@@ -21,20 +21,20 @@ test('release marker is generated together with coherent verified snapshot and n
   const f=async url=>({ok:true,arrayBuffer:async()=>new TextEncoder().encode(JSON.stringify({reports:[],nextCursor:null})).buffer});
   const result=await publishSnapshot('https://example.invalid',folder,f);
   const marker=JSON.parse(await readFile(join(folder,'data/release.json'),'utf8'));
-  assert.equal(marker.databaseVersion,'3.4.1');
+  assert.equal(marker.databaseVersion,'3.4.2');
   assert.equal(marker.generatedAt,result.index.generatedAt);
   assert.equal(marker.appJs,'assets/app.v1030.js');
   assert.equal(marker.siteCss,'assets/site.v1028.css');
   assert.equal(result.index.reportCount,0);
   const worker=await read('worker/src/index.js');
-  assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+  assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
   assert.match(worker,/3\.0\.10/);
  }finally{await rm(folder,{recursive:true,force:true})}
 });
 
 test('update marker is same-origin, bounded, version-gated and checks both published asset types before prompting',async()=>{
  const app=await read('assets/app.v1030.js');
- for(const x of ["'3.4.1'",'release.json?_=',"cache:'no-store'",'raw.length>4096','^assets/${kind}','compareVersions(remote,DATABASE_RELEASE_VERSION)<=0','js.headers.get(\'content-type\')','css.headers.get(\'content-type\')','window.__OPENCLSCOPE_RELEASE_UPDATE__?.check()','document.hidden'])assert.ok(app.includes(x),x);
+ for(const x of ["'3.4.2'",'release.json?_=',"cache:'no-store'",'raw.length>4096','^assets/${kind}','compareVersions(remote,DATABASE_RELEASE_VERSION)<=0','js.headers.get(\'content-type\')','css.headers.get(\'content-type\')','window.__OPENCLSCOPE_RELEASE_UPDATE__?.check()','document.hidden'])assert.ok(app.includes(x),x);
  assert.match(app,/location\.replace\(url\.toString\(\)\)/);
  const body=app.split('function publishedAssetName(name,kind){')[1].split('\nasync function checkPublishedRelease')[0].trim().replace(/}\s*$/,'');
  assert.ok(body);

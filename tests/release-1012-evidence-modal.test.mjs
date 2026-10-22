@@ -17,8 +17,8 @@ test('Keyboard focus/overlay, status filtering and SVG namespace remain correctl
  for(const expected of ['evidenceModalReturnFocus=trigger','focus({preventScroll:true})','if(e.key===\'Escape\')','e.shiftKey&&document.activeElement===first','closeEvidenceModal();const r=state.detail','closeEvidenceModal();try','!statusView&&state.status',"['features','memory','formats'].includes(state.view)","'clipPath','text','tspan'"])assert.ok(app.includes(expected),expected);
  assert.match(app,/e\.state\?tag\(e\.state\):node\('span',\{class:'evidence-recorded'\},'Recorded'\)/);
  assert.match(app,/prop\.value===null\|\|prop\.value===undefined\?'\(none\)':prop\.value/);
- assert.match(html,/app\.v1030\.js\?v=3401/);
- assert.match(html,/site\.v1028\.css\?v=3401/);
+ assert.match(html,/app\.v1030\.js\?v=3402/);
+ assert.match(html,/site\.v1028\.css\?v=3402/);
 });
 test('3.0.18 stage documents remaining gaps instead of claiming upstream parity or live deployment',()=>{
  assert.match(compare,/stage 9/i);

@@ -38,5 +38,5 @@ test('Evidence modal links are sourced per-device from canonical report IDs and 
  for(const expected of ['sourceId','validComparisonId(sourceId)','openReport(sourceId)','function renderCoverageView(kind)','queryCoverageModel(kind)',"state.coverageDisplay==='coverage'",'Absent query evidence counts as Unknown',"['available','unavailable','not_applicable','unknown','error']"]){assert.ok(app.includes(expected),expected)}
  assert.match(app,/node\('td',\{class:'code'\},x\.name\)/);
  assert.match(css,/\.coverage-table/);assert.match(css,/prefers-reduced-motion:reduce/);
- assert.match(html,/app\.v1030\.js\?v=3401/);assert.match(html,/site\.v1028\.css\?v=3401/);
+ assert.match(html,/app\.v1030\.js\?v=3402/);assert.match(html,/site\.v1028\.css\?v=3402/);
 });

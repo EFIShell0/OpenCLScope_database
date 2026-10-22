@@ -37,10 +37,10 @@ test('Detail evidence provides category-scoped search, status states and bounded
  assert.match(css,/\.detail-evidence-toolbar/);
 });
 test('Release 3.4.0 remains a strict producer lock',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
- assert.match(html,/app\.v1030\.js\?v=3401/);
- assert.match(html,/site\.v1028\.css\?v=3401/);
- assert.match(html,/browser-compat\.v1006\.js\?v=3401/);
+ assert.match(html,/app\.v1030\.js\?v=3402/);
+ assert.match(html,/site\.v1028\.css\?v=3402/);
+ assert.match(html,/browser-compat\.v1006\.js\?v=3402/);
  assert.match(app,/Full report details loaded/);
 });

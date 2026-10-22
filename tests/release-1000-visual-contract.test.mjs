@@ -9,8 +9,8 @@ test('VulkanScope Database 1.4.12 exact geometry source pinned, loaded only once
  const css=await bytes('assets/vulkan-layout.v1412.css');
  assert.equal(createHash('sha256').update(css).digest('hex'),'bd5957461701439a7655c652b4e560cb84b7cc0163f202a257e019c2c468181b');
  const html=await read('index.html');
- assert.match(html,/vulkan-layout\.v1412\.css\?v=3401/);
- assert.match(html,/site\.v1028\.css\?v=3401/);
+ assert.match(html,/vulkan-layout\.v1412\.css\?v=3402/);
+ assert.match(html,/site\.v1028\.css\?v=3402/);
  assert.doesNotMatch(html,/<link[^>]*upstream-reference\.css/);
 });
 test('Original page wordmark and exact application CL tab icon have separate assets',async()=>{
@@ -36,8 +36,8 @@ test('Report table, statistics and comparison preserve evidence and semantics',a
 });
 test('New submissions strictly require OpenCLScope 3.4.0, database release identity 3.4.0',async()=>{
  const worker=await read('worker/src/index.js'),html=await read('index.html');
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/p\.application\.versionName!==acceptedVersion/);
  assert.match(worker,/p\.application\.versionCode!==acceptedCode/);
- assert.match(html,/OpenCLScope Database 3\.4\.1/);
+ assert.match(html,/OpenCLScope Database 3\.4\.2/);
 });

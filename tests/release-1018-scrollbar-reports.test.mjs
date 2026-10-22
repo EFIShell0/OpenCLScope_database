@@ -33,6 +33,6 @@ test('Worker contract and canonical browser sync are unchanged by presentation-o
  assert.match(js,/api\('\/v1\/sync'\)/);
  assert.match(js,/setInterval\(\(\)=>update\(\),10000\)/);
  assert.match(js,/function semanticComparisonLeaves\(report\)/);
- const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ const worker=load('worker/src/index.js');assert.match(worker,/export const DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
 });

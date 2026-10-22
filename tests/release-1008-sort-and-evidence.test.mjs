@@ -47,7 +47,7 @@ test('context menu works on compare and evidence rows with no server writes',()=
  assert.doesNotMatch(app.slice(app.indexOf('function evidenceQuickMenu('),app.indexOf('function bindReportLongPress(')),/fetch\(|api\(|localStorage\.setItem/);
 });
 test('3.4.0 remains a source-compatible database version; producer is 3.4.0',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/versionName!==acceptedVersion/);
  assert.match(rules,/Database 3\.2\.0/);
  assert.match(rules,/3\.0\.11 \/ 30011/);

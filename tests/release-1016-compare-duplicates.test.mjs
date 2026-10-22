@@ -38,8 +38,8 @@ test('query state, numeric code and literal false/zero/null/unknown remain disti
 test('Compare offers clickable counts, status filters and source navigation with safe unmodified backend',()=>{
  for(const token of ['compareChange','Filter comparison change type','compare-summary-filter','Open baseline report','Open target report','baselineReportId:state.compareA','targetReportId:state.compareB','state.compareChange===\'All\'','compareExportRecords(matched,\'json\')'])assert.ok(app.includes(token),token);
  const html=readFileSync(new URL('index.html',root),'utf8');
- assert.match(html,/app\.v1030\.js\?v=3401/);assert.match(html,/site\.v1028\.css\?v=3401/);
+ assert.match(html,/app\.v1030\.js\?v=3402/);assert.match(html,/site\.v1028\.css\?v=3402/);
  const css=readFileSync(new URL('assets/site.v1028.css',root),'utf8');assert.match(css,/\.compare-summary-filter\[aria-pressed=/);
- const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
  assert.match(worker,/versionName!==acceptedVersion/);
 });

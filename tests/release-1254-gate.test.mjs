@@ -25,7 +25,7 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
   const dir=await mkdtemp(join(tmpdir(),'openclscope-pages-gate-'));
   try{
     for(const folder of ['tools','worker/src','data','assets','registry','licenses'])await mkdir(join(dir,folder),{recursive:true});
-    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v1030.js','assets/site.v1028.css','assets/parity.v1028.css','assets/release-bootstrap.v3401.js']){
+    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v1030.js','assets/site.v1028.css','assets/parity.v1028.css','assets/release-bootstrap.v3402.js']){
       const dest=join(dir,file);await copyFile(new URL(file,root),dest);
     }
     const run=()=>spawnSync(process.execPath,['tools/build_pages_artifact.mjs'],{cwd:dir,encoding:'utf8',timeout:12000});
@@ -48,8 +48,8 @@ test('Navigation, filters, default page size, and brand revisions are wired into
   assert.match(js,/bindNavigationScroll\(\)/);
   assert.match(js,/\$\('clearFilters'\)\.onclick=clearWorkspaceFilters/);
   assert.match(js,/pageSize:25/);
-  assert.match(html,/OpenCLScope Database 3\.4\.1/);
-  assert.match(html,/app\.v1030\.js\?v=3401/);
+  assert.match(html,/OpenCLScope Database 3\.4\.2/);
+  assert.match(html,/app\.v1030\.js\?v=3402/);
   assert.match(css,/\.nav-scroll-button:disabled/);
   assert.doesNotMatch(html,/site\.v1204\.css/);
 });

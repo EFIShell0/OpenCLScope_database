@@ -50,6 +50,6 @@ test('Exact numeric format pairs are not mixed just because display names agree'
 test('New grouped format view is accessible and version coherent without fake support claims',()=>{
  for(const term of ['renderImageFormatCoverage()','formatDisplay','formatMinimum','formatSearch','imageFormatCoverageModel()','pair.reported/g.queried','Missing groups are Unknown','state.view===\'formats\'','openEvidenceModal','row.reportId','pager(total,false)'])assert.ok(app.includes(term),term);
  assert.match(css,/\.format-coverage-table/);
- assert.match(html,/assets\/app\.v1030\.js\?v=3401/);assert.match(html,/assets\/site\.v1028\.css\?v=3401/);
+ assert.match(html,/assets\/app\.v1030\.js\?v=3402/);assert.match(html,/assets\/site\.v1028\.css\?v=3402/);
  assert.doesNotMatch(app,/IMAGE2D_SUPPORTED_BY_DRIVER/);
 });

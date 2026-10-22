@@ -33,7 +33,8 @@ ACTIVE = frozenset({
     'release-1019-reports-sorting.test.mjs',
     'release-1020-filter-scroll-stats.test.mjs',
     'release-1028-statistics-parity.test.mjs',
-    'release-3401-boot-deploy.test.mjs',
+    'release-3402-boot-deploy.test.mjs',
+    'release-3402-statistics-pager.test.mjs',
 })
 
 def check(apply=False):

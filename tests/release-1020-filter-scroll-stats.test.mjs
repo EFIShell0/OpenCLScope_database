@@ -32,6 +32,6 @@ test('statistics denominators use all loaded query rows rather than category max
 });
 test('immutable Vulkan reference remains present and original OpenCL reports are unmodified',()=>{
  assert.match(html,/assets\/vulkan-layout\.v1412\.css/);
- assert.match(html,/assets\/parity\.v1028\.css\?v=3401/);
- assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.4\.1'/);
+ assert.match(html,/assets\/parity\.v1028\.css\?v=3402/);
+ assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.4\.2'/);
 });
