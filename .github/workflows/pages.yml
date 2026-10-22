@@ -55,7 +55,7 @@ jobs:
         run: |
           python tools/reconcile_repository.py --check
           python tools/verify_release.py
-          node --check assets/app.v3408.js
+          node --check assets/app.v3409.js
           node --check worker/src/index.js
       - name: Run frontend and Worker regression suites on Windows
         run: node tools/run_tests.mjs
@@ -117,8 +117,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          TAG="v3.4.8"
-          ZIP="dist/OpenCLScope-Database-3.4.8.zip"
+          TAG="v3.4.9"
+          ZIP="dist/OpenCLScope-Database-3.4.9.zip"
           SHA="${ZIP}.sha256"
           verify_tag() {
             git fetch origin "+refs/tags/$TAG:refs/tags/$TAG" >/dev/null 2>&1 || true
@@ -138,9 +138,9 @@ jobs:
               fi
             else
               if verify_tag; then
-                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --verify-tag --title "OpenCLScope Database 3.4.8" --generate-notes 2>&1)"; then exit 0; fi
+                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --verify-tag --title "OpenCLScope Database 3.4.9" --generate-notes 2>&1)"; then exit 0; fi
               else
-                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --target "$GITHUB_SHA" --title "OpenCLScope Database 3.4.8" --generate-notes 2>&1)"; then exit 0; fi
+                if OUT="$(gh release create "$TAG" "$ZIP" "$SHA" --target "$GITHUB_SHA" --title "OpenCLScope Database 3.4.9" --generate-notes 2>&1)"; then exit 0; fi
               fi
             fi
             echo "$OUT" >&2

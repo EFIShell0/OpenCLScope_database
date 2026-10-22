@@ -2,7 +2,7 @@ import {readFileSync} from 'node:fs';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-const source=readFileSync(new URL('../assets/app.v3408.js',import.meta.url),'utf8');
+const source=readFileSync(new URL('../assets/app.v3409.js',import.meta.url),'utf8');
 const fnCode=source.match(/const statisticsPageWindow=.+?;\n/)?.[0];
 const page=vm.runInNewContext(fnCode+'statisticsPageWindow');
 test('Statistics shows every extension without a hard 100-row limit',()=>{

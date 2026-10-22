@@ -1,4 +1,4 @@
-# OpenCLScope Database Engineering Rules — 3.4.6
+# OpenCLScope Database Engineering Rules — 3.4.9
 
 This rulebook is adapted from the complete immutable VulkanScope Database 1.4.12 rulebook, with OpenCLScope schema 1, the current strictly pinned 3.4.0/30400 submission producer, and original historical-report compatibility. `UPSTREAM_REFERENCE_RULES.md` preserves the original unmodified for comparison. Vulkan display/Surface/Turnip/driver-mode semantics MUST NOT be fabricated as OpenCL device facts.
 
@@ -497,3 +497,10 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Do not ship an independent visible Diagnostics tab when authoritative collection fields can be presented in Overview. Use the upstream Raw report label and evidence panels, not unrelated accordion-only pages. Show counts derived exclusively from the loaded immutable report.
 - Escape report strings through DOM text nodes; do not conflate unknown, absent, false, 0, error or unavailable query evidence. New CSS loads last without mutating the byte-pinned reference stylesheet. Preserve OpenCL TXT/HTML/JSON exports, SHA-256 links, keyboard traversal, legal notices, user refresh consent, and Worker/D1 contracts.
 - Compare populated upstream and OpenCL pages in mobile and desktop browsers; source checks and blank snapshots are not proof of live/pixel-perfect parity. Document unresolved differences.
+
+## Database 3.4.9 — strict browser-title and ZIP root parity
+- Match VulkanScope 1.4.12 browser document titles for the Reports workspace, each other workspace and each loaded GPU report/tab, changing only technology/product names. Switching report tabs MUST update the document title without losing the current route.
+- Match the upstream favicon link roles (regular PNG, shortcut ICO, Apple touch image) while using the actual OpenCL CL icon and black background.
+- The source ZIP MUST NOT ship accumulated old COMPARISON/QA/FULL_VULKAN_DESIGN_COMPARISON markdown documents, old UI audit TSV files, a redundant README.md, or stale root SHA inventories. Keep current changelog.md and release.md, mandatory immutable rules, source/test/Worker assets and current manifest verification. Release QA and audit documents are separately distributed.
+- When extracting over a previous checkout, `reconcile_repository.py --apply` must clean only exact previously released historical root files (known hashes), and never erase user-edited local files.
+- Existing immutable reference CSS, cl.xml, GPU icon source files, submission contract and Cloudflare D1 configuration remain unchanged.

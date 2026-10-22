@@ -102,7 +102,7 @@ export async function publishSnapshot(api,out,fetchImpl=fetch,options={}){
   const result=await collectSnapshot(api,fetchImpl,options);
   const folder=resolve(out,'data');await mkdir(folder,{recursive:true});
   const suffix=`.${process.pid}.tmp`;
-  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',{schemaVersion:2,releaseReady:true,databaseVersion:DATABASE_RELEASE_VERSION,cacheKey:'3408',appJs:'assets/app.v3408.js',siteCss:'assets/site.v3408.css',parityCss:'assets/parity.v3408.css',shellCss:'assets/reference-shell.v3408.css',reportDetailCss:'assets/report-detail.v3408.css',bootstrapJs:'assets/release-bootstrap.v3408.js',generatedAt:result.index.generatedAt}]];
+  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',{schemaVersion:2,releaseReady:true,databaseVersion:DATABASE_RELEASE_VERSION,cacheKey:'3409',appJs:'assets/app.v3409.js',siteCss:'assets/site.v3409.css',parityCss:'assets/parity.v3409.css',shellCss:'assets/reference-shell.v3409.css',reportDetailCss:'assets/report-detail.v3409.css',bootstrapJs:'assets/release-bootstrap.v3409.js',generatedAt:result.index.generatedAt}]];
   for(const [filename,payload] of entries)await writeFile(join(folder,filename+suffix),JSON.stringify(payload));
   for(const [filename]of entries)await rename(join(folder,filename+suffix),join(folder,filename));
   return result;

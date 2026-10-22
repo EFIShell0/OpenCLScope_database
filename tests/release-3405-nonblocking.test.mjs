@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 const read=p=>readFile(new URL('../'+p,import.meta.url),'utf8');
 test('Deployed version prompts never lock the page or steal keyboard focus',async()=>{
- const [app,css,html]=await Promise.all([read('assets/app.v3408.js'),read('assets/site.v3408.css'),read('index.html')]);
+ const [app,css,html]=await Promise.all([read('assets/app.v3409.js'),read('assets/site.v3409.css'),read('index.html')]);
  assert.match(app,/class:'db-release-notice',role:'status'/);
  assert.match(app,/suppressedRemoteRelease===remote/);
  assert.match(app,/document\.body\.append\(box\);publishedReleaseNotice=box/);
@@ -17,7 +17,7 @@ test('Deployed version prompts never lock the page or steal keyboard focus',asyn
  assert.match(html,/id="settingsAutoReleaseReload" type="checkbox"/);
 });
 test('Automatic deployment reload needs user opt-in, is reversible, and retains route',async()=>{
- const [app,boot,rules]=await Promise.all([read('assets/app.v3408.js'),read('assets/release-bootstrap.v3408.js'),read('rules/PROJECT_RULES.md')]);
+ const [app,boot,rules]=await Promise.all([read('assets/app.v3409.js'),read('assets/release-bootstrap.v3409.js'),read('rules/PROJECT_RULES.md')]);
  assert.match(app,/\$\('settingsAutoReleaseReload'\)\.onchange/);
  assert.match(app,/\.enable\(\);else window\.__OPENCLSCOPE_RELEASE_UPDATE__\?\.disable\(\)/);
  assert.match(app,/syncReleasePreference\(\)/);
@@ -29,13 +29,13 @@ test('Automatic deployment reload needs user opt-in, is reversible, and retains 
 test('App and stylesheet revisions are individually versioned for cache-safe GitHub Pages publication',async()=>{
  const [html,rawMarker]=await Promise.all([read('index.html'),read('data/release.json')]);
  const marker=JSON.parse(rawMarker);
- assert.equal(marker.databaseVersion,'3.4.8');
+ assert.equal(marker.databaseVersion,'3.4.9');
  assert.equal(marker.releaseReady,false);
  for(const p of [marker.appJs,marker.siteCss,marker.parityCss,marker.bootstrapJs]){
-   assert.ok(html.includes(p+'?v=3408'),p);
+   assert.ok(html.includes(p+'?v=3409'),p);
    const bytes=await read(p);
    assert.ok(bytes.length>100,p);
  }
- assert.equal(marker.appJs,'assets/app.v3408.js');
- assert.equal(marker.siteCss,'assets/site.v3408.css');
+ assert.equal(marker.appJs,'assets/app.v3409.js');
+ assert.equal(marker.siteCss,'assets/site.v3409.css');
 });
