@@ -24,8 +24,8 @@ for(const essential of ['index.html','config.js','data/index.json','data/snapsho
 const index=JSON.parse(await readFile(resolve(site,'data/index.json'),'utf8'));
 const preload=JSON.parse(await readFile(resolve(site,'data/snapshot.json'),'utf8'));
 const marker=JSON.parse(await readFile(resolve(site,'data/release.json'),'utf8'));
-if(index.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||preload.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||marker.databaseVersion!==DATABASE_RELEASE_VERSION||index.generatedAt!==preload.generatedAt||marker.generatedAt!==index.generatedAt)throw Error('Published index/release identity mismatch');
+if(marker.schemaVersion!==2||typeof marker.releaseReady!=='boolean'||marker.cacheKey!=='3401'||index.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||preload.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||marker.databaseVersion!==DATABASE_RELEASE_VERSION||index.generatedAt!==preload.generatedAt||marker.generatedAt!==index.generatedAt)throw Error('Published index/release identity mismatch');
 if(!Array.isArray(index.reports)||index.reportCount!==index.reports.length||preload.reportCount!==index.reportCount||!Array.isArray(preload.reports)||preload.preloadedReportCount!==preload.reports.length)throw Error('Published index/preload incomplete');
 const html=await readFile(resolve(site,'index.html'),'utf8');
-if(!html.includes(marker.appJs+'?')||!html.includes(marker.siteCss+'?')||!files.includes(marker.appJs)||!files.includes(marker.siteCss))throw Error('Published frontend/release marker mismatch');
+if(!html.includes(marker.appJs+'?')||!html.includes(marker.siteCss+'?')||!files.includes(marker.appJs)||!files.includes(marker.siteCss)||!html.includes(marker.parityCss+'?')||!html.includes(marker.bootstrapJs+'?')||!files.includes(marker.parityCss)||!files.includes(marker.bootstrapJs))throw Error('Published frontend/release marker mismatch');
 console.log(`PASS: audited ${files.length} public Pages files, Database ${DATABASE_RELEASE_VERSION}`);

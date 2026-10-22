@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 const root = new URL('../', import.meta.url);
 const read = name => readFileSync(new URL(name,root),'utf8');
 const html=read('index.html');
-const app=read('assets/app.v1028.js');
+const app=read('assets/app.v1030.js');
 const css=read('assets/parity.v1028.css');
 test('filters have a separate visible row independent of title',()=>{
  const section=html.indexOf('id="workspace"'),heading=html.indexOf('class="section-heading"',section),filters=html.indexOf('id="filterPanel"',section),lookup=html.indexOf('class="lookup-deck"',section);
@@ -32,6 +32,6 @@ test('statistics denominators use all loaded query rows rather than category max
 });
 test('immutable Vulkan reference remains present and original OpenCL reports are unmodified',()=>{
  assert.match(html,/assets\/vulkan-layout\.v1412\.css/);
- assert.match(html,/assets\/parity\.v1028\.css\?v=1027/);
- assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.0\.32'/);
+ assert.match(html,/assets\/parity\.v1028\.css\?v=3401/);
+ assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.4\.1'/);
 });

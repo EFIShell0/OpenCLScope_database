@@ -15,12 +15,21 @@ function makeAudit(platform,legacy307=false) {
  const audit={status:missing.length||(legacy307&&only.length)?'inconsistent':'consistent',versionedEvidence:'incomplete',checkedDevices:platform.devices.length,commonDeviceExtensions:common,missingFromPlatform:missing,platformOnly:only,platformVersionedMismatch:[],deviceVersionedMismatch:[]};
  return audit;
 }
-function fullProducer(value,versionName='3.0.11',versionCode=30011){
+function fullProducer(value,versionName='3.4.0',versionCode=30400){
   const current=clone(value);
   current.application.versionName=versionName;current.application.versionCode=versionCode;current.technicalReport.appVersion=versionName;
   const fill=(rows,keys)=>{const by=new Map(rows.map(row=>[row.name,row]));return [...keys].map(name=>by.get(name)||{name,value:'',status:'unavailable',code:-30})};
-  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
-  if (versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
+  for(const platform of current.technicalReport.platforms){platform.properties=fill(platform.properties,PLATFORM_KEYS);for(const device of platform.devices)device.properties=fill(device.properties,(versionName==='3.4.0' || versionName==='3.2.0' || versionName==='3.1.0' || versionName==='3.0.14' || versionName==='3.0.13' || versionName==='3.0.12' || versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7' || versionName==='3.0.6' || versionName==='3.0.5' || versionName==='3.0.4' || versionName==='3.0.3') ? DEVICE_KEYS_1016 : DEVICE_KEYS_30002)}
+  if (versionName==='3.4.0') for (const platform of current.technicalReport.platforms) for (const device of platform.devices) {
+    for (const prop of device.properties) if (['CL_DEVICE_PAGE_SIZE_QCOM','CL_DEVICE_EXT_MEM_PADDING_IN_BYTES_QCOM'].includes(prop.name) && prop.status==='available') {
+      const match=/^4 bytes \(raw hex 0x([0-9A-Fa-f]{8})\)$/.exec(prop.value);
+      if (match) { const raw=match[1].toUpperCase();const bytes=raw.match(/../g).map(x=>parseInt(x,16));prop.decoded={unit:'bytes',encoding:'native_u32',value:bytes.reduce((acc,v,i)=>acc+v*2**(8*i),0),rawHex:raw}; }
+    }
+    for (const group of device.imageFormats) for (const format of group.formats) {
+      format.specWarning=format.order==='CL_RGB' && new Set(['CL_SNORM_INT8','CL_SNORM_INT16','CL_UNORM_INT8','CL_UNORM_INT16','CL_SIGNED_INT8','CL_SIGNED_INT16','CL_SIGNED_INT32','CL_UNSIGNED_INT8','CL_UNSIGNED_INT16','CL_UNSIGNED_INT32','CL_HALF_FLOAT','CL_FLOAT']).has(format.dataType)?'non_power_of_two_element_bits':'';
+    }
+  }
+  if (versionName==='3.4.0' || versionName==='3.2.0' || versionName==='3.1.0' || versionName==='3.0.14' || versionName==='3.0.13' || versionName==='3.0.12' || versionName==='3.0.11' || versionName==='3.0.10' || versionName==='3.0.9' || versionName==='3.0.8' || versionName==='3.0.7') for(const platform of current.technicalReport.platforms)platform.extensionAudit=makeAudit(platform,versionName==='3.0.7');
   return current;
 }
 class MockDatabase {
@@ -38,7 +47,42 @@ function req(path,method='GET',body=null,headers={}){return new Request('https:/
 const get=(e,path)=>worker.fetch(req(path),e,{});
 async function post(e,data,ctx={}){return worker.fetch(req('/v1/reports','POST',data),e,ctx)}
 const fixture=fullProducer(originalFixture);
-test('3.0.9/30011 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
+test('3.2.0 exact historic producer remains readable but cannot POST after 3.4.0',()=>{
+ const previous=fullProducer(originalFixture,'3.2.0',30200);
+ assert.deepEqual(validateStoredReport(previous),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(previous).ok,false);
+});
+test('3.4.0 typed QCOM bytes and image warnings cannot be forged',()=>{
+ const base=clone(fixture);
+ const device=base.technicalReport.platforms[0].devices[0];
+ const page=device.properties.find(p=>p.name==='CL_DEVICE_PAGE_SIZE_QCOM');
+ page.status='available';page.code=0;page.value='4 bytes (raw hex 0x00100000)';page.decoded={unit:'bytes',encoding:'native_u32',value:4096,rawHex:'00100000'};
+ const group=device.imageFormats[0];group.formats=[{order:'CL_RGB',dataType:'CL_SIGNED_INT16',orderValue:4276,typeValue:4312,specWarning:'non_power_of_two_element_bits'}];
+ assert.deepEqual(validateSubmission(base),{ok:true,reason:'ok'});
+ for(const mutate of [p=>p.technicalReport.platforms[0].devices[0].properties.find(x=>x.name==='CL_DEVICE_PAGE_SIZE_QCOM').decoded.value=100,
+  p=>p.technicalReport.platforms[0].devices[0].properties.find(x=>x.name==='CL_DEVICE_PAGE_SIZE_QCOM').decoded.rawHex='DEADBEEF',
+  p=>p.technicalReport.platforms[0].devices[0].imageFormats[0].formats[0].specWarning='',
+  p=>p.technicalReport.platforms[0].devices[0].imageFormats[0].formats[0].dataType='CL_UNORM_SHORT_565']) {
+  const forged=clone(base);mutate(forged);assert.equal(validateSubmission(forged).ok,false);
+ }
+});
+test('3.1.0 complete historic reports stay readable and cannot be uploaded as 3.4.0',async()=>{
+ const old=fullProducer(originalFixture,'3.1.0',30100);
+ assert.deepEqual(validateStoredReport(old),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(old).ok,false);
+ assert.equal((await post(env(),old)).status,400);
+ const forged=clone(old);forged.technicalReport.appVersion='3.4.0';
+ assert.equal(validateStoredReport(forged).ok,false);
+});
+test('3.0.13/30013 reports remain readable but are not accepted as fresh submissions',()=>{
+ const prior=fullProducer(originalFixture,'3.0.13',30013);
+ assert.deepEqual(validateStoredReport(prior),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(prior).ok,false);
+ const forged=clone(prior);
+ forged.technicalReport.appVersion='3.4.0';
+ assert.equal(validateStoredReport(forged).ok,false);
+});
+test('3.4.0/30400 is the only new submission producer; older versions and unknown futures fail closed',async()=>{
  assert.deepEqual(validateSubmission(fixture),{ok:true,reason:'ok'});
  for(const [v,c] of [['0.2.0',200],['0.12.10',1210],['0.30.29',3029],['1.0.0',10000],['1.0.14',10014],['1.0.15',10015],['1.0.16',10016],['1.0.17',10017],['1.0.18',10018],['1.0.19',10019],['1.0.20',10020],['1.0.21',10021],['1.0.22',10022]]){
   const older=fullProducer(originalFixture,v,c);
@@ -244,4 +288,33 @@ test('legacy 3.0.7 historical classifier is accepted as archived but not as a ne
   assert.equal((await post(env(),old)).status,400);
   const changed=clone(old);changed.technicalReport.platforms[0].extensionAudit.status='consistent';
   assert.equal(validateStoredReport(changed).ok,false);
+});
+
+test('3.0.12 reports remain historical-only after the runtime access upgrade',async()=>{
+ const historical=fullProducer(originalFixture,'3.0.12',30012);
+ assert.deepEqual(validateStoredReport(historical),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(historical).ok,false);
+ assert.equal((await post(env(),historical)).status,400);
+ const invalid=clone(historical);invalid.technicalReport.platforms[0].devices[0].properties.pop();
+ assert.equal(validateStoredReport(invalid).ok,false);
+});
+test('3.0.11 complete reports are historical-only; 3.4.0 is the new upload producer',async()=>{
+ const old=fullProducer(originalFixture,'3.0.11',30011);
+ assert.deepEqual(validateStoredReport(old),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(old).ok,false);
+ assert.equal((await post(env(),old)).status,400);
+ const modified=clone(old);modified.technicalReport.platforms[0].devices[0].properties.pop();
+ assert.equal(validateStoredReport(modified).ok,false);
+});
+test('3.0.14 complete reports remain historical-only after OpenCLScope 3.4.0 release',async()=>{
+ const previous=fullProducer(originalFixture,'3.0.14',30014);
+ assert.deepEqual(validateStoredReport(previous),{ok:true,reason:'ok'});
+ assert.equal(validateSubmission(previous).ok,false);
+ assert.equal((await post(env(),previous)).status,400);
+ const corrupted=clone(previous);
+ corrupted.technicalReport.platforms[0].devices[0].properties.pop();
+ assert.equal(validateStoredReport(corrupted).ok,false);
+ const forged=clone(previous);
+ forged.application.versionName='3.4.0';forged.application.versionCode=30400;
+ assert.equal(validateSubmission(forged).ok,false);
 });

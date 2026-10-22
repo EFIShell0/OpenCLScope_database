@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const file = name => readFileSync(new URL('../'+name,import.meta.url),'utf8');
 const html=file('index.html');
-const js=file('assets/app.v1028.js');
+const js=file('assets/app.v1030.js');
 const patch=file('assets/parity.v1028.css');
 const reference=file('assets/vulkan-layout.v1412.css');
 const rules=file('rules/PROJECT_RULES.md');
@@ -14,7 +14,7 @@ test('parity corrections are the final local stylesheet after the pinned upstrea
  assert.match(html,/data-workspace="reports"/);
  assert.match(js,/\$\('databaseHero'\)\.dataset\.workspace=state\.view/);
  assert.match(reference,/\.hero-v127\{position:relative;overflow:hidden/);
- assert.match(rules,/Database 3\.0\.32/);
+ assert.match(rules,/Database 3\.2\.0/);
 });
 test('OpenCL green is decorative, neutral surfaces and semantic error state survive',()=>{
  assert.match(patch,/:root\{--bg:#09090a;--panel:#111113;--panel2:#161619;--line:#292a2f/);
@@ -35,8 +35,8 @@ test('pagination is centered, bounded, and loads next remote page only for Repor
 });
 test('all workspace filters can wrap without crushing the title and obey hidden state',()=>{
  assert.match(patch,/\.section-heading\{display:grid;grid-template-columns:minmax\(0,1fr\)/);
- assert.match(patch,/\.section-heading \.filters\.filter-panel\{display:grid;grid-template-columns:repeat\(auto-fit/);
- assert.match(patch,/\.section-heading \.filters\.filter-panel\[hidden\],\.section-heading \.filters\.filter-panel \.filter-control\[hidden\]\{display:none!important\}/);
+ assert.match(patch,/\.db-workspace \.filters\.filter-panel\{display:grid;grid-template-columns:repeat\(auto-fit/);
+ assert.match(patch,/\.db-workspace \.filters\.filter-panel\[hidden\],\.db-workspace \.filters\.filter-panel \.filter-control\[hidden\]\{display:none!important\}/);
  assert.match(patch,/@media\(max-width:760px\)/);
  assert.match(patch,/\.db-content \.table-wrap,\.db-content \.coverage-table-wrap,\.db-content \.compare-evidence-wrap\{[^}]*overflow-x:auto/);
 });

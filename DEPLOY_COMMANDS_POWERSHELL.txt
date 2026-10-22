@@ -1,13 +1,14 @@
-# New release ZIP 3.0.32: extract to a fresh directory first; do not overwrite a different live Git checkout.
-$zip = "$env:USERPROFILE\Downloads\OpenCLScope-Database-3.0.32.zip"
-$dest = "$env:USERPROFILE\Desktop\OpenCLScope_database_3.0.32"
-Expand-Archive -LiteralPath $zip -DestinationPath $dest -Force
-Set-Location $dest
+$zip = "$env:USERPROFILE\Downloads\OpenCLScope-Database-3.4.1.zip"
+$repo = "C:\Users\Administrator\Desktop\OpenCLScope_database"
+Expand-Archive -LiteralPath $zip -DestinationPath $repo -Force
+Set-Location $repo
+python -B tools\reconcile_repository.py --apply
 python -B tools\reconcile_repository.py --check
 python -B tools\verify_release.py
-node tools\run_tests.mjs
-node tools\build_pages_artifact.mjs
-node tools\audit_pages_artifact.mjs _site
-python -B tools\package_release.py dist
-python -B tools\package_release.py dist --verify-existing
-# Merge carefully with existing Git working tree after reviewing git diff; a push triggers GitHub Actions release/deploy.
+node tools/run_tests.mjs
+Set-Location (Join-Path $repo 'worker')
+npm run deploy
+Set-Location $repo
+git add -A
+git commit -m "Release OpenCLScope Database 3.4.1"
+git push origin main

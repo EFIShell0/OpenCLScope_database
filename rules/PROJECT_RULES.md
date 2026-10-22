@@ -412,11 +412,42 @@ OpenCLScope 0.12.5/1205 is the only newly permitted producer; previous exact-ver
 - Runtime linker errors and no-driver statuses are never valid complete reports. Device identity or capabilities must not be inferred from Vulkan or GLES.
 - Pinned Khronos registry and VulkanScope reference assets are immutable.
 
+## 3.0.32 producer and report integrity
+- OpenCLScope Database 3.0.32 accepts new complete, explicit live reports only from OpenCLScope 3.0.12 / 30012.
+- OpenCLScope 3.0.11 / 30011 remains historical read-only, validated with its original complete OpenCL evidence contract; prior supported reports remain readable and cannot be resubmitted.
+- A failed OpenCL runtime load is not a reportable OpenCL device and cannot be submitted as a complete report.
+- Native library discovery diagnostics cannot infer an OpenCL implementation from graphics renderer names, filenames, or linker errors.
 
-## OpenCLScope Database 3.0.32 — Windows CI and publication integrity
-- Checkout on Windows MUST preserve byte-for-byte immutable VulkanScope CSS and official OpenCL registry. Source files, JS tests and styles use Git-enforced LF; immutable XML/SVG bytes remain unmodified.
-- Cross-platform source extraction tests MUST accept LF and CRLF delimiters. Fixing a failure may not change pinned reference hashes or bypass the semantic Compare regression.
-- Windows and Linux quality jobs precede the same-commit GitHub Release; successful Release gates Pages deployment. Snapshot refresh remains independent of source release and requires an exact lowercase 64-character report ID.
-- Deterministic release source ZIP and SHA-256 must include this rulebook, source, tests, and workflows but exclude secrets, dependencies and generated files; public Pages artifacts contain only the allowlisted static site.
-- Current OpenCLScope application producer remains 3.0.11 / 30011. No changes to Worker schema, previous report compatibility, D1 identities, or runtime support assertions.
-- Offline tests do not establish live GitHub Actions, D1, Worker, or GitHub Pages publication success.
+## OpenCLScope Database 3.0.33 runtime-loader compatibility producer contract
+- New complete live submissions require OpenCLScope 3.0.13 / 30013 exactly, following source/registry identity and strict privacy checks.
+- Historical 3.0.12 reports remain readable and may not be resubmitted as fresh live evidence.
+- Worker and frontend release identities are 3.0.33; VulkanScope reference files remain unchanged.
+- Diagnostic-only failed collections never become accepted Database submissions.
+
+## 3.0.34 / OpenCLScope 3.0.14 producer compatibility
+- Accept new complete live explicit producer 3.0.14/30014 only; require exact registry, privacy, report shape, collection origin, and version pair.
+- Preserve 3.0.13/30013 and all earlier compatible complete report identities solely for historical reads. Never accept older or partial reports on POST.
+- Preserve original VulkanScope reference sources and release and client deployed-state checks; do not claim successful live deployment without actual evidence.
+
+## OpenCLScope Database 3.0.34 exact-producer release lock
+- 3.0.14/30014 is the only permitted new live submission producer. 3.0.13/30013 is a historical read-only producer.
+
+## 3.2.0 producer and preserved-history release lock
+- Database 3.2.0 only accepts complete, explicit, live OpenCLScope 3.2.0 / 30100 producer uploads.
+- Existing stored OpenCLScope 3.0.14 / 30014 reports remain read-only; previously accepted versions retain their historical storage validations.
+- Canonical registry and current 16/211/24 report envelope are unchanged. The Khronos API-name aliases affect display only, never stored query keys or privacy controls.
+
+## OpenCLScope Database 3.4.0 — typed evidence and historical report contract
+- New report POST requires exact complete, explicit live OpenCLScope 3.4.0 / 30400 and current registry digest. 3.2.0 / 30200 and older valid complete reports remain read-only historical evidence, not accepted as new reports.
+- The current report adds independently verifiable image-format specWarning fields to every reported format and native_u32 typed-decoding evidence to valid QCOM cl_uint opaque bytes; the old unmodified name/value/status/code and format enum pairs remain the primary runtime evidence.
+- The Worker checks the warning against the order/data-type combination and the numeric byte count against the unmodified raw native bytes. Mutations of those fields must be rejected; previous report shapes are parsed only under their original pinned producer identities.
+- Browser displays specification warnings and QCOM typed bytes without deleting raw image rows or inferring successful image allocations, conformance or unsupported GPU capabilities.
+- VulkanScope pinned reference CSS/assets, original OpenCL cl.xml/mark, user-initiated consent, privacy controls, bounded source reports and fail-closed publication workflows remain immutable.
+
+## OpenCLScope Database 3.4.1 — deploy/readiness and UI control repair
+- Frontend-only database revision; new POST producer remains strictly OpenCLScope 3.4.0/30400, historical evidence, registry and D1 unchanged.
+- Windows, Build, GitHub Release and Pages Deploy are serial gates; a snapshot dispatch is independently validated and never issues a duplicate GitHub Release.
+- Source release marker is not ready until a successful snapshot build; deployed readiness requires matching immutable HTML, app, CSS, bootstrap, report index and preload.
+- Automatic full-page reload requires prior explicit user opt-in, and preserves the current hash; no reload occurs for incomplete or older deployments.
+- Filters are a sibling of the workspace heading. Styling targets the real DOM; hidden controls remain hidden and native select value remains authoritative.
+- Live Cloudflare, GitHub Releases and production reports require separate confirmation; never infer success from local tests.

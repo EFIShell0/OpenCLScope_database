@@ -33,6 +33,7 @@ ACTIVE = frozenset({
     'release-1019-reports-sorting.test.mjs',
     'release-1020-filter-scroll-stats.test.mjs',
     'release-1028-statistics-parity.test.mjs',
+    'release-3401-boot-deploy.test.mjs',
 })
 
 def check(apply=False):
@@ -59,13 +60,13 @@ def check(apply=False):
             source.rename(destination)
             print('Archived legacy/unreviewed test without deleting: '+name)
     outdated = [p for stem,extension in (('app','js'),('site','css')) for p in (ROOT/'assets').glob(f'{stem}.v*.{extension}')]
-    stale = sorted(p for p in outdated if p.name not in ('app.v1028.js','site.v1028.css'))
+    stale = sorted(p for p in outdated if p.name not in ('app.v1030.js','site.v1028.css'))
     if stale and not apply:
         print('FAIL: stale outdated browser assets: '+', '.join(p.name for p in stale),file=sys.stderr)
         return 1
     if stale:
         for old in stale:
-            latest = ROOT/'assets'/('app.v1028.js' if old.name.startswith('app.') else 'site.v1028.css')
+            latest = ROOT/'assets'/('app.v1030.js' if old.name.startswith('app.') else 'site.v1028.css')
             if not latest.exists():
                 print('FAIL: missing new replacement for '+old.name,file=sys.stderr)
                 return 1

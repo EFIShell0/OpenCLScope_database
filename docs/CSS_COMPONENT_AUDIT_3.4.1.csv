@@ -1,0 +1,11 @@
+Component,VulkanScope token,OpenCLScope token,Vulkan occurrences,OpenCL occurrences,Conclusion
+Top navigation,.nav-button,.main-nav,16,56,Component presence only; not proof of CSS/behavioral parity
+Header / hero,.hero,.hero-v127,83,120,Component presence only; not proof of CSS/behavioral parity
+Filters / select,.custom-select,.filter-panel,260,57,Component presence only; not proof of CSS/behavioral parity
+Reports table,.reports-table,.opencl-reports-table,117,89,Component presence only; not proof of CSS/behavioral parity
+Horizontal scroll,.table-scroll-track,.table-scroll-track,9,20,Component presence only; not proof of CSS/behavioral parity
+Statistics charts,.distribution-card,.stats-charts,12,43,Component presence only; not proof of CSS/behavioral parity
+Compare,.compare-report-card,.compare-report-card,18,18,Component presence only; not proof of CSS/behavioral parity
+Settings,.settings-drawer,.settings-drawer,12,24,Component presence only; not proof of CSS/behavioral parity
+Details / evidence,.detail-tabs,.evidence-modal,20,55,Component presence only; not proof of CSS/behavioral parity
+Pagination,.pagination,.pagination,6,41,Component presence only; not proof of CSS/behavioral parity

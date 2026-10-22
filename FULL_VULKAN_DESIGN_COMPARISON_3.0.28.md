@@ -19,7 +19,7 @@
 
 ## Değişikliklerin kapsamı
 
-- `assets/app.v1028.js`: `statsDonut` SVG/legend renderer yeniden kuruldu; Statistics başlığı ve baskın yüzdelik görünümü eklendi; Extensions Reset yanlış durum bağlantısı düzeltildi.
+- `assets/app.v1030.js`: `statsDonut` SVG/legend renderer yeniden kuruldu; Statistics başlığı ve baskın yüzdelik görünümü eklendi; Extensions Reset yanlış durum bağlantısı düzeltildi.
 - `assets/parity.v1028.css`: upstream Statistics chart markup için kapsamlı uyum stilleri ve duruma göre yüzde renkleri. `vulkan-layout.v1412.css` birebir sabit kaldı.
 - `tests/release-1028-statistics-parity.test.mjs`: grafik sınıfları, sınırlı `Other` gruplaması, yüzde paydası, baskın durum ve reset izolasyonu doğrulamaları.
 - Test envanteri, kaynak sürüm adları, Worker sürüm belirteci ve statik snapshot/release ID birlikte güncellendi. **Worker'ın doğrulama, D1, cache ve gönderim kabul mantığı değiştirilmedi.**

@@ -9,8 +9,8 @@ if(index.schemaVersion!==1||snapshot.schemaVersion!==1||index.databaseReleaseVer
 
 const release=JSON.parse(await readFile(join(root,'data/release.json'),'utf8'));
 const html=await readFile(join(root,'index.html'),'utf8');
-if(release.databaseVersion!==DATABASE_RELEASE_VERSION||release.generatedAt!==index.generatedAt||!/^assets\/app\.v[0-9]+\.js$/.test(release.appJs)||!/^assets\/site\.v[0-9]+\.css$/.test(release.siteCss)||!html.includes(release.appJs+'?')||!html.includes(release.siteCss+'?'))throw Error('Release marker and published frontend references are inconsistent');
-await Promise.all([release.appJs,release.siteCss].map(path=>readFile(join(root,path))));
+if(release.schemaVersion!==2||typeof release.releaseReady!=='boolean'||release.cacheKey!=='3401'||release.parityCss!=='assets/parity.v1028.css'||release.bootstrapJs!=='assets/release-bootstrap.v3401.js'||release.databaseVersion!==DATABASE_RELEASE_VERSION||release.generatedAt!==index.generatedAt||!/^assets\/app\.v[0-9]+\.js$/.test(release.appJs)||!/^assets\/site\.v[0-9]+\.css$/.test(release.siteCss)||!html.includes(release.appJs+'?')||!html.includes(release.siteCss+'?')||!html.includes(release.parityCss+'?v='+release.cacheKey)||!html.includes(release.bootstrapJs+'?v='+release.cacheKey))throw Error('Release marker and published frontend references are inconsistent');
+await Promise.all([release.appJs,release.siteCss,release.parityCss,release.bootstrapJs].map(path=>readFile(join(root,path))));
 
 // An excluded archive detail remains a public INDEX row, never a verified
 // preload. Validate the exclusion list so a broken snapshot cannot hide data.

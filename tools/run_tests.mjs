@@ -1,15 +1,11 @@
-import {readdir} from 'node:fs/promises';
-import {resolve} from 'node:path';
+import {readdirSync} from 'node:fs';
+import {resolve, dirname} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-const roots=['tests','worker/tests'];
-const names=[];
-for(const folder of roots){
-  for(const name of await readdir(resolve(folder))){
-    if(name.endsWith('.test.mjs'))names.push(resolve(folder,name));
-  }
-}
-names.sort();
-if(!names.length)throw Error('Refusing to run empty regression suite');
-const result=spawnSync(process.execPath,['--test',...names],{stdio:'inherit',env:process.env});
-if(result.error)throw result.error;
+
+const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const suites=['tests','worker/tests'];
+const files=suites.flatMap(folder=>readdirSync(resolve(root,folder)).filter(name=>name.endsWith('.test.mjs')).sort().map(name=>resolve(root,folder,name)));
+if(files.length===0)process.exit(2);
+const result=spawnSync(process.execPath,['--test',...files],{cwd:root,stdio:'inherit'});
 process.exit(result.status??1);

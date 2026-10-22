@@ -15,6 +15,19 @@ for(let i=0;i<12;i++){
     const index=await response.json();
     if(index.schemaVersion!==1||index.databaseReleaseVersion!==DATABASE_RELEASE_VERSION||!Array.isArray(index.reports)||index.reports.length!==index.reportCount)throw Error('Published index schema, count or release mismatch');
     if(required&&!index.reports.some(r=>r.id===required))throw Error('Triggered report not yet visible in published Pages index');
+    const markerResponse=await fetch(new URL('data/release.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
+    if(!markerResponse.ok)throw Error('Pages release marker unavailable');
+    const marker=await markerResponse.json();
+    if(marker.schemaVersion!==2||marker.releaseReady!==true||marker.databaseVersion!==DATABASE_RELEASE_VERSION||marker.cacheKey!=='3401'||marker.generatedAt!==index.generatedAt||marker.appJs!=='assets/app.v1030.js'||marker.bootstrapJs!=='assets/release-bootstrap.v3401.js')throw Error('Pages release readiness/identity mismatch');
+    const stamp=encodeURIComponent(DATABASE_RELEASE_VERSION);
+    const htmlResponse=await fetch(new URL(`index.html?_release_probe=${stamp}`,base),{cache:'no-store',headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
+    if(!htmlResponse.ok)throw Error('Published Pages HTML unavailable');
+    const html=await htmlResponse.text();
+    if(!html.includes(`${marker.appJs}?v=${marker.cacheKey}`)||!html.includes(`${marker.siteCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.parityCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.bootstrapJs}?v=${marker.cacheKey}`))throw Error('Pages HTML still points at an older release');
+    for(const [filename,contract] of [[marker.appJs,`const DATABASE_RELEASE_VERSION = '${DATABASE_RELEASE_VERSION}'`],[marker.bootstrapJs,`const LOCAL='${DATABASE_RELEASE_VERSION}'`]]){
+      const response=await fetch(new URL(`${filename}?_release_probe=${stamp}`,base),{cache:'no-store',headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
+      if(!response.ok||!(await response.text()).includes(contract))throw Error(`Published release script not yet updated: ${filename}`);
+    }
     const snapshotResponse=await fetch(new URL('data/snapshot.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!snapshotResponse.ok)throw Error(`Pages preload HTTP ${snapshotResponse.status}`);
     const snapshot=await snapshotResponse.json();
