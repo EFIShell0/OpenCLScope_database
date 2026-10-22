@@ -1,0 +1,30 @@
+import {readFileSync} from 'node:fs';
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+const source=readFileSync(new URL('../assets/app.v3404.js',import.meta.url),'utf8');
+const fnCode=source.match(/const statisticsPageWindow=.+?;\n/)?.[0];
+const page=vm.runInNewContext(fnCode+'statisticsPageWindow');
+test('Statistics shows every extension without a hard 100-row limit',()=>{
+ assert.ok(fnCode,'A bounded local statistics pager must exist');
+ const entries=Array.from({length:237},(_,i)=>({name:'cl_test_'+i,count:i}));
+ const pages=[1,2,3,4,5].map(n=>page(entries,n,50));
+ assert.equal(pages[0].pages,5);
+ assert.deepEqual(pages.map(p=>p.items.length),[50,50,50,50,37]);
+ assert.deepEqual(pages.flatMap(p=>p.items).map(x=>x.name),entries.map(x=>x.name));
+ assert.equal(page(entries,999,50).current,5);
+ assert.equal(page([],99,25).current,1);
+ assert.equal(page(entries,1,0).size,25);
+});
+test('Statistics extension pagination uses VulkanScope page-jump and retains accurate denominator',()=>{
+ assert.match(source,/class:'page-jump statistics-page-jump'/);
+ assert.match(source,/bindPageJump\(jump,\{getCurrent:/);
+ assert.match(source,/statistics-page-range/);
+ assert.match(source,/state\.statisticsPage=1;renderStatistics\(\)/);
+ assert.match(source,/stats-extension-panel/);
+ assert.doesNotMatch(source,/const top=entries\.slice\(0,100\)/);
+ assert.match(source,/\$\('pager'\)\.hidden=true/);
+ assert.match(source,/thumb\.tabIndex=scrollable\?0:-1/);
+ assert.match(source,/t\.tabIndex=overflow\?0:-1/);
+ assert.match(source,/behavior:prefersReducedMotion\(\)\?'auto':'smooth'/);
+});

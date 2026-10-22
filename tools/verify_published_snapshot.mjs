@@ -18,15 +18,16 @@ for(let i=0;i<12;i++){
     const markerResponse=await fetch(new URL('data/release.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!markerResponse.ok)throw Error('Pages release marker unavailable');
     const marker=await markerResponse.json();
-    if(marker.schemaVersion!==2||marker.releaseReady!==true||marker.databaseVersion!==DATABASE_RELEASE_VERSION||marker.cacheKey!=='3402'||marker.generatedAt!==index.generatedAt||marker.appJs!=='assets/app.v1030.js'||marker.bootstrapJs!=='assets/release-bootstrap.v3402.js')throw Error('Pages release readiness/identity mismatch');
+    if(marker.schemaVersion!==2||marker.releaseReady!==true||marker.databaseVersion!==DATABASE_RELEASE_VERSION||marker.cacheKey!=='3404'||marker.generatedAt!==index.generatedAt||marker.appJs!=='assets/app.v3404.js'||marker.bootstrapJs!=='assets/release-bootstrap.v3404.js'||marker.shellCss!=='assets/reference-shell.v3404.css')throw Error('Pages release readiness/identity mismatch');
     const stamp=encodeURIComponent(DATABASE_RELEASE_VERSION);
     const htmlResponse=await fetch(new URL(`index.html?_release_probe=${stamp}`,base),{cache:'no-store',headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!htmlResponse.ok)throw Error('Published Pages HTML unavailable');
     const html=await htmlResponse.text();
-    if(!html.includes(`${marker.appJs}?v=${marker.cacheKey}`)||!html.includes(`${marker.siteCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.parityCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.bootstrapJs}?v=${marker.cacheKey}`))throw Error('Pages HTML still points at an older release');
-    for(const [filename,contract] of [[marker.appJs,`const DATABASE_RELEASE_VERSION = '${DATABASE_RELEASE_VERSION}'`],[marker.bootstrapJs,`const LOCAL='${DATABASE_RELEASE_VERSION}'`]]){
+    if(!html.includes(`${marker.appJs}?v=${marker.cacheKey}`)||!html.includes(`${marker.siteCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.parityCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.shellCss}?v=${marker.cacheKey}`)||!html.includes(`${marker.bootstrapJs}?v=${marker.cacheKey}`))throw Error('Pages HTML still points at an older release');
+    for(const [filename,contract] of [[marker.appJs,`const DATABASE_RELEASE_VERSION = '${DATABASE_RELEASE_VERSION}'`],[marker.bootstrapJs,`const LOCAL='${DATABASE_RELEASE_VERSION}'`],[marker.siteCss,null],[marker.parityCss,null],[marker.shellCss,null]]){
       const response=await fetch(new URL(`${filename}?_release_probe=${stamp}`,base),{cache:'no-store',headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
-      if(!response.ok||!(await response.text()).includes(contract))throw Error(`Published release script not yet updated: ${filename}`);
+      const body=await response.text();
+      if(!response.ok||(contract?!body.includes(contract):body.length<500))throw Error(`Published release asset is missing or stale: ${filename}`);
     }
     const snapshotResponse=await fetch(new URL('data/snapshot.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!snapshotResponse.ok)throw Error(`Pages preload HTTP ${snapshotResponse.status}`);

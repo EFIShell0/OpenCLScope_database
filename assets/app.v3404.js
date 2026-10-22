@@ -1,8 +1,8 @@
-if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.4.2');}
+if(typeof window!=='undefined'&&window.__OPENCLSCOPE_COMPATIBLE__===false){throw new Error('Unsupported browser for OpenCLScope Database 3.4.4');}
 'use strict';
 const API = String(window.OPENCLSCOPE_DATABASE_API || '').trim().replace(/\/$/,'');
 const PAGE = 25;
-const DATABASE_RELEASE_VERSION = '3.4.2';
+const DATABASE_RELEASE_VERSION = '3.4.4';
 const $ = id=>document.getElementById(id);
 const state = {rows:[],reports:new Map(),cursor:null,view:'reports',page:0,query:'',vendor:'',version:'',status:'',sort:'newest',detail:null,detailTab:'Overview',favorites:new Set(),favoritesOnly:false,device:'',driver:'',manufacturer:'',model:'',platform:'',submittedAge:'',remote:false,seen:new Set(),catalog:null,compareA:'',compareB:'',differencesOnly:true,syncBusy:false,syncToken:"",snapshotCount:0,invalidPublishedContracts:new Set(),pageSize:25,encyclopedia:null,encyclopediaCategory:'All',compareKind:'All',detailQuery:'',detailStatus:'',detailPage:0,detailPageSize:25,statisticsSliceLimit:8,statisticsExtensionScope:'both',statisticsNamespace:'all',statisticsMinimum:0,statisticsSearch:'',statisticsPage:1,statisticsPageSize:25,coverageDisplay:'coverage',coverageVariation:'all',coverageMinimum:'all',coverageSearch:'',formatDisplay:'groups',formatMinimum:'all',formatSearch:'',extensionDisplay:'coverage',extensionScope:'device',extensionNamespace:'all',extensionMinimum:'all',extensionEvidenceState:'all',extensionSearch:'',compareMinimized:false,compareChange:'All',compareSort:'evidence-asc',compareMobilePinnedExpanded:false,reportSubmittedExpanded:false,reportVendorExpanded:false,reportTypeExpanded:false};
 const panes={reports:['REPORTS','Latest submissions','Complete, explicitly shared technical reports'],platforms:['PLATFORMS','OpenCL platforms','Platform-reported versions, vendors and extensions'],devices:['DEVICES','Compute devices','Device identity, driver and capability evidence'],features:['FEATURES','Features and support','Canonical OpenCL property states, never inferred'],memory:['MEMORY','Memory & limits','Runtime-reported memory and SVM properties'],formats:['IMAGE FORMATS','Image formats','Actual clGetSupportedImageFormats query results'],extensions:['EXTENSIONS','Extensions','Runtime-enumerated device and platform extension names'],profiles:['PROFILES','Profiles','Informational checklist, not certification'],compare:['COMPARE','Compare reports','Compare exact values and query states'],encyclopedia:['ENCYCLOPEDIA','OpenCL registry','Bundled Khronos cl.xml reference tokens, not runtime support evidence'],statistics:['STATISTICS','Report statistics','Report-backed device, API and query-state distributions (loaded detail evidence only)']};
@@ -1106,7 +1106,7 @@ async function loadNetworkObservation(force=false){
  finally{if(generation===networkProbeGeneration){networkBusy=false;renderNetworkInfo()}}
 }
 const SETTINGS_DEPENDENCIES=[
- {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.4.2',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
+ {scope:'Browser runtime',name:'OpenCLScope Database frontend',version:'3.4.4',license:'First-party project code',purpose:'Local HTML, CSS and vanilla JavaScript. No third-party browser framework, remote font, analytics or advertising script is bundled.',source:'This release'},
  {scope:'Development / deployment',name:'Wrangler',version:'4.130.0',license:'MIT OR Apache-2.0',purpose:'Cloudflare Worker development and deployment CLI. Not sent to the browser.',source:'worker/package.json',file:'wrangler'},
  {scope:'Toolchain component',name:'sharp',version:'0.35.4',license:'Apache-2.0',purpose:'Pinned toolchain override for Cloudflare development tooling; not a Pages runtime dependency.',source:'worker/package.json override',file:'sharp'},
  {scope:'Toolchain component',name:'esbuild',version:'Resolved by Wrangler 4.130.0',license:'MIT',purpose:'Transitive JS build helper; this project does not pin its resolved transitive version.',source:'Wrangler toolchain dependency',file:'esbuild'},
@@ -1171,6 +1171,8 @@ function installSettingsPreferences(){
  for(const [id,key] of [['settingsRegionalMode','mode'],['settingsRegionalCountry','country'],['settingsRegionalDateFormat','date'],['settingsRegionalClock','clock'],['settingsRegionalTimeZone','timeZone'],['settingsRegionalSeason','season']])$(id).onchange=e=>{regional[key]=e.target.value;if(key==='mode'&&regional.mode==='manual')regional.country='auto';if(key==='mode'&&regional.mode==='country'&&regional.country==='auto'){const lang=navigator.language?.split('-')[1]?.toUpperCase();regional.country=REGIONS[lang]?lang:'auto'}syncRegionalSettingsControls();saveFavoritePreferences();render()};
  for(const [id,key] of [['settingsSubmittedDefault','submitted'],['settingsVendorDefault','vendor'],['settingsTypeDefault','deviceType']])$(id).onchange=e=>{regional[key]=e.target.checked;saveFavoritePreferences();render()};
  for(const [id,key,klass] of [['compactMode','compact','compact'],['reduceMotion','motion','reduce-motion']])$(id).onchange=e=>{regional[key]=e.target.checked;document.body.classList.toggle(klass,regional[key]);saveFavoritePreferences()};
+ $('settingsAutoReleaseReload').onchange=e=>{if(e.target.checked)window.__OPENCLSCOPE_RELEASE_UPDATE__?.enable();else window.__OPENCLSCOPE_RELEASE_UPDATE__?.disable();syncReleasePreference();if(!e.target.checked){const remote=window.__OPENCLSCOPE_RELEASE_UPDATE__?.pending();if(remote)showPublishedReleaseNotice(remote)}else {closePublishedReleaseNotice();const remote=window.__OPENCLSCOPE_RELEASE_UPDATE__?.pending();if(remote)window.__OPENCLSCOPE_RELEASE_UPDATE__?.go(remote)}};
+ syncReleasePreference();
  $('settingsRememberLocalState').onchange=e=>{rememberLocalState=e.target.checked;if(rememberLocalState)saveFavoritePreferences();else{try{localStorage.removeItem('openclscopeRememberedState')}catch{}}syncRegionalSettingsControls();renderSettingsFavorites()};
  $('settingsClearSavedData').onclick=()=>confirmDestructive('Clear saved browser data? This removes local Favorites and preferences. It never deletes reports.',()=>{
  state.favorites.clear();Object.assign(regional,REGIONAL_DEFAULTS);rememberLocalState=false;state.pageSize=25;state.page=0;
@@ -1182,57 +1184,24 @@ setInterval(()=>{if(!$('settingsDrawer').hidden&&!document.querySelector('[data-
 window.addEventListener('focus',updateSettingsClock);document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateSettingsClock()});
 
 
-window.addEventListener('openclscope:published-release-ready',event=>{if(event.detail?.version)showPublishedReleasePrompt(event.detail.version)});
-queueMicrotask(()=>{const remote=window.__OPENCLSCOPE_RELEASE_UPDATE__?.pending();if(remote)showPublishedReleasePrompt(remote)});
-let publishedReleasePrompt=null;
+window.addEventListener('openclscope:published-release-ready',event=>{if(event.detail?.version)showPublishedReleaseNotice(event.detail.version)});
+queueMicrotask(()=>{const remote=window.__OPENCLSCOPE_RELEASE_UPDATE__?.pending();if(remote)showPublishedReleaseNotice(remote)});
+let publishedReleaseNotice=null;
 let suppressedRemoteRelease='';
-let publishedReleaseCheckBusy=false;
-let newReportNoticeTimer=0;
-function closePublishedReleasePrompt(){
- const modal=publishedReleasePrompt;
- if(!modal)return;
- modal.remove();publishedReleasePrompt=null;
- document.body.classList.remove('db-update-open');
-}
-function showPublishedReleasePrompt(remote){
- if(publishedReleasePrompt||suppressedRemoteRelease===remote||compareVersions(remote,DATABASE_RELEASE_VERSION)<=0)return;
- const shade=node('div',{class:'db-update-backdrop'});
- const dialog=node('section',{class:'db-update-dialog',role:'dialog','aria-modal':'true','aria-labelledby':'dbUpdateHeading'});
- const heading=node('h2',{id:'dbUpdateHeading'},'Database update available');
- const desc=node('p',{},`OpenCLScope Database ${remote} has finished publishing. Refresh the site to use the newer frontend.`);
- const refresh=node('button',{type:'button',class:'db-update-primary'},'Refresh to update');
- const later=node('button',{type:'button',class:'db-update-secondary'},'Later');
- const automatic=node('button',{type:'button',class:'db-update-secondary'},'Always auto-refresh after deploy');
- const oldFocus=document.activeElement;
- const close=()=>{closePublishedReleasePrompt();oldFocus?.focus?.({preventScroll:true})};
- later.onclick=()=>{suppressedRemoteRelease=remote;close()};
- automatic.onclick=()=>{window.__OPENCLSCOPE_RELEASE_UPDATE__?.enable();window.__OPENCLSCOPE_RELEASE_UPDATE__?.go(remote)};
- shade.onclick=close;
- refresh.onclick=()=>{const url=new URL(location.href);url.searchParams.set('release',remote);url.searchParams.set('_r',String(Date.now()));location.replace(url.toString())};
- dialog.addEventListener('keydown',event=>{
-  if(event.key==='Escape'){event.preventDefault();close()}
-  if(event.key==='Tab'){const choices=[refresh,automatic,later];const index=choices.indexOf(document.activeElement);if(event.shiftKey&&index===0){event.preventDefault();later.focus()}else if(!event.shiftKey&&index===1){event.preventDefault();refresh.focus()}}
- });
- dialog.append(node('span',{class:'db-update-eyebrow'},'DATABASE RELEASE'),heading,desc,node('div',{class:'db-update-actions'},refresh,automatic,later));
- const modal=node('div',{class:'db-update-modal'},shade,dialog);
- document.body.append(modal);publishedReleasePrompt=modal;
- document.body.classList.add('db-update-open');refresh.focus({preventScroll:true});
-}
-function publishedAssetName(name,kind){return typeof name==='string'&&new RegExp(`^assets/${kind}\\.v[0-9]+\\.${kind==='app'?'js':'css'}$`).test(name)}
-async function checkPublishedRelease(){
- if(publishedReleaseCheckBusy||document.hidden||navigator.onLine===false)return;
- publishedReleaseCheckBusy=true;
- const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),7000);
- try{
-  const response=await fetch(`./data/release.json?_=${Date.now()}`,{cache:'no-store',signal:controller.signal});
-  if(!response.ok||Number(response.headers.get('content-length')||0)>4096)return;
-  const raw=await response.text();if(raw.length>4096)return;const marker=JSON.parse(raw),remote=String(marker?.databaseVersion||'');
-  if(marker?.schemaVersion!==2||marker?.releaseReady!==true||!/^\d+\.\d+\.\d+$/.test(remote)||compareVersions(remote,DATABASE_RELEASE_VERSION)<=0)return;
-  if(!publishedAssetName(marker.appJs,'app')||!publishedAssetName(marker.siteCss,'site'))return;
-  const [js,css]=await Promise.all([marker.appJs,marker.siteCss].map(path=>fetch(`./${path}`,{cache:'no-store',signal:controller.signal})));
-  if(!js.ok||!css.ok||!/javascript|ecmascript/.test(js.headers.get('content-type')||'')||!/text\/css/.test(css.headers.get('content-type')||''))return;
-  await window.__OPENCLSCOPE_RELEASE_UPDATE__?.check();
- }catch{}finally{clearTimeout(timer);publishedReleaseCheckBusy=false}
+function closePublishedReleaseNotice(){publishedReleaseNotice?.remove();publishedReleaseNotice=null}
+function syncReleasePreference(){const toggle=$('settingsAutoReleaseReload');if(toggle)toggle.checked=!!window.__OPENCLSCOPE_RELEASE_UPDATE__?.enabled()}
+function showPublishedReleaseNotice(remote){
+ if(publishedReleaseNotice||suppressedRemoteRelease===remote||compareVersions(remote,DATABASE_RELEASE_VERSION)<=0||window.__OPENCLSCOPE_RELEASE_UPDATE__?.enabled())return;
+ const box=node('aside',{class:'db-release-notice',role:'status','aria-live':'polite'});
+ const text=node('span',{class:'db-release-copy'},`OpenCLScope Database ${remote} is ready.`);
+ const update=node('button',{type:'button',class:'db-release-now'},'Update now');
+ const always=node('button',{type:'button',class:'db-release-auto'},'Always update automatically');
+ const dismiss=node('button',{type:'button',class:'db-release-dismiss','aria-label':'Dismiss update notice'},'×');
+ update.onclick=()=>window.__OPENCLSCOPE_RELEASE_UPDATE__?.go(remote);
+ always.onclick=()=>{window.__OPENCLSCOPE_RELEASE_UPDATE__?.enable();syncReleasePreference();window.__OPENCLSCOPE_RELEASE_UPDATE__?.go(remote)};
+ dismiss.onclick=()=>{suppressedRemoteRelease=remote;closePublishedReleaseNotice()};
+ box.append(text,update,always,dismiss);
+ document.body.append(box);publishedReleaseNotice=box;
 }
 function showNewReportNotice(count){
  if(count<=0||!Number.isSafeInteger(count))return;
@@ -1253,11 +1222,13 @@ async function start(){
   restoreRememberedPreferences();
   installIcons();bind();bindNavigationScroll();
   installCustomSelects();installViewportControls();$('runtimeStatus').textContent=API?`Configured API: ${API}`:'API URL is not configured. Published snapshot remains available.';
+  let startupSettled=0;
+  const trackStartup=promise=>promise.finally(()=>{startupSettled++;const progress=$('databaseLoadingProgress');if(progress)progress.style.width=`${startupSettled*25}%`});
   const results=await Promise.allSettled([
-    fetch('./data/index.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing published index');return r.json()}),
-    fetch('./data/snapshot.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing published snapshot');return r.json()}),
-    fetch('./assets/catalog.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing registry');return r.json()}),
-    fetch('./assets/encyclopedia.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing encyclopedia');return r.json()})
+    trackStartup(fetch('./data/index.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing published index');return r.json()})),
+    trackStartup(fetch('./data/snapshot.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing published snapshot');return r.json()})),
+    trackStartup(fetch('./assets/catalog.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing registry');return r.json()})),
+    trackStartup(fetch('./assets/encyclopedia.json',{cache:'default'}).then(r=>{if(!r.ok)throw Error('Missing encyclopedia');return r.json()}))
   ]);
   const indexReady=results[0].status==='fulfilled',snapshotReady=results[1].status==='fulfilled';
   const index=indexReady?results[0].value:{reports:[]},snapshot=snapshotReady?results[1].value:{reports:[]};
@@ -1271,7 +1242,7 @@ async function start(){
   $('sourceBadge').textContent=`Cache loaded · ${state.rows.length} reports · ${state.reports.size} verified full${state.invalidPublishedContracts.size?' · '+state.invalidPublishedContracts.size+' unverified archive record(s)':''}`;
   $('databaseLoading').hidden=true;$('pageProgress').hidden=true;metrics();notice(indexReady?(index.generatedAt?`Cached published snapshot · ${humanDate(index.generatedAt)}`:'No reports in the published snapshot yet.'):'Published report index unavailable; only verified live API data can restore the list.');if(!indexReady||!snapshotReady)banner('Published data cache incomplete · live API may still be available','warning');render();
   if(location.hash.startsWith('#reports/'))await openHash();else if(restoreCompareRoute())render();else if(panes[location.hash.slice(1)]){state.view=location.hash.slice(1);syncWorkspaceTitle();render()}
-  checkPublishedRelease();setInterval(checkPublishedRelease,60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)checkPublishedRelease()});if(API){await update();setInterval(()=>update(),10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});window.addEventListener('online',()=>update())}
+  if(API){await update();setInterval(()=>update(),10000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});window.addEventListener('online',()=>update())}
   else banner('Published snapshot only · production API is not configured','warning');
   window.addEventListener('offline',()=>banner('Offline · cached reports remain available','warning'));
 }

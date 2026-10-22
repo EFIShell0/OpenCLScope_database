@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
-const app=readFileSync(new URL('assets/app.v1030.js',root),'utf8');
-const css=readFileSync(new URL('assets/site.v1028.css',root),'utf8');
+const app=readFileSync(new URL('assets/app.v3404.js',root),'utf8');
+const css=readFileSync(new URL('assets/site.v3404.css',root),'utf8');
 const rules=readFileSync(new URL('rules/PROJECT_RULES.md',root),'utf8');
 const worker=readFileSync(new URL('worker/src/index.js',root),'utf8');
 const pure=app.slice(app.indexOf('function sortComparisonRecords('),app.indexOf('function compareCategory('));
@@ -47,7 +47,7 @@ test('context menu works on compare and evidence rows with no server writes',()=
  assert.doesNotMatch(app.slice(app.indexOf('function evidenceQuickMenu('),app.indexOf('function bindReportLongPress(')),/fetch\(|api\(|localStorage\.setItem/);
 });
 test('3.4.0 remains a source-compatible database version; producer is 3.4.0',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.2'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.4'/);
  assert.match(worker,/versionName!==acceptedVersion/);
  assert.match(rules,/Database 3\.2\.0/);
  assert.match(rules,/3\.0\.11 \/ 30011/);

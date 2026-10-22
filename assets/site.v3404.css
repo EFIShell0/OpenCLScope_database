@@ -505,21 +505,12 @@ body.license-viewer-open{overflow:hidden}
 .compare-evidence-table td:nth-child(2){min-width:115px}
 @media(max-width:760px){.compare-toolbar label{min-width:0}.compare-toolbar select{max-width:min(100%,240px)}}
 
-.db-update-open{overflow:hidden}
-.db-update-modal{position:fixed;inset:0;z-index:11000;display:grid;place-items:center;padding:20px}
-.db-update-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(5px)}
-.db-update-dialog{position:relative;width:min(480px,100%);padding:27px;border:1px solid #37653a;border-radius:22px;background:#161917;box-shadow:0 20px 70px #000a;color:#f1f2f1;display:grid;gap:14px}
-.db-update-dialog h2{font-size:23px;line-height:1.2;margin:0}
-.db-update-dialog p{color:#b3bdb5;line-height:1.55;margin:0}
-.db-update-eyebrow{letter-spacing:.12em;font-size:12px;font-weight:800;color:#86dc7a}
-.db-update-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end}
-.db-update-actions button,.db-new-report-notice button{min-height:42px;border-radius:12px;padding:9px 15px;cursor:pointer;font-weight:700;border:1px solid #38643d;background:#173d21;color:#d9ffdd}
-.db-update-actions .db-update-secondary{background:#242825;color:#dedede;border-color:#3b413c}
-.db-update-dialog button:focus-visible,.db-new-report-notice button:focus-visible{outline:2px solid #91e08c;outline-offset:3px}
+ .db-new-report-notice button{min-height:42px;border-radius:12px;padding:9px 15px;cursor:pointer;font-weight:700;border:1px solid #38643d;background:#173d21;color:#d9ffdd}
+.db-new-report-notice button:focus-visible{outline:2px solid #91e08c;outline-offset:3px}
 .db-new-report-notice{position:fixed;right:20px;bottom:24px;z-index:9500;display:flex;align-items:center;flex-wrap:wrap;gap:10px;max-width:calc(100vw - 24px);padding:12px 14px;border:1px solid #37653a;border-radius:15px;color:#e4ffe5;background:#122217;box-shadow:0 12px 36px #0009}
 .db-new-report-notice button:last-child{padding:4px 11px;min-width:38px;font-size:23px;background:transparent;border:0}
-@media(max-width:600px){.db-update-modal{padding:12px}.db-update-dialog{padding:20px}.db-update-actions button{flex:1}.db-new-report-notice{left:12px;right:12px;bottom:84px}}
-@media(prefers-reduced-motion:reduce){.db-update-dialog,.db-new-report-notice{transition:none!important;animation:none!important}}
+@media(max-width:600px){.db-new-report-notice{left:12px;right:12px;bottom:84px}}
+@media(prefers-reduced-motion:reduce){.db-new-report-notice,.db-release-notice{transition:none!important;animation:none!important}}
 
 .detail-animated-accordion{margin:0 0 13px;border:1px solid #304b35;border-radius:16px;background:#171b18;overflow:hidden}
 .detail-accordion-trigger{width:100%;min-height:58px;padding:14px 18px;color:#f0f3f0;background:#1c241f;border:0;display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:16px;font-weight:750;text-align:left;cursor:pointer}
@@ -599,3 +590,11 @@ body.license-viewer-open{overflow:hidden}
 .compare-summary-filter:hover{border-color:var(--accent)}
 .compare-summary-filter:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.compare-summary-filter{transition:none}}
+
+.db-release-notice{position:fixed;z-index:10200;bottom:18px;right:18px;max-width:min(520px,calc(100vw - 28px));display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:12px 14px;border:1px solid #3f5943;border-radius:14px;background:#171d19;color:#e7f3e8;box-shadow:0 8px 30px #0009}
+.db-release-notice .db-release-copy{font-size:13px;font-weight:650;flex:1 1 180px}
+.db-release-notice button{border:1px solid #4d6651;border-radius:10px;background:#232c25;color:#eef8ef;cursor:pointer;padding:7px 10px;min-height:36px;font:inherit;font-size:12px}
+.db-release-notice .db-release-now{background:#285a30;border-color:#4c9351;color:#fff}
+.db-release-notice .db-release-dismiss{padding:5px 10px;background:transparent;border-color:transparent;font-size:20px}
+.db-release-notice button:focus-visible{outline:2px solid #81d18b;outline-offset:2px}
+@media(max-width:600px){.db-release-notice{bottom:10px;left:10px;right:10px;max-width:none}.db-release-notice .db-release-copy{flex-basis:100%}}

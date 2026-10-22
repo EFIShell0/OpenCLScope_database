@@ -1,7 +1,6 @@
-# Database 3.4.0 QA
+# Database 3.4.4 local QA
 
-- **154/154** Worker + web contract tests passed.
-- Static release verification and `reconcile_repository.py --check` passed.
-- Typed QCOM and RGB format warnings are recomputed server-side with negative mutation tests.
-- 3.2.0/30200 remains historical; only 3.4.0/30400 POST is enabled.
-- Real Cloudflare D1/Worker deployment and live Android hardware run: **not executed**.
+- 167 of 167 combined frontend and Worker tests passed.
+- Official OpenCL XML and immutable VulkanScope stylesheet hashes passed.
+- Sourced Settings and loading component parity tests passed.
+- Live D1, Pages deployment and populated pixel-perfect UI comparison were not executed.
