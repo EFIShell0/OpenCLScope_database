@@ -4,15 +4,15 @@ import {readFileSync} from 'node:fs';
 const root = new URL('../', import.meta.url);
 const read = name => readFileSync(new URL(name,root),'utf8');
 const html=read('index.html');
-const app=read('assets/app.v3411.js');
-const css=read('assets/parity.v3411.css');
-test('filters have a separate visible row independent of title',()=>{
+const app=read('assets/app.v3414.js');
+const css=read('assets/parity.v3414.css');
+test('filters use upstream heading-side grouped layout with authoritative selects',()=>{
  const section=html.indexOf('id="workspace"'),heading=html.indexOf('class="section-heading"',section),filters=html.indexOf('id="filterPanel"',section),lookup=html.indexOf('class="lookup-deck"',section);
  assert.ok(section>=0&&heading<section+250&&heading<filters&&filters<lookup);
  assert.match(html,/id="filterPanel"/);
- assert.match(css,/#workspace>\.filters\.filter-panel\{display:grid!important/);
- assert.match(css,/#workspace>\.filters\.filter-panel\[hidden\]\{display:none!important/);
- assert.match(app,/\$\('filterPanel'\)\.hidden=state\.view==='compare'\|\|state\.view==='encyclopedia'/);
+ assert.match(html,/reference-filter-grid/);
+ assert.match(read('assets/reference-controls.v3414.css'),/\.reference-filter-family/);
+ assert.match(app,/\$\('filterPanel'\)\.hidden=\['reports','compare','encyclopedia'\]/);
 });
 test('table track remains present, disabled without overflow, and reports actual scroll pixels',()=>{
  assert.match(css,/#workspace>\.db-content \.table-scroll-controls\{display:flex!important/);
@@ -32,6 +32,6 @@ test('statistics denominators use all loaded query rows rather than category max
 });
 test('immutable Vulkan reference remains present and original OpenCL reports are unmodified',()=>{
  assert.match(html,/assets\/vulkan-layout\.v1412\.css/);
- assert.match(html,/assets\/parity\.v3411\.css\?v=3411/);
- assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.4\.11'/);
+ assert.match(html,/assets\/parity\.v3414\.css\?v=3414/);
+ assert.match(app,/const DATABASE_RELEASE_VERSION = '3\.4\.14'/);
 });

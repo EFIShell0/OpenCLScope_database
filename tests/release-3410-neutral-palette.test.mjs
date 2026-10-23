@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createHash} from 'node:crypto';
 const load=(p)=>readFileSync(new URL('../'+p,import.meta.url),'utf8');
-const shell=load('assets/reference-shell.v3411.css');
-const parity=load('assets/parity.v3411.css');
+const shell=load('assets/reference-shell.v3414.css');
+const parity=load('assets/parity.v3414.css');
 const html=load('index.html');
 const rules=load('rules/PROJECT_RULES.md');
 test('final shared shell contains no upstream burgundy decorative scrollbar or button palette',()=>{
@@ -23,9 +23,9 @@ test('native scrollbar colors and shared select/repository surfaces remain neutr
 test('immutable Vulkan reference and independent OpenCL release are preserved',()=>{
  const original=readFileSync(new URL('../rules/UPSTREAM_REFERENCE_SITE_CSS.css',import.meta.url));
  assert.equal(createHash('sha256').update(original).digest('hex'),'bd5957461701439a7655c652b4e560cb84b7cc0163f202a257e019c2c468181b');
- for(const path of ['assets/site.v3411.css','assets/parity.v3411.css','assets/reference-shell.v3411.css'])assert.ok(html.includes(path+'?v=3411'),path);
+ for(const path of ['assets/site.v3414.css','assets/parity.v3414.css','assets/reference-shell.v3414.css'])assert.ok(html.includes(path+'?v=3414'),path);
  assert.match(rules,/## Database 3\.4\.11/);
- assert.match(load('worker/src/index.js'),/DATABASE_RELEASE_VERSION = '3\.4\.11'/);
+ assert.match(load('worker/src/index.js'),/DATABASE_RELEASE_VERSION = '3\.4\.14'/);
  assert.match(load('worker/src/index.js'),/3\.4\.0/);
  assert.match(load('tools/reconcile_repository.py'),/stale_color_assets = stale_shell \+ stale_bootstrap/);
 });

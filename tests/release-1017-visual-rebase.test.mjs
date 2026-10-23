@@ -3,12 +3,12 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const file = name => readFileSync(new URL('../'+name,import.meta.url),'utf8');
 const html=file('index.html');
-const js=file('assets/app.v3411.js');
-const patch=file('assets/parity.v3411.css');
+const js=file('assets/app.v3414.js');
+const patch=file('assets/parity.v3414.css');
 const reference=file('assets/vulkan-layout.v1412.css');
 const rules=file('rules/PROJECT_RULES.md');
 test('parity corrections are the final local stylesheet after the pinned upstream and original OpenCL layers',()=>{
- const order=['assets/vulkan-layout.v1412.css','assets/site.v3411.css','assets/parity.v3411.css'];
+ const order=['assets/vulkan-layout.v1412.css','assets/site.v3414.css','assets/parity.v3414.css'];
  assert.ok(order.every(x=>html.includes(x)));
  assert.ok(order.map(x=>html.indexOf(x)).every((n,i,list)=>n>=0&&(i===0||n>list[i-1])));
  assert.match(html,/data-workspace="reports"/);

@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {runInNewContext} from 'node:vm';
 const root=new URL('../',import.meta.url);
 const read=(p)=>readFile(new URL(p,root),'utf8');
-const [app,html,css,worker,registry]=await Promise.all(['assets/app.v3411.js','index.html','assets/site.v3411.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
+const [app,html,css,worker,registry]=await Promise.all(['assets/app.v3414.js','index.html','assets/site.v3414.css','worker/src/index.js','assets/encyclopedia.json'].map(read));
 const data=JSON.parse(registry);
 test('Complete bundled OpenCL encyclopedia, not runtime support claims',()=>{
  assert.equal(data.entries.length,2002);
@@ -26,7 +26,7 @@ test('Compare classification never equates missing evidence with unsupported',()
  assert.equal(classify('Platform: P / Device: GPU / Image formats: IMAGE2D / State'),'Image formats');
  for(const state of ['Added','Removed','Changed','Unchanged'])assert.match(app,new RegExp(state));
  assert.match(app,/x\.has\(k\)/);assert.match(app,/y\.has\(k\)/);
- assert.match(app,/r\.hasA\?text\(r\.baseline\):'Not reported'/);
+ assert.match(app,/comparisonValueCell\(r\.baseline,r\.hasA\)/);assert.match(app,/node\('span',\{class:'compare-value-state unknown'\},'Unknown'\)/);
  assert.match(app,/state\.compareA===state\.compareB/);
 });
 test('Detail evidence provides category-scoped search, status states and bounded paging',()=>{
@@ -37,10 +37,10 @@ test('Detail evidence provides category-scoped search, status states and bounded
  assert.match(css,/\.detail-evidence-toolbar/);
 });
 test('Release 3.4.0 remains a strict producer lock',()=>{
- assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.11'/);
+ assert.match(worker,/DATABASE_RELEASE_VERSION = '3\.4\.14'/);
  assert.match(worker,/predecessor311 \? '3\.0\.11' : predecessor312 \? '3\.0\.12' : predecessor313 \? '3\.0\.13' : predecessor314 \? '3\.0\.14' : predecessor315 \? '3\.1\.0' : predecessor320 \? '3\.2\.0' : '3\.4\.0'/);
- assert.match(html,/app\.v3411\.js\?v=3411/);
- assert.match(html,/site\.v3411\.css\?v=3411/);
- assert.match(html,/browser-compat\.v1006\.js\?v=3411/);
+ assert.match(html,/app\.v3414\.js\?v=3414/);
+ assert.match(html,/site\.v3414\.css\?v=3414/);
+ assert.match(html,/browser-compat\.v1006\.js\?v=3414/);
  assert.match(app,/Full report details loaded/);
 });

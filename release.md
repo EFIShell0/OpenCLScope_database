@@ -1,6 +1,23 @@
-# OpenCLScope Database 3.4.11
+# OpenCLScope Database 3.4.14
 
 Paired to OpenCLScope 3.4.0/30400. Strict new report admission, historical read-only 3.2.0/30200, Image format `specWarning` integrity and native QCOM typed byte decoding; preserve pinned VulkanScope CSS, OpenCL registry and report-scoped evidence.
+
+## Database 3.4.14 — Video-observed controls and filter geometry
+
+- Compared the shared viewport scrollbar HTML/SVG/ARIA contract directly with the immutable VulkanScope Database 1.4.12 implementation and reviewed the 157-second 4K video, especially the filters, scrollbar tracks, menu buttons and tables.
+- Adopted the reference's vertical scrollbar arrow paths, classes, accessible scroll position ranges and hit-region behavior. Kept neutral dark track and grey thumb, with OpenCL green only for interaction and brand emphasis.
+- Moved native OpenCL filters to grouped header-side filter-family controls. Hardware, OpenCL/driver, submission and evidence groups use the upstream control layout. Reports retains its own Sort and Per page controls; duplicate generic controls are not displayed there.
+- Added a final versioned reference-controls stylesheet to correct the competing scrollbar/button/table surface overrides from previous release layers. The official upstream CSS remains unmodified.
+- Corrected hidden scrollbar keyboard-focus behavior, and required the new terminal stylesheet in the release marker, Pages artifact and post-deploy verification.
+- Verified static Chromium computed styles/overflow at 1440 and 390 pixels, source/Worker tests, immutable hash gates and Pages package. Dynamic populated-UI pixel parity and live GitHub/Cloudflare were not verified; additional differences remain.
+
+## Database 3.4.12 — Video-observed Compare evidence parity
+
+- Compared the user-provided 157-second VulkanScope 1.4.12 recording, especially the A/B comparison evidence cards near 143 seconds, with OpenCLScope Database 3.4.11 and the immutable reference source.
+- Replaced the flat Compare evidence table with bounded group-headed cards, two independently labeled baseline/candidate value columns and source evidence action buttons.
+- Canonical OpenCL property tokens now compare across differently named GPUs with the same reported OpenCL device type. Devices sharing a type are compared as stable multisets; the interface does not invent pairwise device associations.
+- Missing data remains Unknown and Not reported, distinct from unavailable, and raw false, 0, error codes and query status remain intact. No Vulkan-only evidence is ported.
+- Preserved canonical backend, D1, snapshot, consent-controlled deploy refresh and pinned Khronos and VulkanScope reference files. Compare changes are a tested subset, not a claim of complete UI parity.
 
 ## Database 3.4.11 — Video-guided Properties parity
 
@@ -84,3 +101,10 @@ Paired to OpenCLScope 3.4.0/30400. Strict new report admission, historical read-
 - Cohort-filtered loaded reports are no longer counted as missing report details. Extension ranking remains report-scoped and evidence backed.
 - Refreshed versioned assets and deploy readiness marker. Historical reports, new submission producer 3.4.0/30400, schema 1, immutable Khronos OpenCL registry, pinned VulkanScope CSS, Worker and D1 rules are unchanged.
 - Local/regression tests and isolated Chromium checks were run; live Cloudflare/GitHub deployment and full visual parity have not been verified.
+
+
+## Database 3.4.14 — VulkanScope Settings and masked IP component parity
+- Aligned Favorites, Preferences, regional date/clock controls, information icons, browser-data clearing button and applicable static copy with VulkanScope Database 1.4.12, preserving native OpenCL nomenclature and the user's independent automatic-update consent.
+- Replaced stale Information release `3.0.19` with the authoritative database release constant.
+- Rebuilt the masked network-address action using the upstream badge/mosaic/eye SVG structure, keyboard-usable button, accessible pressed state and 15-second automatic masking, without leaking addresses into masked DOM text.
+- Verified unchanged immutable Khronos registry and VulkanScope reference CSS, producer 3.4.0/30400, Worker/D1 shape and publication chain. Not a claim of complete pixel-perfect parity or live deployment.

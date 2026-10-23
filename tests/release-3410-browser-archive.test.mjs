@@ -7,7 +7,7 @@ import {resolve,dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const read=p=>readFileSync(resolve(root,p),'utf8');
-const app=read('assets/app.v3411.js');
+const app=read('assets/app.v3414.js');
 const html=read('index.html');
 const upstream=readFileSync(resolve(root,'assets/vulkan-layout.v1412.css'));
 const rules=read('rules/PROJECT_RULES.md');

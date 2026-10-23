@@ -1,5 +1,20 @@
 # OpenCLScope Database changelog
 
+## 3.4.14
+
+- Restored the upstream VulkanScope 1.4.12 viewport scrollbar structure, accessible thumb and arrow paths while preserving OpenCL green brand accent.
+- Grouped real native OpenCL filters by semantic family beside workspace headings, avoiding redundant Sort/Per page controls in Reports.
+- Neutralized conflicting native/table scrollbar and report-button surface colors in a last-loaded, cache-busted reference-controls stylesheet.
+- Strengthened release readiness and Pages artifact verification for the additional stylesheet; preserved the strict 3.4.0 producer admission and historical report validation.
+- Validated static Chromium style geometry and mobile overflow; complete screen-by-screen dynamic matching remains open.
+
+## 3.4.12
+
+- Video-guided Compare refactor: grouped canonical OpenCL evidence cards, side-by-side A/B values, real query-state badges and retained evidence actions/export/pagination.
+- Compared device-type cohorts across different GPU names rather than coupling property keys to names; names and vendors remain original compared evidence fields.
+- Browser regression tests for mobile/desktop table containment and grouped evidence with temporary QA fixtures; live Pages/D1 equivalence and remaining Reports, Settings, Memory and all pixel differences are not claimed.
+- Refreshed source assets, release markers, tests, Pages publication and ZIP manifests without changing the strict Android 3.4.0/30400 submission contract or historical data.
+
 ## 3.4.11
 
 - Reviewed the complete 157-second 3840×2160 VulkanScope UI recording, including Reports, Settings, property distributions, Memory, Instance, Encyclopedia and Compare. Compared against the pinned VulkanScope Database 1.4.12 project.
