@@ -18,7 +18,7 @@ for(let i=0;i<12;i++){
     const markerResponse=await fetch(new URL('data/release.json',base),{headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!markerResponse.ok)throw Error('Pages release marker unavailable');
     const marker=await markerResponse.json();
-    if(marker.schemaVersion!==2||marker.releaseReady!==true||marker.databaseVersion!==DATABASE_RELEASE_VERSION||marker.cacheKey!=='3414'||marker.generatedAt!==index.generatedAt||marker.appJs!=='assets/app.v3414.js'||marker.bootstrapJs!=='assets/release-bootstrap.v3414.js'||marker.shellCss!=='assets/reference-shell.v3414.css')throw Error('Pages release readiness/identity mismatch');
+    if(marker.schemaVersion!==2||marker.releaseReady!==true||marker.databaseVersion!==DATABASE_RELEASE_VERSION||marker.cacheKey!=='3415'||marker.generatedAt!==index.generatedAt||marker.appJs!=='assets/app.v3415.js'||marker.bootstrapJs!=='assets/release-bootstrap.v3415.js'||marker.shellCss!=='assets/reference-shell.v3415.css'||marker.controlsCss!=='assets/reference-controls.v3415.css')throw Error('Pages release readiness/identity mismatch');
     const stamp=encodeURIComponent(DATABASE_RELEASE_VERSION);
     const htmlResponse=await fetch(new URL(`index.html?_release_probe=${stamp}`,base),{cache:'no-store',headers:{'cache-control':'no-cache'},redirect:'error',signal:AbortSignal.timeout(12000)});
     if(!htmlResponse.ok)throw Error('Published Pages HTML unavailable');

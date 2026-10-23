@@ -25,7 +25,7 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
   const dir=await mkdtemp(join(tmpdir(),'openclscope-pages-gate-'));
   try{
     for(const folder of ['tools','worker/src','data','assets','registry','licenses'])await mkdir(join(dir,folder),{recursive:true});
-    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v3414.js','assets/site.v3414.css','assets/parity.v3414.css','assets/reference-shell.v3414.css','assets/report-detail.v3414.css','assets/release-bootstrap.v3414.js']){
+    for(const file of ['tools/build_pages_artifact.mjs','worker/src/index.js','worker/src/query-manifest.js','worker/package.json','index.html','config.js','data/index.json','data/snapshot.json','data/release.json','assets/app.v3415.js','assets/site.v3415.css','assets/parity.v3415.css','assets/reference-shell.v3415.css','assets/report-detail.v3415.css','assets/reference-controls.v3415.css','assets/release-bootstrap.v3415.js']){
       const dest=join(dir,file);await copyFile(new URL(file,root),dest);
     }
     const run=()=>spawnSync(process.execPath,['tools/build_pages_artifact.mjs'],{cwd:dir,encoding:'utf8',timeout:12000});
@@ -43,13 +43,13 @@ test('Pages artifact refuses an index/snapshot release mismatch (fail closed)',a
 });
 
 test('Navigation, filters, default page size, and brand revisions are wired into current assets',async()=>{
-  const html=await read('index.html'),js=await read('assets/app.v3414.js'),css=await read('assets/site.v3414.css');
+  const html=await read('index.html'),js=await read('assets/app.v3415.js'),css=await read('assets/site.v3415.css');
   for(const id of ['navScrollLeft','navScrollRight','navEdgeLeft','navEdgeRight','clearFilters'])assert.ok(html.includes(`id="${id}"`));
   assert.match(js,/bindNavigationScroll\(\)/);
   assert.match(js,/\$\('clearFilters'\)\.onclick=clearWorkspaceFilters/);
   assert.match(js,/pageSize:25/);
-  assert.match(html,/OpenCLScope Database 3\.4\.14/);
-  assert.match(html,/app\.v3414\.js\?v=3414/);
+  assert.match(html,/OpenCLScope Database 3\.4\.15/);
+  assert.match(html,/app\.v3415\.js\?v=3415/);
   assert.match(css,/\.nav-scroll-button:disabled/);
   assert.doesNotMatch(html,/site\.v1204\.css/);
 });

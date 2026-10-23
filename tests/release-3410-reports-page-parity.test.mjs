@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-const js=readFileSync(new URL('../assets/app.v3414.js',import.meta.url),'utf8');
+const js=readFileSync(new URL('../assets/app.v3415.js',import.meta.url),'utf8');
 const upstream=readFileSync(new URL('../rules/UPSTREAM_REFERENCE_RULES.md',import.meta.url),'utf8');
 const rules=readFileSync(new URL('../rules/PROJECT_RULES.md',import.meta.url),'utf8');
 test('VulkanScope Reports toolbar options have one authoritative report pager without altering other views',()=>{
@@ -21,7 +21,7 @@ test('VulkanScope Reports toolbar options have one authoritative report pager wi
  assert.ok(upstream.length>1000);
 });
 test('Release assets and marker remain cache coherent',()=>{
- for(const path of ['assets/app.v3414.js?v=3414','assets/site.v3414.css?v=3414','assets/parity.v3414.css?v=3414','assets/reference-shell.v3414.css?v=3414','assets/release-bootstrap.v3414.js?v=3414'])assert.ok(html.includes(path),path);
+ for(const path of ['assets/app.v3415.js?v=3415','assets/site.v3415.css?v=3415','assets/parity.v3415.css?v=3415','assets/reference-shell.v3415.css?v=3415','assets/release-bootstrap.v3415.js?v=3415'])assert.ok(html.includes(path),path);
  const marker=JSON.parse(readFileSync(new URL('../data/release.json',import.meta.url),'utf8'));
- assert.equal(marker.databaseVersion,'3.4.14');assert.equal(marker.cacheKey,'3414');assert.equal(marker.releaseReady,false);
+ assert.equal(marker.databaseVersion,'3.4.15');assert.equal(marker.cacheKey,'3415');assert.equal(marker.releaseReady,false);
 });

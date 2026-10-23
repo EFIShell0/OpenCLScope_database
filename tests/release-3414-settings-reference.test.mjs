@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
 const src=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 const html=src('index.html');
-const app=src('assets/app.v3414.js');
+const app=src('assets/app.v3415.js');
 const ref=src('assets/upstream-reference.css');
 const release=JSON.parse(src('data/release.json'));
 
@@ -20,10 +20,10 @@ test('Settings category help and informational icons preserve the upstream share
 });
 
 test('Settings Information derives the published database version rather than an obsolete literal',()=>{
- assert.equal(release.databaseVersion,'3.4.14');
+ assert.equal(release.databaseVersion,'3.4.15');
  assert.match(app,/\[\["Database release",DATABASE_RELEASE_VERSION\]/);
  assert.ok(!app.includes('[["Database release","3.0.19"]'));
- assert.match(src('worker/src/index.js'),/DATABASE_RELEASE_VERSION = '3\.4\.14'/);
+ assert.match(src('worker/src/index.js'),/DATABASE_RELEASE_VERSION = '3\.4\.15'/);
 });
 
 test('The upstream mask UI remains private before click, exposes on click and re-masks on timer',()=>{

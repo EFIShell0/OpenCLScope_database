@@ -1,5 +1,5 @@
 import {createHash} from 'node:crypto';
-import {writeFile,rename,mkdir} from 'node:fs/promises';
+import {writeFile,rename,mkdir,readFile} from 'node:fs/promises';
 import {resolve,join} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {validateStoredReport,DATABASE_RELEASE_VERSION} from '../worker/src/index.js';
@@ -102,7 +102,15 @@ export async function publishSnapshot(api,out,fetchImpl=fetch,options={}){
   const result=await collectSnapshot(api,fetchImpl,options);
   const folder=resolve(out,'data');await mkdir(folder,{recursive:true});
   const suffix=`.${process.pid}.tmp`;
-  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',{schemaVersion:2,releaseReady:true,databaseVersion:DATABASE_RELEASE_VERSION,cacheKey:'3414',appJs:'assets/app.v3414.js',siteCss:'assets/site.v3414.css',parityCss:'assets/parity.v3414.css',shellCss:'assets/reference-shell.v3414.css',reportDetailCss:'assets/report-detail.v3414.css',bootstrapJs:'assets/release-bootstrap.v3414.js',generatedAt:result.index.generatedAt}]];
+  // The checked-in release manifest is the ONLY source for published frontend
+  // references. Snapshot refresh must never silently omit a newly required CSS.
+  const sourceRelease=JSON.parse(await readFile(new URL('../data/release.json',import.meta.url),'utf8'));
+  if(sourceRelease.schemaVersion!==2||sourceRelease.releaseReady!==false||
+     sourceRelease.databaseVersion!==DATABASE_RELEASE_VERSION||
+     !sourceRelease.controlsCss||!sourceRelease.reportDetailCss||
+     !sourceRelease.bootstrapJs)throw Error('Source release manifest invalid');
+  const readyRelease={...sourceRelease,releaseReady:true,generatedAt:result.index.generatedAt};
+  const entries=[['index.json',result.index],['snapshot.json',result.snapshot],['release.json',readyRelease]];
   for(const [filename,payload] of entries)await writeFile(join(folder,filename+suffix),JSON.stringify(payload));
   for(const [filename]of entries)await rename(join(folder,filename+suffix),join(folder,filename));
   return result;

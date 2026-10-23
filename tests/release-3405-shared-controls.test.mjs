@@ -4,8 +4,8 @@ import {readFile} from 'node:fs/promises';
 const root=new URL('../',import.meta.url);
 const load=name=>readFile(new URL(name,root),'utf8');
 const html=await load('index.html');
-const app=await load('assets/app.v3414.js');
-const shared=await load('assets/reference-shell.v3414.css');
+const app=await load('assets/app.v3415.js');
+const shared=await load('assets/reference-shell.v3415.css');
 const upstream=await load('assets/vulkan-layout.v1412.css');
 test('Vulkan 1.4.12 global search SVG and upstream clear behavior are reused',()=>{
  assert.match(html,/class="search-clear-button global-search-clear is-hidden" id="globalSearchClear"/);

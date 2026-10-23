@@ -6,7 +6,7 @@ import vm from 'node:vm';
 const read=path=>readFile(new URL('../'+path,import.meta.url),'utf8');
 const baseMarker={schemaVersion:2,releaseReady:true,databaseVersion:'3.5.0',cacheKey:'3500',appJs:'assets/app.v3500.js',siteCss:'assets/site.v3500.css',parityCss:'assets/parity.v3500.css',shellCss:'assets/reference-shell.v3500.css',reportDetailCss:'assets/report-detail.v3500.css',controlsCss:'assets/reference-controls.v3500.css',bootstrapJs:'assets/release-bootstrap.v3500.js'};
 async function testUpdate(marker,auto){
- const source=await read('assets/release-bootstrap.v3414.js');
+ const source=await read('assets/release-bootstrap.v3415.js');
  const requests=[],events=[],visits=[];
  const storage=new Map(auto?[['openclscope.autoReleaseReload','yes']]:[]);
  const fetch=async url=>{
@@ -26,10 +26,12 @@ async function testUpdate(marker,auto){
 test('release marker stays not-ready before snapshot publication, and is ready in the snapshot builder',async()=>{
  const source=JSON.parse(await read('data/release.json'));
  assert.equal(source.releaseReady,false);
- assert.equal(source.cacheKey,'3414');
+ assert.equal(source.cacheKey,'3415');
  const builder=await read('tools/build_snapshot.mjs');
  assert.match(builder,/releaseReady:true/);
- assert.match(builder,/cacheKey:'3414'/);
+ assert.match(builder,/readFile\(new URL\('\.\.\/data\/release\.json',import\.meta\.url\)/);
+ assert.match(builder,/const readyRelease=\{\.\.\.sourceRelease,releaseReady:true,generatedAt:result\.index\.generatedAt\}/);
+ assert.equal(source.controlsCss,'assets/reference-controls.v3415.css');
  const builderArtifact=await read('tools/build_pages_artifact.mjs');
  assert.match(builderArtifact,/release\.schemaVersion!==2/);
 });
@@ -60,7 +62,7 @@ test('VulkanScope-style multi-stage deployment and independent report dispatch r
  const workflow=await read('.github/workflows/pages.yml');
  for(const name of ['windows-tooling:','build:','release:','deploy:','snapshot-refresh:','needs: windows-tooling','needs: [build, release]','node tools/verify_published_snapshot.mjs','node tools/audit_pages_artifact.mjs'])assert.ok(workflow.includes(name),name);
  assert.match(workflow,/inputs\.mode == 'snapshot'/);
- const css=await read('assets/parity.v3414.css');
+ const css=await read('assets/parity.v3415.css');
  assert.match(css,/\.db-workspace \.filters\.filter-panel\{display:grid/);
  assert.doesNotMatch(css,/\.section-heading \.filters\.filter-panel\{display:grid/);
  assert.match(css,/\.hero-v127 \.hero-command-deck \.search-box\{border-color:#363c39!important/);

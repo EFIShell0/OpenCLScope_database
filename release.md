@@ -1,3 +1,6 @@
+## OpenCLScope Database 3.4.15
+Fixed GitHub Actions deploy failure in `Stage and audit release-ready Pages files`. Snapshot generation now preserves every versioned asset field from the checked-in release manifest, including reference controls CSS. The checked-in release remains `releaseReady: false` until a verified snapshot is assembled; publish-time release is marked ready only after the verified index/preload is generated. A full snapshot-to-Pages artifact regression test guards this path. No report format, D1 schema, producer allowlist, or VulkanScope reference assets were changed.
+
 # OpenCLScope Database 3.4.14
 
 Paired to OpenCLScope 3.4.0/30400. Strict new report admission, historical read-only 3.2.0/30200, Image format `specWarning` integrity and native QCOM typed byte decoding; preserve pinned VulkanScope CSS, OpenCL registry and report-scoped evidence.

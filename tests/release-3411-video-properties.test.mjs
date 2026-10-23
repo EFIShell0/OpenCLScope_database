@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url';
 import vm from 'node:vm';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
-const app=readFileSync(join(root,'assets/app.v3414.js'),'utf8');
+const app=readFileSync(join(root,'assets/app.v3415.js'),'utf8');
 const html=readFileSync(join(root,'index.html'),'utf8');
 const rules=readFileSync(join(root,'rules/PROJECT_RULES.md'),'utf8');
 const start=app.indexOf('function propertyCoverageModel(){');

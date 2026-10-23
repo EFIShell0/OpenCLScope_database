@@ -30,7 +30,7 @@ def allowed(path):
 def package(out_dir,verify_existing=False):
     marker=json.loads((ROOT/'data/release.json').read_text(encoding='utf-8'))
     version=marker['databaseVersion']
-    if version!='3.4.14':
+    if version!='3.4.15':
         raise ValueError('Unexpected database version')
     paths=sorted((p for p in ROOT.rglob('*') if p.is_file() and allowed(p)),key=lambda p:p.relative_to(ROOT).as_posix())
     if len(paths)<400 or not any(x.relative_to(ROOT).as_posix()=='.github/workflows/pages.yml' for x in paths):

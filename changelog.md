@@ -1,3 +1,8 @@
+## 3.4.15 — Pages deploy release manifest integrity
+- Repair production snapshot manifest generation: propagate every frontend asset reference, including `controlsCss`, from the immutable-in-build source release marker.
+- Verify referenced CSS files during Pages staging. Add end-to-end snapshot-to-Pages regression testing for the failure seen in GitHub Actions #702.
+- Preserve VulkanScope interface reference, OpenCL data semantics and the existing phased GitHub workflow.
+
 # OpenCLScope Database changelog
 
 ## 3.4.14
